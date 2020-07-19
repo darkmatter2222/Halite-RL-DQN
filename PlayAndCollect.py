@@ -21,10 +21,10 @@ agent_count = 2
 environment.reset(agent_count)
 state = environment.state[0]
 board = Board(state.observation, environment.configuration)
-SHIP_DIRECTIVES = {'8': ShipAction.NORTH,
-                   '6': ShipAction.EAST,
-                   '5': ShipAction.SOUTH,
-                   '4': ShipAction.WEST,
+SHIP_DIRECTIVES = {'w': ShipAction.NORTH,
+                   'd': ShipAction.EAST,
+                   's': ShipAction.SOUTH,
+                   'a': ShipAction.WEST,
                    '7': ShipAction.CONVERT,
                    '': 'NOTHING'}
 SHIPYARD_DIRECTIVES = {'9': ShipyardAction.SPAWN}
@@ -44,12 +44,28 @@ def renderer(board, highlight=None):
     for y in range(size):
         for x in range(size):
             board_cell = board[(x, size - y - 1)]
+            bord_cell_halite = int(9.0 * board_cell.halite / float(board.configuration.max_cell_halite))
             precolor = ''
             postcolor = ''
+
+            if bord_cell_halite > 0:
+                precolor = '\x1b[32m'
+                postcolor = '\x1b[0m'
+
+            if board_cell.ship is not None:
+                precolor = '\x1b[31m'
+                postcolor = '\x1b[0m'
+            if board_cell.shipyard is not None:
+                precolor = '\x1b[31m'
+                postcolor = '\x1b[0m'
+
             if highlight != None:
                 if (x, size - y - 1) == highlight:
-                    precolor = '\x1b[31m'
+                    precolor = '\x1b[36m'
                     postcolor = '\x1b[0m'
+
+
+
             sudo_cell = ''
             sudo_cell += precolor
 
@@ -58,7 +74,7 @@ def renderer(board, highlight=None):
             else:
                 sudo_cell += ' '
 
-            sudo_cell += str(int(9.0 * board_cell.halite / float(board.configuration.max_cell_halite)))
+            sudo_cell += str(bord_cell_halite)
 
             if board_cell.shipyard is not None:
                 sudo_cell += chr(ord('A') + board_cell.shipyard.player_id)
@@ -212,13 +228,14 @@ def save_image(img, name):
 
 
 def human_action(observation, configuration):
+    #this_step += 1
     try:
         board = Board(observation, configuration)
         current_player = board.current_player
 
         for ship in current_player.ships:
             renderer(board, ship.position)
-            ship_directive = input(f"What Direction to Move Ship w/ cargo {ship.halite}?")
+            ship_directive = input(f"What Direction to Move Ship w/ cargo {ship.halite} for this step:{observation.step}?")
             if ship_directive != '':
                 ship.next_action = SHIP_DIRECTIVES[ship_directive]
                 # clear_output(wait=False)
@@ -232,7 +249,6 @@ def human_action(observation, configuration):
                                     'ship',
                                     board.observation['halite'])
             save_image(img, SHIP_DIRECTIVES[ship_directive])
-
         return current_player.next_actions
     except Exception as e:
         return current_player.next_actions

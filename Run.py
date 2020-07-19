@@ -9,7 +9,6 @@ model = keras.models.load_model('N:\\Halite\\Models\\v2.h5')
 from kaggle_environments import make
 from kaggle_environments.envs.halite.helpers import *
 import numpy as np
-import database_interface
 import tensorflow as tf
 from PIL import Image
 import numpy as np
@@ -22,7 +21,6 @@ import json
 
 label_map = {0: "EAST", 1: "NORTH", 2: "NOTHING", 3: "SOUTH", 4: "WEST"}
 label_map_actions = {0: ShipAction.EAST, 1: ShipAction.NORTH, 2: "NOTHING", 3: ShipAction.SOUTH, 4: ShipAction.WEST}
-database = database_interface.database
 rolling_reserve = []
 root_image_directory = 'N:\\Halite'
 board_size = 10
@@ -54,12 +52,28 @@ def renderer(board, highlight=None):
     for y in range(size):
         for x in range(size):
             board_cell = board[(x, size - y - 1)]
+            bord_cell_halite = int(9.0 * board_cell.halite / float(board.configuration.max_cell_halite))
             precolor = ''
             postcolor = ''
+
+            if bord_cell_halite > 0:
+                precolor = '\x1b[32m'
+                postcolor = '\x1b[0m'
+
+            if board_cell.ship is not None:
+                precolor = '\x1b[31m'
+                postcolor = '\x1b[0m'
+            if board_cell.shipyard is not None:
+                precolor = '\x1b[31m'
+                postcolor = '\x1b[0m'
+
             if highlight != None:
                 if (x, size - y - 1) == highlight:
-                    precolor = '\x1b[31m'
+                    precolor = '\x1b[36m'
                     postcolor = '\x1b[0m'
+
+
+
             sudo_cell = ''
             sudo_cell += precolor
 
@@ -68,7 +82,7 @@ def renderer(board, highlight=None):
             else:
                 sudo_cell += ' '
 
-            sudo_cell += str(int(9.0 * board_cell.halite / float(board.configuration.max_cell_halite)))
+            sudo_cell += str(bord_cell_halite)
 
             if board_cell.shipyard is not None:
                 sudo_cell += chr(ord('A') + board_cell.shipyard.player_id)
@@ -130,7 +144,6 @@ def renderer(board, highlight=None):
             result += postcolor
         result += '|\n'
     print(shifted_result)
-
 
 def shift(seq, n=0):
     a = n % len(seq)
