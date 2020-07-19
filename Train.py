@@ -57,24 +57,24 @@ logging.info('Compress/Shuffle Data')
 logging.info('Compress/Shuffle Data Complete')
 
 model = tf.keras.Sequential([
-    #tf.keras.layers.Flatten(input_shape=(5, 10, 10)),
+    tf.keras.layers.Flatten(input_shape=(5, 10, 10)),
     #tf.keras.layers.Dense(32, activation='relu'),
-    tf.keras.layers.Conv2D(10, 10, padding='same', activation='relu', input_shape=(5, 10, 10)),
-    tf.keras.layers.MaxPooling2D(),
-    tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(128, activation='relu'),
+    #tf.keras.layers.Conv2D(50, 50, padding='same', activation='relu', input_shape=(5, 10, 10)),
+    #tf.keras.layers.MaxPooling2D(),
+    #tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(16, activation='relu'),
     tf.keras.layers.Dense(5)
 ])
 
 tensor_board = tf.keras.callbacks.TensorBoard(log_dir=os.path.realpath('..')+"\\Logs\\{}".format(time.time()))
 
 model.compile(optimizer='adam',
-                loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+                loss=tf.keras.losses.MeanAbsoluteError(),
                 metrics=['accuracy'])
 
 model.fit(x=normalized_training_data, y=np.array(training_labels), validation_data=(normalized_validation_data, np.array(validation_labels)),
-          epochs=1000,
-          batch_size=1024,
+          epochs=100000,
+          batch_size=2048,
           callbacks=[tensor_board],
           verbose=1)
 

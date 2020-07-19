@@ -3,12 +3,18 @@ from kaggle_environments.envs.halite.helpers import *
 import numpy as np
 import database_interface
 import tensorflow as tf
+from PIL import Image
+import numpy as np
+import matplotlib.pyplot as plt
+import time
+from matplotlib.widgets import TextBox
 import json
 
 database = database_interface.database
+rolling_reserve = []
+root_image_directory = ''
 
 
-# Render Override
 def renderer(board, highlight=None):
     """
     The board is printed in a grid with the following rules:
@@ -53,7 +59,11 @@ def renderer(board, highlight=None):
     print(result)
 
 
-# calculate_deltas
+def shift(seq, n=0):
+    a = n % len(seq)
+    return seq[-a:] + seq[:-a]
+
+
 def calculate_delta(source_ship, all_ships, all_shipyards, board_size, player_id=0):
     self_ship = np.zeros([board_size, board_size])
     other_ships = np.zeros([board_size, board_size])
@@ -93,9 +103,45 @@ def get_training_data(source_ship, all_ships, all_shipyards, board_size, player_
 
     field = np.zeros([board_size, board_size])
     field = np.array(halite_on_field).reshape((board_size, board_size))
-    field = tf.keras.utils.normalize(field)
+    #field = tf.keras.utils.normalize(field)
 
-    return [self_ship.tolist(), other_ships.tolist(), friend_shipyards.tolist(), foe_shipyards.tolist(), field.tolist()]
+    shift_delta = Point(4, 4) - source_ship.position
+
+    pixels = []
+    for x in range(0, board_size):
+        row = []
+        for y in range(0, board_size):
+            pixel = [0, 0, 0] #ThisShip, Attract, Avoide
+            pixel[1] = int(200.0 * field[x][y] / float(board.configuration.max_cell_halite)) # Attract (Halite) (Max 200 of 255)
+            if self_ship[x][y] == 1:
+                pixel[0] = 255 # This Ship
+            if other_ships[x][y] == 1:
+                pixel[2] = 255 # Avoide
+                pixel[1] = 0 # Set Attract to NONE
+            if foe_shipyards[x][y]:
+                pixel[2] = 255 # Avoide
+                pixel[1] = 0 # Set Attract to NONE
+            row.append(tuple(pixel))
+        row = shift(row, shift_delta[0])
+        pixels.append(row)
+    pixels = shift(pixels, (shift_delta[1] * -1))
+
+    # Convert the pixels into an array using numpy
+    array = np.array(pixels, dtype=np.uint8)
+
+    # Use PIL to create an image from the new array of pixels
+    new_image = Image.fromarray(array)
+
+    #plt.imshow(new_image)
+    #plt.show(block=False)
+
+    #new_image.save('new.png')
+
+    return new_image
+
+
+def save_image(img, name):
+    img.save(f'{name}.png')
 
 
 board_size = 10
@@ -123,7 +169,7 @@ def human_action(observation, configuration):
                 ship.next_action = SHIP_DIRECTIVES[ship_directive]
                 # clear_output(wait=False)
             data = get_training_data(ship, board.ships, board.shipyards, board_size, current_player.id, board.observation["players"][0][0], ship.halite, 'ship', board.observation['halite'])
-            database.post(database, json.dumps(data), LABELS[ship_directive])
+            #database.post(database, json.dumps(data), LABELS[ship_directive])
 
         return current_player.next_actions
     except Exception as e:
