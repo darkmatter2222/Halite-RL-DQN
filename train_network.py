@@ -10,19 +10,31 @@ model_dir = 'Models'
 tensorboard_dir = 'Logs'
 model_name = 'v3'
 train_dir = os.path.join(base_dir, 'TRAIN')
+target_image_size = (10, 10)
 
-train_f_names = os.listdir(train_dir)
-print(train_f_names[:10])
+train_datagen = ImageDataGenerator(validation_split=0.25)
+train_generator = train_datagen.flow_from_directory(
+        train_dir,
+        target_size=target_image_size,
+        batch_size=10,
+        class_mode='categorical',
+        subset='training')
 
+validation_generator = train_datagen.flow_from_directory(
+        train_dir,
+        target_size=target_image_size,
+        batch_size=10,
+        class_mode='categorical',
+        subset='validation')
 
 model = tf.keras.Sequential([
-    tf.keras.layers.Input(shape=(10, 10, 3)),
+    tf.keras.layers.Input(shape=(target_image_size[0], target_image_size[1], 3)),
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(256, activation='relu'),
     tf.keras.layers.Dense(512, activation='relu'),
     tf.keras.layers.Dense(512, activation='relu'),
-    tf.keras.layers.Dense(256, activation='relu'),
-    tf.keras.layers.Dense(5, activation='sigmoid')
+    tf.keras.layers.Dense(512, activation='relu'),
+    tf.keras.layers.Dropout(0.1),
+    tf.keras.layers.Dense(train_generator.num_classes, activation='sigmoid')
 ])
 
 model.summary()
@@ -30,21 +42,6 @@ model.compile(optimizer=tf.keras.optimizers.Adam(
                 learning_rate=0.000001),
               loss='categorical_crossentropy',
               metrics=['accuracy'])
-
-train_datagen = ImageDataGenerator(validation_split=0.2)
-train_generator = train_datagen.flow_from_directory(
-        train_dir,
-        target_size=(10, 10),
-        batch_size=10,
-        class_mode='categorical',
-        subset='training')
-
-validation_generator = train_datagen.flow_from_directory(
-        train_dir,
-        target_size=(10, 10),
-        batch_size=10,
-        class_mode='categorical',
-        subset='validation')
 
 tensor_board = tf.keras.callbacks.TensorBoard(log_dir=f"{base_dir}\\{tensorboard_dir}\\{time.time()}")
 model_save = tf.keras.callbacks.ModelCheckpoint(
