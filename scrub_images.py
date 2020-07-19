@@ -20,7 +20,9 @@ west_review_dir = f'{review_dir}\\WEST'
 nothing_source_dir = f'{train_dir}\\NOTHING'
 nothing_review_dir = f'{review_dir}\\NOTHING'
 
-# north_bad_files.append(file)
+# plt.imshow(img)
+# plt.show()
+# print('bad')
 
 # NORTH
 for file in glob.glob(f"{north_source_dir}\\*.png"):
@@ -45,9 +47,6 @@ for file in glob.glob(f"{east_source_dir}\\*.png"):
     center_e_1_s_1 = img_array[6][5]
     if center_e_1[2] == 255 or center_e_2[2] == 255 or center_e_1_n_1[2] == 255 or center_e_1_s_1[2] == 255:
         shutil.move(file, east_review_dir)
-        #plt.imshow(img)
-        #plt.show()
-        #print('bad')
 
 # SOUTH
 for file in glob.glob(f"{south_source_dir}\\*.png"):
@@ -72,9 +71,20 @@ for file in glob.glob(f"{west_source_dir}\\*.png"):
     center_w_1_s_1 = img_array[6][3]
     if center_w_1[2] == 255 or center_w_2[2] == 255 or center_w_1_n_1[2] == 255 or center_w_1_s_1[2] == 255:
         shutil.move(file, west_review_dir)
-        #plt.imshow(img)
-        #plt.show()
-        #print('bad')
+
+# NOTHING
+for file in glob.glob(f"{nothing_source_dir}\\*.png"):
+    img = Image.open(file)
+    img_array = np.array(img)
+    center = img_array[5][4]
+    center_n_1 = img_array[4][4]
+    center_e_1 = img_array[5][5]
+    center_s_1 = img_array[6][4]
+    center_w_1 = img_array[5][3]
+    if center_n_1[2] == 255 or center_e_1[2] == 255 or center_s_1[2] == 255 or center_w_1[2] == 255:
+        shutil.move(file, nothing_review_dir)
+
+
 
 
 
