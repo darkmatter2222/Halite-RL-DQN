@@ -1,81 +1,76 @@
-import database_interface
-import numpy as np
-import json
-import tensorflow as tf
-import logging
-import time
 import os
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+from tensorflow.keras import layers
+from tensorflow.keras import Model
+from tensorflow.keras.optimizers import RMSprop
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import tensorflow as tf
+import time
+import math
+import json
 
-logging.getLogger().setLevel(logging.INFO)
-database = database_interface.database
+base_dir = 'N:\\Halite'
+train_dir = os.path.join(base_dir, 'TRAIN')
 
-logging.info('Download Data')
-raw_db_data = database.get(database)
-logging.info('Download Data Complete')
+train_fnames = os.listdir(train_dir)
+print(train_fnames[:10])
 
-logging.info('Extract Data')
-raw_list_data = []
-raw_list_labels = []
-LABELS = {"NORTH": 0, "EAST": 1, "SOUTH": 2, "WEST": 3, "NOTHING": 4}
-for record in raw_db_data:
-    raw_list_data.append(json.loads(record[2]))
-    raw_list_labels.append(LABELS[record[3]])
-logging.info('Extract Data Complete')
+# Our input feature map is 200x200x3: 200x200 for the image pixels, and 3 for
+# the three color channels: R, G, and B
+img_input = layers.Input(shape=(10, 10, 3))
 
-logging.info('Slice Data')
+# Flatten feature map to a 1-dim tensor so we can add fully connected layers
+x = layers.Flatten()(img_input)
 
-nf_of = int(len(raw_list_data) * .80)
-training_data = raw_list_data[0: nf_of]
-validation_data = raw_list_data[nf_of:]
-training_labels = raw_list_labels[0: nf_of]
-validation_labels = raw_list_labels[nf_of:]
+# Create a fully connected layer with ReLU activation and 512 hidden units
+x = layers.Dense(32, activation='relu')(x)
 
-#training_data = raw_list_data[0: int(len(raw_list_data) * .95)]
-#validation_data = raw_list_data[int(len(raw_list_data) * .95):]
-#training_labels = raw_list_data[0: int(len(raw_list_labels) * .95)]
-#validation_labels = raw_list_data[int(len(raw_list_labels) * .95):]
-training_data = training_data
-training_labels = training_labels
-validation_data = validation_data
-validation_labels = validation_labels
-logging.info('Slice Data Complete')
+# Create output layer with a single node and sigmoid activation
+output = layers.Dense(5, activation='sigmoid')(x)
 
-logging.info('Normalize Data')
-normalized_training_data = []
-normalized_training_data = tf.keras.utils.normalize(training_data)
-normalized_validation_data = []
-normalized_validation_data = tf.keras.utils.normalize(validation_data)
-logging.info('Normalize Data Complete')
+# Create model:
+# input = input feature map
+# output = input feature map + stacked convolution/maxpooling layers + fully
+# connected layer + sigmoid output layer
+model = Model(img_input, output)
 
-logging.info('Compress/Shuffle Data')
-#training_dataset = tf.data.Dataset.from_tensor_slices((normalized_training_data, np.array(training_labels)))
-#training_dataset = training_dataset.shuffle(100, reshuffle_each_iteration=True)
-#training_dataset = training_dataset.repeat(20)
-#training_dataset = training_dataset.batch(1024)
+model.summary()
 
-#validation_dataset = tf.data.Dataset.from_tensor_slices((normalized_validation_data, np.array(validation_labels)))
-logging.info('Compress/Shuffle Data Complete')
+model.compile(loss='categorical_crossentropy',
+              optimizer=RMSprop(lr=0.001),
+              metrics=['acc'])
 
-model = tf.keras.Sequential([
-    tf.keras.layers.Flatten(input_shape=(5, 10, 10)),
-    #tf.keras.layers.Dense(32, activation='relu'),
-    #tf.keras.layers.Conv2D(50, 50, padding='same', activation='relu', input_shape=(5, 10, 10)),
-    #tf.keras.layers.MaxPooling2D(),
-    #tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(16, activation='relu'),
-    tf.keras.layers.Dense(5)
-])
+# All images will be rescaled by 1./255
+train_datagen = ImageDataGenerator()
+val_datagen = ImageDataGenerator()
 
-tensor_board = tf.keras.callbacks.TensorBoard(log_dir=os.path.realpath('..')+"\\Logs\\{}".format(time.time()))
+# Flow training images in batches of 20 using train_datagen generator
+train_generator = train_datagen.flow_from_directory(
+        train_dir,  # This is the source directory for training images
+        target_size=(10, 10),  # All images will be resized to 200x200
+        batch_size=10,
+        # Since we use binary_crossentropy loss, we need binary labels
+        class_mode='categorical')
 
-model.compile(optimizer='adam',
-                loss=tf.keras.losses.MeanAbsoluteError(),
-                metrics=['accuracy'])
+tensor_board = tf.keras.callbacks.TensorBoard(log_dir="N:\\Halite\\Logs\\{}".format(time.time()))
+model_save = tf.keras.callbacks.ModelCheckpoint(
+    'N:\\Halite\\Models\\v1Checkpoint.h5',
+    monitor='acc', verbose=0, save_best_only=True, save_weights_only=False, mode='auto', save_freq='epoch')
 
-model.fit(x=normalized_training_data, y=np.array(training_labels), validation_data=(normalized_validation_data, np.array(validation_labels)),
-          epochs=100000,
-          batch_size=2048,
-          callbacks=[tensor_board],
-          verbose=1)
 
-model.save("T1.h5")
+#classes = train_generator.class_indices
+#with open('E:\\Projects\\COD Head Spotter\\Models\\Classes.json', 'w') as outfile:
+    #json.dump(classes, outfile)
+#print(classes)
+
+history = model.fit_generator(
+      train_generator,
+      steps_per_epoch=math.floor(train_generator.samples / train_generator.batch_size),   # 2000 images = batch_size * steps
+      epochs=100,
+      callbacks=[tensor_board, model_save],
+      verbose=1)
+
+
+
+model.save('N:\\Halite\\Models\\v1.h5')

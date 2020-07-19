@@ -5,6 +5,8 @@ import database_interface
 import tensorflow as tf
 from PIL import Image
 import numpy as np
+import os
+import uuid
 import matplotlib.pyplot as plt
 import time
 from matplotlib.widgets import TextBox
@@ -12,10 +14,72 @@ import json
 
 database = database_interface.database
 rolling_reserve = []
-root_image_directory = ''
+root_image_directory = 'N:\\Halite'
+board_size = 10
+environment = make("halite", configuration={"size": board_size, "startingHalite": 1000})
+agent_count = 2
+environment.reset(agent_count)
+state = environment.state[0]
+board = Board(state.observation, environment.configuration)
+SHIP_DIRECTIVES = {'8': ShipAction.NORTH,
+                   '6': ShipAction.EAST,
+                   '5': ShipAction.SOUTH,
+                   '4': ShipAction.WEST,
+                   '7': ShipAction.CONVERT,
+                   '': 'NOTHING'}
+SHIPYARD_DIRECTIVES = {'9': ShipyardAction.SPAWN}
+LABELS = {'8': 'NORTH', '6': 'EAST', '5': 'SOUTH', '4': 'WEST', '7': 'CONVERT', '9': 'SPAWN', '': 'NOTHING'}
 
 
 def renderer(board, highlight=None):
+    size = board.configuration.size
+    sudo_board = []
+    shift_delta = Point(0, 0)
+    if highlight != None:
+        shift_delta = Point(4, 4) - highlight
+
+    for y in range(size):
+        sudo_board.append(['   '] * 10)
+
+    for y in range(size):
+        for x in range(size):
+            board_cell = board[(x, size - y - 1)]
+            precolor = ''
+            postcolor = ''
+            if highlight != None:
+                if (x, size - y - 1) == highlight:
+                    precolor = '\x1b[31m'
+                    postcolor = '\x1b[0m'
+            sudo_cell = ''
+            sudo_cell += precolor
+
+            if board_cell.ship is not None:
+                sudo_cell += chr(ord('a') + board_cell.ship.player_id)
+            else:
+                sudo_cell += ' '
+
+            sudo_cell += str(int(9.0 * board_cell.halite / float(board.configuration.max_cell_halite)))
+
+            if board_cell.shipyard is not None:
+                sudo_cell += chr(ord('A') + board_cell.shipyard.player_id)
+            else:
+                sudo_cell += ' '
+
+            sudo_cell += postcolor
+            sudo_board[y][x] = str(sudo_cell)
+
+    for x in range(size):
+        sudo_board[x] = shift(sudo_board[x], shift_delta[0])
+    sudo_board = shift(sudo_board, shift_delta[1] * -1)
+
+    shifted_result = ''
+    for y in range(size):
+        for x in range(size):
+            shifted_result += '|'
+            shifted_result += sudo_board[y][x]
+        shifted_result += '|\n'
+
+
     """
     The board is printed in a grid with the following rules:
     Capital letters are shipyards
@@ -25,7 +89,6 @@ def renderer(board, highlight=None):
     Player 2 is letter b/B
     etc.
     """
-    size = board.configuration.size
     result = ''
     for y in range(size):
         for x in range(size):
@@ -56,7 +119,7 @@ def renderer(board, highlight=None):
             )
             result += postcolor
         result += '|\n'
-    print(result)
+    print(shifted_result)
 
 
 def shift(seq, n=0):
@@ -91,7 +154,8 @@ def calculate_delta(source_ship, all_ships, all_shipyards, board_size, player_id
     return self_ship, other_ships, friend_shipyards, friend_shipyards, foe_shipyards
 
 
-def get_training_data(source_ship, all_ships, all_shipyards, board_size, player_id , total_halite, cargo, object_type, halite_on_field):
+def get_training_data(source_ship, all_ships, all_shipyards, board_size, player_id , total_halite, cargo, object_type,
+                      halite_on_field):
     if object_type == 'ship':
         self_ship, other_ships, friend_shipyards, foe_shipyards, foe_shipyards = calculate_delta(source_ship, all_ships, all_shipyards, board_size, player_id)
 
@@ -141,20 +205,10 @@ def get_training_data(source_ship, all_ships, all_shipyards, board_size, player_
 
 
 def save_image(img, name):
-    img.save(f'{name}.png')
-
-
-board_size = 10
-environment = make("halite", configuration={"size": board_size, "startingHalite": 1000})
-agent_count = 2
-environment.reset(agent_count)
-state = environment.state[0]
-board = Board(state.observation, environment.configuration)
-
-SHIP_DIRECTIVES = {'8': ShipAction.NORTH, '6': ShipAction.EAST, '5': ShipAction.SOUTH, '4': ShipAction.WEST, '7': ShipAction.CONVERT}
-SHIPYARD_DIRECTIVES = {'9': ShipyardAction.SPAWN}
-
-LABELS = {'8': 'NORTH', '6': 'EAST', '5': 'SOUTH', '4': 'WEST', '7': 'CONVERT', '9': 'SPAWN', '': 'NOTHING'}
+    directory = f'{root_image_directory}\\TRAIN\\{name}'
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    img.save(f'{directory}\\{uuid.uuid1()}.png')
 
 
 def human_action(observation, configuration):
@@ -168,8 +222,16 @@ def human_action(observation, configuration):
             if ship_directive != '':
                 ship.next_action = SHIP_DIRECTIVES[ship_directive]
                 # clear_output(wait=False)
-            data = get_training_data(ship, board.ships, board.shipyards, board_size, current_player.id, board.observation["players"][0][0], ship.halite, 'ship', board.observation['halite'])
-            #database.post(database, json.dumps(data), LABELS[ship_directive])
+            img = get_training_data(ship,
+                                    board.ships,
+                                    board.shipyards,
+                                    board_size,
+                                    current_player.id,
+                                    board.observation["players"][0][0],
+                                    ship.halite,
+                                    'ship',
+                                    board.observation['halite'])
+            save_image(img, SHIP_DIRECTIVES[ship_directive])
 
         return current_player.next_actions
     except Exception as e:
