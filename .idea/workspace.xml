@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="17b17302-bd58-4e19-8b68-bc3c854e4095" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/HaliteRunner.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/HaliteRunner.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ExecuteAndPlay.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Halite3.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Halite4QLearning.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/PlayAndCollect.py" beforeDir="false" afterPath="$PROJECT_DIR$/PlayAndCollect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Run.py" beforeDir="false" afterPath="$PROJECT_DIR$/Run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database_interface/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/haliteenv/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/haliteenv/haliteenv.py" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/HaliteHelpers/__init__.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +30,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1euVoW7aylMlBx1HqpTMvXdqVMP" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
