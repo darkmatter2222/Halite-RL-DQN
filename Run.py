@@ -4,7 +4,7 @@ import ctypes
 import json
 
 # Load Model
-model = keras.models.load_model('N:\\Halite\\Models\\v1.h5')
+model = keras.models.load_model('N:\\Halite\\Models\\v2.h5')
 
 from kaggle_environments import make
 from kaggle_environments.envs.halite.helpers import *
@@ -248,7 +248,7 @@ def human_action(observation, configuration):
             y_class = label_map_actions[np.argmax(y_prob)]
             if y_class != 'NOTHING':
                 ship.next_action = y_class
-            print(y_class)
+            print(f'Moving {y_class} w/ {ship.halite}')
             time.sleep(0.25)
             #save_image(img, SHIP_DIRECTIVES[ship_directive])
 

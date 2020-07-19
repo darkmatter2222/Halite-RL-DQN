@@ -16,30 +16,22 @@ train_dir = os.path.join(base_dir, 'TRAIN')
 train_fnames = os.listdir(train_dir)
 print(train_fnames[:10])
 
-# Our input feature map is 200x200x3: 200x200 for the image pixels, and 3 for
-# the three color channels: R, G, and B
-img_input = layers.Input(shape=(10, 10, 3))
 
-# Flatten feature map to a 1-dim tensor so we can add fully connected layers
-x = layers.Flatten()(img_input)
-
-# Create a fully connected layer with ReLU activation and 512 hidden units
-x = layers.Dense(16, activation='relu')(x)
-
-# Create output layer with a single node and sigmoid activation
-output = layers.Dense(5, activation='sigmoid')(x)
-
-# Create model:
-# input = input feature map
-# output = input feature map + stacked convolution/maxpooling layers + fully
-# connected layer + sigmoid output layer
-model = Model(img_input, output)
+model = tf.keras.Sequential([
+    tf.keras.layers.Input(shape=(10, 10, 3)),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(256, activation='relu'),
+    tf.keras.layers.Dense(256, activation='relu'),
+    tf.keras.layers.Dense(256, activation='relu'),
+    tf.keras.layers.Dense(5, activation='sigmoid')
+])
 
 model.summary()
 
-model.compile(loss='categorical_crossentropy',
-              optimizer=RMSprop(lr=0.001),
-              metrics=['acc'])
+model.compile(optimizer=tf.keras.optimizers.Adam(
+                learning_rate=0.00001),
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
 
 # All images will be rescaled by 1./255
 train_datagen = ImageDataGenerator()
@@ -55,8 +47,8 @@ train_generator = train_datagen.flow_from_directory(
 
 tensor_board = tf.keras.callbacks.TensorBoard(log_dir="N:\\Halite\\Logs\\{}".format(time.time()))
 model_save = tf.keras.callbacks.ModelCheckpoint(
-    'N:\\Halite\\Models\\v1Checkpoint.h5',
-    monitor='acc', verbose=0, save_best_only=True, save_weights_only=False, mode='auto', save_freq='epoch')
+    'N:\\Halite\\Models\\v2Checkpoint.h5',
+    monitor='accuracy', verbose=0, save_best_only=True, save_weights_only=False, mode='auto', save_freq='epoch')
 
 label_map = (train_generator.class_indices)
 
@@ -70,10 +62,10 @@ lol = json.dumps(label_map)
 history = model.fit_generator(
       train_generator,
       steps_per_epoch=math.floor(train_generator.samples / train_generator.batch_size),   # 2000 images = batch_size * steps
-      epochs=100,
+      epochs=400,
       callbacks=[tensor_board, model_save],
       verbose=1)
 
 
 
-model.save('N:\\Halite\\Models\\v1.h5')
+model.save('N:\\Halite\\Models\\v2.h5')
