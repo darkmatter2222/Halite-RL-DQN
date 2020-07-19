@@ -65,5 +65,5 @@ def renderer(board, highlight=None):
             shifted_result += sudo_board[y][x]
         shifted_result += '|\n'
 
-    os.system('cls' if os.name == 'nt' else 'clear')
+    #os.system('cls' if os.name == 'nt' else 'clear')
     print(shifted_result)
