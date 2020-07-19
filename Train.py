@@ -24,7 +24,7 @@ img_input = layers.Input(shape=(10, 10, 3))
 x = layers.Flatten()(img_input)
 
 # Create a fully connected layer with ReLU activation and 512 hidden units
-x = layers.Dense(32, activation='relu')(x)
+x = layers.Dense(16, activation='relu')(x)
 
 # Create output layer with a single node and sigmoid activation
 output = layers.Dense(5, activation='sigmoid')(x)
@@ -58,6 +58,9 @@ model_save = tf.keras.callbacks.ModelCheckpoint(
     'N:\\Halite\\Models\\v1Checkpoint.h5',
     monitor='acc', verbose=0, save_best_only=True, save_weights_only=False, mode='auto', save_freq='epoch')
 
+label_map = (train_generator.class_indices)
+
+lol = json.dumps(label_map)
 
 #classes = train_generator.class_indices
 #with open('E:\\Projects\\COD Head Spotter\\Models\\Classes.json', 'w') as outfile:
