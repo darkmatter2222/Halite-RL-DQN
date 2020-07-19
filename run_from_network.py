@@ -28,7 +28,7 @@ def human_action(observation, configuration):
             y_class = label_map_actions[np.argmax(y_prob)]
             if y_class != 'NOTHING':
                 ship.next_action = y_class
-            print(f'Moving {y_class} w/ {ship.halite}')
+            print(f'Moving:{y_class} w/ cargo:{ship.halite}')
             time.sleep(0.25)
 
         return current_player.next_actions
@@ -42,13 +42,6 @@ board_size = 10
 environment = make("halite", configuration={"size": board_size, "startingHalite": 1000})
 agent_count = 2
 environment.reset(agent_count)
-state = environment.state[0]
-SHIP_DIRECTIVES = {'w': ShipAction.NORTH,
-                   'd': ShipAction.EAST,
-                   's': ShipAction.SOUTH,
-                   'a': ShipAction.WEST,
-                   '7': ShipAction.CONVERT,
-                   '': 'NOTHING'}
 
 label_map = {0: "EAST", 1: "NORTH", 2: "NOTHING", 3: "SOUTH", 4: "WEST"}
 label_map_actions = {0: ShipAction.EAST, 1: ShipAction.NORTH, 2: "NOTHING", 3: ShipAction.SOUTH, 4: ShipAction.WEST}

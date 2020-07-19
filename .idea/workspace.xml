@@ -51,7 +51,7 @@
       <recent name="C:\Users\ryans\source\repos\HaliteRunner\database_interface" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.train_network">
+  <component name="RunManager" selected="Python.run_from_network">
     <configuration name="Run" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="HaliteRunner" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -159,8 +159,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.train_network" />
         <item itemvalue="Python.run_from_network" />
+        <item itemvalue="Python.train_network" />
         <item itemvalue="Python.play_and_collect" />
         <item itemvalue="Python.Run" />
         <item itemvalue="Python.Train" />
@@ -188,22 +188,22 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="1205" y="280" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1595173487811" />
-    <state width="1900" height="259" key="GridCell.Tab.0.bottom" timestamp="1595181073168">
+    <state width="1900" height="339" key="GridCell.Tab.0.bottom" timestamp="1595181322336">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="259" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595181073168" />
-    <state width="1900" height="259" key="GridCell.Tab.0.center" timestamp="1595181073168">
+    <state width="1900" height="339" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595181322336" />
+    <state width="1900" height="339" key="GridCell.Tab.0.center" timestamp="1595181322336">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="259" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595181073168" />
-    <state width="1900" height="259" key="GridCell.Tab.0.left" timestamp="1595181073168">
+    <state width="1900" height="339" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595181322336" />
+    <state width="1900" height="339" key="GridCell.Tab.0.left" timestamp="1595181322335">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="259" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595181073168" />
-    <state width="1900" height="259" key="GridCell.Tab.0.right" timestamp="1595181073168">
+    <state width="1900" height="339" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595181322335" />
+    <state width="1900" height="339" key="GridCell.Tab.0.right" timestamp="1595181322336">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="259" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595181073168" />
+    <state width="1900" height="339" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595181322336" />
     <state width="937" height="351" key="GridCell.Tab.1.bottom" timestamp="1595176416980">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>

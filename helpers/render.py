@@ -1,5 +1,6 @@
 from kaggle_environments.envs.halite.helpers import *
 from helpers import data
+import os
 
 
 def renderer(board, highlight=None):
@@ -64,4 +65,5 @@ def renderer(board, highlight=None):
             shifted_result += sudo_board[y][x]
         shifted_result += '|\n'
 
+    os.system('cls' if os.name == 'nt' else 'clear')
     print(shifted_result)
