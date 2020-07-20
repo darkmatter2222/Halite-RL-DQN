@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="17b17302-bd58-4e19-8b68-bc3c854e4095" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/train_network.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_network.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scrub_images.py" beforeDir="false" afterPath="$PROJECT_DIR$/scrub_images.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +51,7 @@
       <recent name="C:\Users\ryans\source\repos\HaliteRunner\database_interface" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.train_network">
+  <component name="RunManager" selected="Python.scrub_images">
     <configuration name="Run" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="HaliteRunner" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -159,8 +159,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.train_network" />
         <item itemvalue="Python.scrub_images" />
+        <item itemvalue="Python.train_network" />
         <item itemvalue="Python.play_and_collect" />
         <item itemvalue="Python.run_from_network" />
         <item itemvalue="Python.Run" />
@@ -188,38 +188,38 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="1205" y="280" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1595173487811" />
-    <state width="1900" height="340" key="GridCell.Tab.0.bottom" timestamp="1595209647067">
+    <state width="1900" height="351" key="GridCell.Tab.0.bottom" timestamp="1595214067841">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="340" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595209647067" />
-    <state width="1900" height="340" key="GridCell.Tab.0.center" timestamp="1595209647067">
+    <state width="1900" height="351" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595214067841" />
+    <state width="1900" height="351" key="GridCell.Tab.0.center" timestamp="1595214067840">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="340" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595209647067" />
-    <state width="1900" height="340" key="GridCell.Tab.0.left" timestamp="1595209647067">
+    <state width="1900" height="351" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595214067840" />
+    <state width="1900" height="351" key="GridCell.Tab.0.left" timestamp="1595214067840">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="340" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595209647067" />
-    <state width="1900" height="340" key="GridCell.Tab.0.right" timestamp="1595209647067">
+    <state width="1900" height="351" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595214067840" />
+    <state width="1900" height="351" key="GridCell.Tab.0.right" timestamp="1595214067841">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="340" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595209647067" />
-    <state width="1900" height="351" key="GridCell.Tab.1.bottom" timestamp="1595201982214">
+    <state width="1900" height="351" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595214067841" />
+    <state width="1900" height="351" key="GridCell.Tab.1.bottom" timestamp="1595214086311">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="351" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595201982214" />
-    <state width="1900" height="351" key="GridCell.Tab.1.center" timestamp="1595201982214">
+    <state width="1900" height="351" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595214086311" />
+    <state width="1900" height="351" key="GridCell.Tab.1.center" timestamp="1595214086311">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="351" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595201982214" />
-    <state width="1900" height="351" key="GridCell.Tab.1.left" timestamp="1595201982214">
+    <state width="1900" height="351" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595214086311" />
+    <state width="1900" height="351" key="GridCell.Tab.1.left" timestamp="1595214086311">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="351" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595201982214" />
-    <state width="1900" height="351" key="GridCell.Tab.1.right" timestamp="1595201982214">
+    <state width="1900" height="351" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595214086311" />
+    <state width="1900" height="351" key="GridCell.Tab.1.right" timestamp="1595214086311">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="351" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595201982214" />
+    <state width="1900" height="351" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595214086311" />
     <state x="926" y="168" key="SettingsEditor" timestamp="1595174100454">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
@@ -232,6 +232,21 @@
           <url>file://$PROJECT_DIR$/../venvs/Python380x64TensorflowGPU/Lib/site-packages/tf_agents/environments/gym_wrapper.py</url>
           <line>124</line>
           <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/scrub_images.py</url>
+          <line>180</line>
+          <option name="timeStamp" value="132" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/scrub_images.py</url>
+          <line>175</line>
+          <option name="timeStamp" value="136" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/scrub_images.py</url>
+          <line>171</line>
+          <option name="timeStamp" value="137" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

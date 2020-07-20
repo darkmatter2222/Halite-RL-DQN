@@ -103,6 +103,81 @@ for file in glob.glob(f"{nothing_source_dir}\\*.png"):
         shutil.move(file, trash_review_dir)
         files_scrubbed += 1
 
+# Remove Duplicates Between classes:
+master_image_dict = {
+    'NORTH': [],
+    'EAST': [],
+    'SOUTH': [],
+    'WEST': [],
+    'NOTHING': []
+}
+
+for file in glob.glob(f"{north_source_dir}\\*.png", recursive=True):
+    img = Image.open(file)
+    img_array = np.array(img)
+    master_image_dict['NORTH'].append({'image': img_array.tolist(), 'directory': file, 'remove_record': False})
+
+for file in glob.glob(f"{east_source_dir}\\*.png", recursive=True):
+    img = Image.open(file)
+    img_array = np.array(img)
+    master_image_dict['EAST'].append({'image': img_array.tolist(), 'directory': file, 'remove_record': False})
+
+for file in glob.glob(f"{south_source_dir}\\*.png", recursive=True):
+    img = Image.open(file)
+    img_array = np.array(img)
+    master_image_dict['SOUTH'].append({'image': img_array.tolist(), 'directory': file, 'remove_record': False})
+
+for file in glob.glob(f"{west_source_dir}\\*.png", recursive=True):
+    img = Image.open(file)
+    img_array = np.array(img)
+    master_image_dict['WEST'].append({'image': img_array.tolist(), 'directory': file, 'remove_record': False})
+
+for file in glob.glob(f"{nothing_source_dir}\\*.png", recursive=True):
+    img = Image.open(file)
+    img_array = np.array(img)
+    master_image_dict['NOTHING'].append({'image': img_array.tolist(), 'directory': file, 'remove_record': False})
+
+# priority Nothing, North, East, South, West
+
+for nothing_image_record in master_image_dict['NOTHING']:
+    for north_image_record in master_image_dict['NORTH']:
+        if nothing_image_record['image'] == north_image_record['image']:
+            north_image_record['remove_record'] = True
+    for east_image_record in master_image_dict['EAST']:
+        if nothing_image_record['image'] == east_image_record['image']:
+            east_image_record['remove_record'] = True
+    for south_image_record in master_image_dict['SOUTH']:
+        if nothing_image_record['image'] == south_image_record['image']:
+            south_image_record['remove_record'] = True
+    for west_image_record in master_image_dict['WEST']:
+        if nothing_image_record['image'] == west_image_record['image']:
+            west_image_record['remove_record'] = True
+
+for nothing_image_record in master_image_dict['NOTHING']:
+    for north_image_record in master_image_dict['NORTH']:
+        if nothing_image_record['image'] == north_image_record['image']:
+            north_image_record['remove_record'] = True
+    for east_image_record in master_image_dict['EAST']:
+        if nothing_image_record['image'] == east_image_record['image']:
+            east_image_record['remove_record'] = True
+    for south_image_record in master_image_dict['SOUTH']:
+        if nothing_image_record['image'] == south_image_record['image']:
+            south_image_record['remove_record'] = True
+    for west_image_record in master_image_dict['WEST']:
+        if nothing_image_record['image'] == west_image_record['image']:
+            west_image_record['remove_record'] = True
+
+
+
+for file in glob.glob(f"{train_dir}\\*\\*.png", recursive=True):
+    img = Image.open(file)
+    img_array = np.array(img)
+    if img_array.tolist() in master_image:
+        print('yes')
+
+
+
+
 print(f'{files_scrubbed} files scrubbed')
 
 
