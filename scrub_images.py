@@ -139,44 +139,48 @@ for file in glob.glob(f"{nothing_source_dir}\\*.png", recursive=True):
 
 # priority Nothing, North, East, South, West
 
-for nothing_image_record in master_image_dict['NOTHING']:
-    for north_image_record in master_image_dict['NORTH']:
-        if nothing_image_record['image'] == north_image_record['image']:
-            north_image_record['remove_record'] = True
-    for east_image_record in master_image_dict['EAST']:
-        if nothing_image_record['image'] == east_image_record['image']:
-            east_image_record['remove_record'] = True
-    for south_image_record in master_image_dict['SOUTH']:
-        if nothing_image_record['image'] == south_image_record['image']:
-            south_image_record['remove_record'] = True
-    for west_image_record in master_image_dict['WEST']:
-        if nothing_image_record['image'] == west_image_record['image']:
-            west_image_record['remove_record'] = True
+def search(this_image, this_list):
+    for searching_image_record in this_list:
+        if this_image == searching_image_record['image']:
+            searching_image_record['remove_record'] = True
 
-for nothing_image_record in master_image_dict['NOTHING']:
-    for north_image_record in master_image_dict['NORTH']:
-        if nothing_image_record['image'] == north_image_record['image']:
-            north_image_record['remove_record'] = True
-    for east_image_record in master_image_dict['EAST']:
-        if nothing_image_record['image'] == east_image_record['image']:
-            east_image_record['remove_record'] = True
-    for south_image_record in master_image_dict['SOUTH']:
-        if nothing_image_record['image'] == south_image_record['image']:
-            south_image_record['remove_record'] = True
-    for west_image_record in master_image_dict['WEST']:
-        if nothing_image_record['image'] == west_image_record['image']:
-            west_image_record['remove_record'] = True
+print('Stage 2')
+for this_record in master_image_dict['NOTHING']:
+    search(this_record['image'], master_image_dict['NORTH'])
+    search(this_record['image'], master_image_dict['EAST'])
+    search(this_record['image'], master_image_dict['SOUTH'])
+    search(this_record['image'], master_image_dict['WEST'])
 
+print('Stage 2.1')
+for this_record in master_image_dict['NORTH']:
+    search(this_record['image'], master_image_dict['EAST'])
+    search(this_record['image'], master_image_dict['SOUTH'])
+    search(this_record['image'], master_image_dict['WEST'])
+    search(this_record['image'], master_image_dict['NOTHING'])
+print('Stage 2.2')
+for this_record in master_image_dict['EAST']:
+    search(this_record['image'], master_image_dict['SOUTH'])
+    search(this_record['image'], master_image_dict['WEST'])
+    search(this_record['image'], master_image_dict['NOTHING'])
+    search(this_record['image'], master_image_dict['NORTH'])
+print('Stage 2.3')
+for this_record in master_image_dict['SOUTH']:
+    search(this_record['image'], master_image_dict['WEST'])
+    search(this_record['image'], master_image_dict['NOTHING'])
+    search(this_record['image'], master_image_dict['NORTH'])
+    search(this_record['image'], master_image_dict['EAST'])
+print('Stage 2.4')
+for this_record in master_image_dict['WEST']:
+    search(this_record['image'], master_image_dict['NOTHING'])
+    search(this_record['image'], master_image_dict['NORTH'])
+    search(this_record['image'], master_image_dict['EAST'])
+    search(this_record['image'], master_image_dict['SOUTH'])
+print('Stage 2 Complete')
 
-
-for file in glob.glob(f"{train_dir}\\*\\*.png", recursive=True):
-    img = Image.open(file)
-    img_array = np.array(img)
-    if img_array.tolist() in master_image:
-        print('yes')
-
-
-
+for this_record_name in master_image_dict:
+    for this_record in master_image_dict[this_record_name]:
+        if this_record['remove_record'] == True:
+            print('delete')
 
 print(f'{files_scrubbed} files scrubbed')
 
