@@ -25,6 +25,9 @@ trash_review_dir = f'{review_dir}\\TRASH'
 # plt.show()
 # print('bad')
 
+files_scrubbed = 0
+
+
 # Scrub out the Bad Moves that cause death
 # NORTH
 for file in glob.glob(f"{north_source_dir}\\*.png"):
@@ -37,6 +40,7 @@ for file in glob.glob(f"{north_source_dir}\\*.png"):
     center_n_1_w_1 = img_array[4][3]
     if center_n_1[2] == 255 or center_n_2[2] == 255 or center_n_1_e_1[2] == 255 or center_n_1_w_1[2] == 255:
         shutil.move(file, north_review_dir)
+        files_scrubbed += 1
 
 # EAST
 for file in glob.glob(f"{east_source_dir}\\*.png"):
@@ -49,6 +53,7 @@ for file in glob.glob(f"{east_source_dir}\\*.png"):
     center_e_1_s_1 = img_array[6][5]
     if center_e_1[2] == 255 or center_e_2[2] == 255 or center_e_1_n_1[2] == 255 or center_e_1_s_1[2] == 255:
         shutil.move(file, east_review_dir)
+        files_scrubbed += 1
 
 # SOUTH
 for file in glob.glob(f"{south_source_dir}\\*.png"):
@@ -61,6 +66,7 @@ for file in glob.glob(f"{south_source_dir}\\*.png"):
     center_s_1_w_1 = img_array[6][3]
     if center_s_1[2] == 255 or center_s_2[2] == 255 or center_s_1_e_1[2] == 255 or center_s_1_w_1[2] == 255:
         shutil.move(file, south_review_dir)
+        files_scrubbed += 1
 
 # WEST
 for file in glob.glob(f"{west_source_dir}\\*.png"):
@@ -73,6 +79,7 @@ for file in glob.glob(f"{west_source_dir}\\*.png"):
     center_w_1_s_1 = img_array[6][3]
     if center_w_1[2] == 255 or center_w_2[2] == 255 or center_w_1_n_1[2] == 255 or center_w_1_s_1[2] == 255:
         shutil.move(file, west_review_dir)
+        files_scrubbed += 1
 
 # NOTHING
 for file in glob.glob(f"{nothing_source_dir}\\*.png"):
@@ -85,6 +92,7 @@ for file in glob.glob(f"{nothing_source_dir}\\*.png"):
     center_w_1 = img_array[5][3]
     if center_n_1[2] == 255 or center_e_1[2] == 255 or center_s_1[2] == 255 or center_w_1[2] == 255:
         shutil.move(file, nothing_review_dir)
+        files_scrubbed += 1
 
 # Scrub out the pointless stay stills...
 for file in glob.glob(f"{nothing_source_dir}\\*.png"):
@@ -93,5 +101,8 @@ for file in glob.glob(f"{nothing_source_dir}\\*.png"):
     center = img_array[5][4]
     if center[1] == 0:
         shutil.move(file, trash_review_dir)
+        files_scrubbed += 1
+
+print(f'{files_scrubbed} files scrubbed')
 
 

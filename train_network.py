@@ -31,9 +31,9 @@ model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=(target_image_size[0], target_image_size[1], 3)),
     tf.keras.layers.Flatten(),
     #tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dense(2, activation='relu'),
+    tf.keras.layers.Dense(2, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
     #tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dropout(0.5),
+    #tf.keras.layers.Dropout(0.1),
     tf.keras.layers.Dense(train_generator.num_classes, activation='sigmoid')
 ])
 
