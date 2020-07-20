@@ -19,11 +19,13 @@ west_source_dir = f'{train_dir}\\WEST'
 west_review_dir = f'{review_dir}\\WEST'
 nothing_source_dir = f'{train_dir}\\NOTHING'
 nothing_review_dir = f'{review_dir}\\NOTHING'
+trash_review_dir = f'{review_dir}\\TRASH'
 
 # plt.imshow(img)
 # plt.show()
 # print('bad')
 
+# Scrub out the Bad Moves that cause death
 # NORTH
 for file in glob.glob(f"{north_source_dir}\\*.png"):
     img = Image.open(file)
@@ -84,7 +86,12 @@ for file in glob.glob(f"{nothing_source_dir}\\*.png"):
     if center_n_1[2] == 255 or center_e_1[2] == 255 or center_s_1[2] == 255 or center_w_1[2] == 255:
         shutil.move(file, nothing_review_dir)
 
-
-
+# Scrub out the pointless stay stills...
+for file in glob.glob(f"{nothing_source_dir}\\*.png"):
+    img = Image.open(file)
+    img_array = np.array(img)
+    center = img_array[5][4]
+    if center[1] == 0:
+        shutil.move(file, trash_review_dir)
 
 
