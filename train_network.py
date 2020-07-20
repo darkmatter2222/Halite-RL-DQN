@@ -30,16 +30,16 @@ validation_generator = train_datagen.flow_from_directory(
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=(target_image_size[0], target_image_size[1], 3)),
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(512, activation='relu'),
-    tf.keras.layers.Dense(512, activation='relu'),
-    tf.keras.layers.Dense(512, activation='relu'),
-    tf.keras.layers.Dropout(0.1),
+    #tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(2, activation='relu'),
+    #tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dropout(0.5),
     tf.keras.layers.Dense(train_generator.num_classes, activation='sigmoid')
 ])
 
 model.summary()
 model.compile(optimizer=tf.keras.optimizers.Adam(
-                learning_rate=0.000001),
+                learning_rate=0.0001),
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 
