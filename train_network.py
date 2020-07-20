@@ -16,14 +16,14 @@ train_datagen = ImageDataGenerator(validation_split=0.25)
 train_generator = train_datagen.flow_from_directory(
         train_dir,
         target_size=target_image_size,
-        batch_size=10,
+        batch_size=2,
         class_mode='categorical',
         subset='training')
 
 validation_generator = train_datagen.flow_from_directory(
         train_dir,
         target_size=target_image_size,
-        batch_size=10,
+        batch_size=2,
         class_mode='categorical',
         subset='validation')
 
@@ -34,12 +34,13 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(2, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
     #tf.keras.layers.Dense(128, activation='relu'),
     #tf.keras.layers.Dropout(0.1),
+    tf.keras.layers.Dropout(0.5),
     tf.keras.layers.Dense(train_generator.num_classes, activation='sigmoid')
 ])
 
 model.summary()
 model.compile(optimizer=tf.keras.optimizers.Adam(
-                learning_rate=0.0001),
+                learning_rate=0.000001),
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 
