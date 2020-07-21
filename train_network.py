@@ -11,7 +11,7 @@ import numpy as np
 base_dir = 'N:\\Halite'
 model_dir = 'Models'
 tensorboard_dir = 'Logs'
-model_name = 'v3'
+model_name = 'v4'
 train_dir = os.path.join(base_dir, 'TRAIN')
 target_image_size = (10, 10)
 

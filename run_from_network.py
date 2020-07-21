@@ -36,7 +36,7 @@ def human_action(observation, configuration):
         return current_player.next_actions
 
 
-model = tf.keras.models.load_model('N:\\Halite\\Models\\v2.h5')
+model = tf.keras.models.load_model('N:\\Halite\\Models\\v3_Complete.h5')
 root_image_directory = 'N:\\Halite'
 board_size = 10
 environment = make("halite", configuration={"size": board_size, "startingHalite": 1000})
