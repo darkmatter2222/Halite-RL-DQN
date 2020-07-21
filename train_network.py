@@ -30,27 +30,29 @@ validation_generator = train_datagen.flow_from_directory(
         class_mode='categorical',
         subset='validation')
 
-counter = Counter(train_generator.classes)
-max_val = float(max(counter.values()))
-class_weights = {class_id: max_val/num_images for class_id, num_images in counter.items()}
+#counter = Counter(train_generator.classes)
+#max_val = float(max(counter.values()))
+#class_weights = {class_id: max_val/num_images for class_id, num_images in counter.items()}
 #class_weights= {}
 #pre_class_weights = class_weight.compute_class_weight(
-               #'balanced',
-                #np.unique(train_generator.classes),
-                #train_generator.classes)
+              # 'balanced',
+               # np.unique(train_generator.classes),
+               # train_generator.classes)
 
 #for x in range(0, train_generator.num_classes):
     #class_weights[x] = pre_class_weights[x]
 
 model = tf.keras.Sequential([
     tf.keras.layers.Flatten(input_shape=(target_image_size[0], target_image_size[1], 3)),
-    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.LayerNormalization(),
+    tf.keras.layers.Dense(2, activation='relu'),
+    tf.keras.layers.Dropout(0.1),
     tf.keras.layers.Dense(train_generator.num_classes, activation='softmax')
 ])
 
 model.summary()
 model.compile(optimizer=tf.keras.optimizers.Adam(
-                learning_rate=0.0001
+                #learning_rate=0.0000001
             ),
               loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
@@ -74,6 +76,7 @@ history = model.fit_generator(
         epochs=800,
         callbacks=[tensor_board, model_save],
         verbose=1,
-        class_weight=class_weights)
+        #class_weight=class_weights
+)
 
 model.save(f'{base_dir}\\{model_dir}\\{model_name}_Complete.h5')
