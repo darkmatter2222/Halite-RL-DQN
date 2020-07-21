@@ -35,18 +35,18 @@ validation_generator = train_datagen.flow_from_directory(
 #class_weights = {class_id: max_val/num_images for class_id, num_images in counter.items()}
 #class_weights= {}
 #pre_class_weights = class_weight.compute_class_weight(
-              # 'balanced',
-               # np.unique(train_generator.classes),
-               # train_generator.classes)
+               #'balanced',
+                #np.unique(train_generator.classes),
+                #train_generator.classes)
 
 #for x in range(0, train_generator.num_classes):
     #class_weights[x] = pre_class_weights[x]
 
 model = tf.keras.Sequential([
     tf.keras.layers.Flatten(input_shape=(target_image_size[0], target_image_size[1], 3)),
-    tf.keras.layers.LayerNormalization(),
-    tf.keras.layers.Dense(2, activation='relu'),
-    tf.keras.layers.Dropout(0.1),
+    #tf.keras.layers.LayerNormalization(),
+    #tf.keras.layers.Dense(2, activation='relu'),
+    #tf.keras.layers.Dropout(0.1),
     tf.keras.layers.Dense(train_generator.num_classes, activation='softmax')
 ])
 
