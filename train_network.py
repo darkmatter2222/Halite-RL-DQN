@@ -5,6 +5,8 @@ import time
 import math
 import json
 from collections import Counter
+from sklearn.utils import class_weight
+import numpy as np
 
 base_dir = 'N:\\Halite'
 model_dir = 'Models'
@@ -13,41 +15,44 @@ model_name = 'v3'
 train_dir = os.path.join(base_dir, 'TRAIN')
 target_image_size = (10, 10)
 
-train_datagen = ImageDataGenerator(validation_split=0.25)
+train_datagen = ImageDataGenerator(validation_split=0.1)
 train_generator = train_datagen.flow_from_directory(
         train_dir,
         target_size=target_image_size,
-        batch_size=10,
+        batch_size=100,
         class_mode='categorical',
         subset='training')
 
 validation_generator = train_datagen.flow_from_directory(
         train_dir,
         target_size=target_image_size,
-        batch_size=10,
+        batch_size=100,
         class_mode='categorical',
         subset='validation')
 
 counter = Counter(train_generator.classes)
 max_val = float(max(counter.values()))
 class_weights = {class_id: max_val/num_images for class_id, num_images in counter.items()}
+#class_weights= {}
+#pre_class_weights = class_weight.compute_class_weight(
+               #'balanced',
+                #np.unique(train_generator.classes),
+                #train_generator.classes)
 
+#for x in range(0, train_generator.num_classes):
+    #class_weights[x] = pre_class_weights[x]
 
 model = tf.keras.Sequential([
-    tf.keras.layers.Input(shape=(target_image_size[0], target_image_size[1], 3)),
-    tf.keras.layers.Flatten(),
-    #tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dense(2, activation='relu', kernel_regularizer=tf.keras.regularizers.l2(0.001)),
-    #tf.keras.layers.Dense(128, activation='relu'),
-    #tf.keras.layers.Dropout(0.1),
-    tf.keras.layers.Dropout(0.5),
-    tf.keras.layers.Dense(train_generator.num_classes, activation='sigmoid')
+    tf.keras.layers.Flatten(input_shape=(target_image_size[0], target_image_size[1], 3)),
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dense(train_generator.num_classes, activation='softmax')
 ])
 
 model.summary()
 model.compile(optimizer=tf.keras.optimizers.Adam(
-                learning_rate=0.0001),
-              loss='categorical_crossentropy',
+                learning_rate=0.0001
+            ),
+              loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
 tensor_board = tf.keras.callbacks.TensorBoard(log_dir=f"{base_dir}\\{tensorboard_dir}\\{time.time()}")

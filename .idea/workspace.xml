@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="17b17302-bd58-4e19-8b68-bc3c854e4095" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scrub_images.py" beforeDir="false" afterPath="$PROJECT_DIR$/scrub_images.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/train_network.py" beforeDir="false" afterPath="$PROJECT_DIR$/train_network.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -185,46 +184,50 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state width="620" height="466" key="DebuggerActiveHint" timestamp="1595291545930">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state width="620" height="466" key="DebuggerActiveHint/0.0.1920.1050@0.0.1920.1050" timestamp="1595291545930" />
     <state x="1205" y="280" key="FileChooserDialogImpl" timestamp="1595173487811">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="1205" y="280" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1595173487811" />
-    <state width="939" height="340" key="GridCell.Tab.0.bottom" timestamp="1595290941520">
+    <state width="937" height="340" key="GridCell.Tab.0.bottom" timestamp="1595294093678">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="340" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595290941520" />
-    <state width="939" height="340" key="GridCell.Tab.0.center" timestamp="1595290941520">
+    <state width="937" height="340" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595294093678" />
+    <state width="937" height="340" key="GridCell.Tab.0.center" timestamp="1595294093678">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="340" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595290941520" />
-    <state width="939" height="340" key="GridCell.Tab.0.left" timestamp="1595290941520">
+    <state width="937" height="340" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595294093678" />
+    <state width="937" height="340" key="GridCell.Tab.0.left" timestamp="1595294093678">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="340" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595290941520" />
-    <state width="939" height="340" key="GridCell.Tab.0.right" timestamp="1595290941520">
+    <state width="937" height="340" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595294093678" />
+    <state width="937" height="340" key="GridCell.Tab.0.right" timestamp="1595294093678">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="340" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595290941520" />
-    <state width="1900" height="351" key="GridCell.Tab.1.bottom" timestamp="1595290780431">
+    <state width="937" height="340" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595294093678" />
+    <state width="939" height="353" key="GridCell.Tab.1.bottom" timestamp="1595291994660">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="351" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595290780431" />
-    <state width="1900" height="351" key="GridCell.Tab.1.center" timestamp="1595290780431">
+    <state width="939" height="353" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595291994660" />
+    <state width="939" height="353" key="GridCell.Tab.1.center" timestamp="1595291994660">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="351" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595290780431" />
-    <state width="1900" height="351" key="GridCell.Tab.1.left" timestamp="1595290780430">
+    <state width="939" height="353" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595291994660" />
+    <state width="939" height="353" key="GridCell.Tab.1.left" timestamp="1595291994660">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="351" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595290780430" />
-    <state width="1900" height="351" key="GridCell.Tab.1.right" timestamp="1595290780431">
+    <state width="939" height="353" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595291994660" />
+    <state width="939" height="353" key="GridCell.Tab.1.right" timestamp="1595291994660">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="351" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595290780431" />
-    <state x="926" y="168" key="SettingsEditor" timestamp="1595174100454">
+    <state width="939" height="353" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595291994660" />
+    <state x="926" y="168" key="SettingsEditor" timestamp="1595291587958">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="926" y="168" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1595174100454" />
+    <state x="926" y="168" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1595291587958" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -243,6 +246,11 @@
           <url>file://$PROJECT_DIR$/scrub_images.py</url>
           <line>178</line>
           <option name="timeStamp" value="149" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/train_network.py</url>
+          <line>68</line>
+          <option name="timeStamp" value="152" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
