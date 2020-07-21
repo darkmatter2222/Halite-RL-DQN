@@ -150,7 +150,6 @@ for this_record in master_image_dict['NOTHING']:
     search(this_record['image'], master_image_dict['EAST'])
     search(this_record['image'], master_image_dict['SOUTH'])
     search(this_record['image'], master_image_dict['WEST'])
-
 print('Stage 2.1')
 for this_record in master_image_dict['NORTH']:
     search(this_record['image'], master_image_dict['EAST'])

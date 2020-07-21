@@ -4,6 +4,7 @@ import tensorflow as tf
 import time
 import math
 import json
+from collections import Counter
 
 base_dir = 'N:\\Halite'
 model_dir = 'Models'
@@ -16,16 +17,21 @@ train_datagen = ImageDataGenerator(validation_split=0.25)
 train_generator = train_datagen.flow_from_directory(
         train_dir,
         target_size=target_image_size,
-        batch_size=2,
+        batch_size=10,
         class_mode='categorical',
         subset='training')
 
 validation_generator = train_datagen.flow_from_directory(
         train_dir,
         target_size=target_image_size,
-        batch_size=2,
+        batch_size=10,
         class_mode='categorical',
         subset='validation')
+
+counter = Counter(train_generator.classes)
+max_val = float(max(counter.values()))
+class_weights = {class_id: max_val/num_images for class_id, num_images in counter.items()}
+
 
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=(target_image_size[0], target_image_size[1], 3)),
@@ -40,7 +46,7 @@ model = tf.keras.Sequential([
 
 model.summary()
 model.compile(optimizer=tf.keras.optimizers.Adam(
-                learning_rate=0.000001),
+                learning_rate=0.0001),
               loss='categorical_crossentropy',
               metrics=['accuracy'])
 
@@ -62,6 +68,7 @@ history = model.fit_generator(
         steps_per_epoch=math.floor(train_generator.samples / train_generator.batch_size),
         epochs=800,
         callbacks=[tensor_board, model_save],
-        verbose=1)
+        verbose=1,
+        class_weight=class_weights)
 
 model.save(f'{base_dir}\\{model_dir}\\{model_name}_Complete.h5')
