@@ -9,7 +9,7 @@ def human_action(observation, configuration):
     try:
         board = Board(observation, configuration)
         current_player = board.current_player
-
+        data.get_offset_board(board,'lol')
         for ship in current_player.ships:
             render.renderer(board, ship.position)
             ship_directive = input(f"What Direction to Move Ship w/ cargo "

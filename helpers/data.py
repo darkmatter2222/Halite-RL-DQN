@@ -36,6 +36,11 @@ def calculate_delta(source_ship, all_ships, all_shipyards, board_size, player_id
     return self_ship, other_ships, friend_shipyards, friend_shipyards, foe_shipyards
 
 
+def get_offset_board(board, source_ship):
+    field = np.array(halite_on_field).reshape((board.configuration.size, board.configuration.size))
+
+
+
 def get_training_data(board, source_ship, all_ships, all_shipyards, board_size, player_id , total_halite, cargo, object_type,
                       halite_on_field):
     if object_type == 'ship':
