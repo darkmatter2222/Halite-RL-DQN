@@ -5,7 +5,7 @@ import math
 
 
 def origional(board):
-    c=0
+    c = 0
     size = board.configuration.size
     result = ''
     for y in range(size):

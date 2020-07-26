@@ -9,6 +9,33 @@ def shift(seq, n=0):
     return seq[-a:] + seq[:-a]
 
 
+def env_to_board(env):
+    obs = env.state[0].observation
+    config = env.configuration
+    actions = [agent.action for agent in env.state]
+    return Board(obs, config, actions)
+
+
+def board_to_state(board):
+    size = board.configuration.size
+    pixels = []
+    for x in range(0, size):
+        row = []
+        for y in range(0, size):
+            cell = board[(x, size - y - 1)]
+            cell_halite = int(9.0 * cell.halite / float(board.configuration.max_cell_halite))
+            # Normalized Halite, Ship, Shipyard
+            pixel = [0, 0, 0]
+            if cell.ship is not None:
+                pixel[1] = 1
+            if cell.shipyard is not None:
+                pixel[2] = 1
+            pixel[0] = cell_halite
+            row.append(np.array(pixel))
+        pixels.append(np.array(row))
+    return np.array(pixels)
+
+
 def calculate_delta(source_ship, all_ships, all_shipyards, board_size, player_id=0):
     self_ship = np.zeros([board_size, board_size])
     other_ships = np.zeros([board_size, board_size])
@@ -34,11 +61,6 @@ def calculate_delta(source_ship, all_ships, all_shipyards, board_size, player_id
             foe_shipyards[board_size - 1 - this_shipyard.position.y][this_shipyard.position.x] = 1
 
     return self_ship, other_ships, friend_shipyards, friend_shipyards, foe_shipyards
-
-
-def get_offset_board(board, source_ship):
-    field = np.array(halite_on_field).reshape((board.configuration.size, board.configuration.size))
-
 
 
 def get_training_data(board, source_ship, all_ships, all_shipyards, board_size, player_id , total_halite, cargo, object_type,
