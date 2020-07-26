@@ -24,7 +24,9 @@ def board_to_state(board):
         for y in range(0, size):
             cell = board[(x, size - y - 1)]
             #cell_halite = int(9.0 * cell.halite / float(board.configuration.max_cell_halite))
-            cell_halite = cell.halite
+            cell_halite = 1.0 * cell.halite / float(board.configuration.max_cell_halite)
+
+            #cell_halite = cell.halite
             # Normalized Halite, Ship, Shipyard
             pixel = [0, 0, 0]
             if cell.ship is not None:

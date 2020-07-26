@@ -44,7 +44,7 @@ class SusmanHalite(py_environment.PyEnvironment):
         self._action_spec = array_spec.BoundedArraySpec(
             shape=(1,), dtype=np.int32, minimum=0, maximum=4, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
-            shape=state.shape, dtype=np.int32, minimum=0, maximum=500, name='observation')
+            shape=state.shape, dtype=np.int32, minimum=0, maximum=1, name='observation')
 
         self._state = state
         self._episode_ended = False
@@ -78,8 +78,6 @@ class SusmanHalite(py_environment.PyEnvironment):
             # a new episode.
             return self.reset()
 
-        cargo = 0
-        cargo_delta = 0
         current_player = self.board.current_player
         if current_player.id == 0:
             for ship in current_player.ships:
@@ -89,30 +87,28 @@ class SusmanHalite(py_environment.PyEnvironment):
                 if self.action_def[action[0]] == "NOTHING":
                     lol = 1
                 break
+        reward = 0
         self.board = self.board.next()
         current_player = self.board.current_player
         if current_player.id == 0:
             for ship in current_player.ships:
                 cargo_delta = ship.halite - cargo
                 if cargo_delta > 0:
-                    lol = 1
+                    reward = 1
                 else:
                     if self.action_def[action[0]] == "NOTHING":
-                        cargo_delta += -2
+                        reward = -5
                     else:
-                        cargo_delta += -1
+                        reward = -1
 
                 break
 
-        reward = cargo_delta
         self.total_reward += reward
-        if reward > 0:
-            lol = 1
 
         observation = data.board_to_state(self.board)
         self._state = np.array([observation])
         if self.board.step >= self.environment.configuration.episodeSteps:
-            return ts.termination(np.array(self._state, dtype=np.int32), 0.0)
+            return ts.termination(np.array(self._state, dtype=np.int32), reward)
         else:
             return ts.transition(
                 np.array(self._state, dtype=np.int32), reward=reward, discount=0.5)

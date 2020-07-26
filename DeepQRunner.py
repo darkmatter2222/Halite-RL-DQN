@@ -21,11 +21,12 @@ import pyvirtualdisplay
 from helpers.SusmanHaliteWrapper import SusmanHalite
 
 import tensorflow as tf
-
+import os
 from tf_agents.agents.dqn import dqn_agent
 from tf_agents.drivers import dynamic_step_driver
 from tf_agents.environments import suite_gym
 from tf_agents.environments import tf_py_environment
+from tf_agents.policies import policy_saver
 from tf_agents.eval import metric_utils
 from tf_agents.metrics import tf_metrics
 from tf_agents.networks import q_network
@@ -49,7 +50,7 @@ collect_steps_per_iteration = 1  # @param {type:"integer"}
 replay_buffer_max_length = 100000  # @param {type:"integer"}
 
 batch_size = 64  # @param {type:"integer"}
-learning_rate = 1  # @param {type:"number"}
+learning_rate = 1e-3  # @param {type:"number"}
 log_interval = 200  # @param {type:"integer"}
 
 num_eval_episodes = 10  # @param {type:"integer"}
@@ -60,7 +61,7 @@ eval_env = tf_py_environment.TFPyEnvironment(eval_py_env)
 
 
 
-fc_layer_params = (100000,)
+fc_layer_params = (100,)
 
 q_net = q_network.QNetwork(
     train_env.observation_spec(),
@@ -134,7 +135,7 @@ def collect_data(env, policy, buffer, steps):
   for _ in range(steps):
     collect_step(env, policy, buffer)
 
-collect_data(train_env, random_policy, replay_buffer, steps=100)
+collect_data(train_env, random_policy, replay_buffer, steps=400)
 
 dataset = replay_buffer.as_dataset(
     num_parallel_calls=3,
@@ -172,3 +173,6 @@ for _ in range(num_iterations):
     avg_return = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
     print('step = {0}: Average Return = {1}'.format(step, avg_return))
     returns.append(avg_return)
+
+    policy_dir = os.path.join('\\\\SUSMANSERVER\\Active Server Drive\\Neural\\Policy\\Halite', 'policyLaptop')
+    tf_policy_saver = policy_saver.PolicySaver(agent.policy)
