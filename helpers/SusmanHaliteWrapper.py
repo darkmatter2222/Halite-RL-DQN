@@ -29,7 +29,7 @@ class SusmanHalite(py_environment.PyEnvironment):
                            3: ShipAction.SOUTH,
                            4: ShipAction.WEST}
 
-        self.board_size = 10
+        self.board_size = 4
         self.environment = make("halite", configuration={"size": self.board_size, "startingHalite": 1000})
         self.agent_count = 1
         self.environment.reset(self.agent_count)
@@ -44,10 +44,12 @@ class SusmanHalite(py_environment.PyEnvironment):
         self._action_spec = array_spec.BoundedArraySpec(
             shape=(1,), dtype=np.int32, minimum=0, maximum=4, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
-            shape=state.shape, dtype=np.int32, minimum=0, name='observation')
+            shape=state.shape, dtype=np.int32, minimum=0, maximum=500, name='observation')
 
         self._state = state
         self._episode_ended = False
+        self.total_reward = 0
+        self.historical_action = []
 
     def action_spec(self):
         return self._action_spec
@@ -64,10 +66,13 @@ class SusmanHalite(py_environment.PyEnvironment):
         state_shape = state.shape
         self._state = state
         self._episode_ended = False
+        self.total_reward = 0
+        print(f'history:{self.historical_action}')
+        self.historical_action = []
         return ts.restart(np.array(self._state, dtype=np.int32)) #
 
     def _step(self, action):
-
+        self.historical_action.append(action[0])
         if self.board.step >= self.environment.configuration.episodeSteps:
             # The last action ended the episode. Ignore the current action and start
             # a new episode.
@@ -81,7 +86,7 @@ class SusmanHalite(py_environment.PyEnvironment):
                 cargo = ship.halite
                 if self.action_def[action[0]] != "NOTHING":
                     ship.next_action = self.action_def[action[0]]
-                if self.action_def[action[0]] != "NOTHING":
+                if self.action_def[action[0]] == "NOTHING":
                     lol = 1
                 break
         self.board = self.board.next()
@@ -91,17 +96,26 @@ class SusmanHalite(py_environment.PyEnvironment):
                 cargo_delta = ship.halite - cargo
                 if cargo_delta > 0:
                     lol = 1
+                else:
+                    if self.action_def[action[0]] == "NOTHING":
+                        cargo_delta += -2
+                    else:
+                        cargo_delta += -1
+
                 break
 
         reward = cargo_delta
+        self.total_reward += reward
         if reward > 0:
             lol = 1
 
+        observation = data.board_to_state(self.board)
+        self._state = np.array([observation])
         if self.board.step >= self.environment.configuration.episodeSteps:
             return ts.termination(np.array(self._state, dtype=np.int32), 0.0)
         else:
             return ts.transition(
-                np.array(self._state, dtype=np.int32), reward=reward, discount=1.0)
+                np.array(self._state, dtype=np.int32), reward=reward, discount=0.5)
 
 
 

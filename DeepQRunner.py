@@ -49,7 +49,7 @@ collect_steps_per_iteration = 1  # @param {type:"integer"}
 replay_buffer_max_length = 100000  # @param {type:"integer"}
 
 batch_size = 64  # @param {type:"integer"}
-learning_rate = 1e-3  # @param {type:"number"}
+learning_rate = 1  # @param {type:"number"}
 log_interval = 200  # @param {type:"integer"}
 
 num_eval_episodes = 10  # @param {type:"integer"}
@@ -60,7 +60,7 @@ eval_env = tf_py_environment.TFPyEnvironment(eval_py_env)
 
 
 
-fc_layer_params = (100,)
+fc_layer_params = (100000,)
 
 q_net = q_network.QNetwork(
     train_env.observation_spec(),
@@ -94,7 +94,6 @@ def compute_avg_return(environment, policy, num_episodes=10):
     print('Computing Avg Return...')
     total_return = 0.0
     for _ in range(num_episodes):
-        print(f'Episode {_}')
         # start a new game
         time_step = environment.reset()
         episode_return = 0.0
@@ -106,12 +105,13 @@ def compute_avg_return(environment, policy, num_episodes=10):
             episode_return += time_step.reward
             #print(step)
         total_return += episode_return
+        print(f'Episode {_} w/ {episode_return} reward')
 
     avg_return = total_return / num_episodes
     return avg_return.numpy()[0]
 
 average_return = compute_avg_return(eval_env, random_policy, num_eval_episodes)
-
+print(f'Random Return:{average_return}')
 replay_buffer = tf_uniform_replay_buffer.TFUniformReplayBuffer(
     data_spec=agent.collect_data_spec,
     batch_size=train_env.batch_size,
@@ -152,7 +152,7 @@ agent.train_step_counter.assign(0)
 # Evaluate the agent's policy once before training.
 avg_return = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
 returns = [avg_return]
-
+print(f'Prerun Return:{avg_return}')
 for _ in range(num_iterations):
 
   # Collect a few steps using collect_policy and save to the replay buffer.

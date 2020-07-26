@@ -5,7 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DeepQRunner.py" beforeDir="false" afterPath="$PROJECT_DIR$/DeepQRunner.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/helpers/SusmanHaliteWrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/SusmanHaliteWrapper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/helpers/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/data.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,12 +20,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="229" />
-    <option name="y" value="-8" />
-    <option name="width" value="2576" />
-    <option name="height" value="1426" />
   </component>
   <component name="ProjectId" id="1euVoW7aylMlBx1HqpTMvXdqVMP" />
   <component name="ProjectLevelVcsManager">
@@ -136,7 +129,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="run_from_network" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="q_network" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="HaliteRunner" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -144,11 +137,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../venvs/Python380x64TensorflowGPU/Lib/site-packages/tf_agents/networks" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run_from_network.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../venvs/Python380x64TensorflowGPU/Lib/site-packages/tf_agents/networks/q_network.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -160,10 +153,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.DeepQRunner" />
+        <item itemvalue="Python.q_network" />
         <item itemvalue="Python.data" />
         <item itemvalue="Python.play_by_rules" />
         <item itemvalue="Python.play_and_collect" />
-        <item itemvalue="Python.run_from_network" />
       </list>
     </recent_temporary>
   </component>
@@ -184,54 +177,54 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="620" height="466" key="DebuggerActiveHint" timestamp="1595782315302">
+    <state width="1095" height="466" key="DebuggerActiveHint" timestamp="1595799299146">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="620" height="466" key="DebuggerActiveHint/0.0.1920.1050@0.0.1920.1050" timestamp="1595782315302" />
+    <state width="1095" height="466" key="DebuggerActiveHint/0.0.1920.1050@0.0.1920.1050" timestamp="1595799299146" />
     <state x="1205" y="280" key="FileChooserDialogImpl" timestamp="1595377026007">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="1205" y="280" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1595377026007" />
-    <state width="1900" height="298" key="GridCell.Tab.0.bottom" timestamp="1595782344950">
+    <state width="1900" height="298" key="GridCell.Tab.0.bottom" timestamp="1595800441803">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595782344950" />
-    <state width="1900" height="298" key="GridCell.Tab.0.center" timestamp="1595782344950">
+    <state width="1900" height="298" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595800441803" />
+    <state width="1900" height="298" key="GridCell.Tab.0.center" timestamp="1595800441803">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595782344950" />
-    <state width="1900" height="298" key="GridCell.Tab.0.left" timestamp="1595782344950">
+    <state width="1900" height="298" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595800441803" />
+    <state width="1900" height="298" key="GridCell.Tab.0.left" timestamp="1595800441803">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595782344950" />
-    <state width="1900" height="298" key="GridCell.Tab.0.right" timestamp="1595782344950">
+    <state width="1900" height="298" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595800441803" />
+    <state width="1900" height="298" key="GridCell.Tab.0.right" timestamp="1595800441803">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595782344950" />
-    <state width="1900" height="298" key="GridCell.Tab.1.bottom" timestamp="1595782308626">
+    <state width="1900" height="298" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595800441803" />
+    <state width="1900" height="298" key="GridCell.Tab.1.bottom" timestamp="1595800361606">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595782308626" />
-    <state width="1900" height="298" key="GridCell.Tab.1.center" timestamp="1595782308626">
+    <state width="1900" height="298" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595800361606" />
+    <state width="1900" height="298" key="GridCell.Tab.1.center" timestamp="1595800361606">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595782308626" />
-    <state width="1900" height="298" key="GridCell.Tab.1.left" timestamp="1595782308625">
+    <state width="1900" height="298" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595800361606" />
+    <state width="1900" height="298" key="GridCell.Tab.1.left" timestamp="1595800361606">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595782308625" />
-    <state width="1900" height="298" key="GridCell.Tab.1.right" timestamp="1595782308626">
+    <state width="1900" height="298" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595800361606" />
+    <state width="1900" height="298" key="GridCell.Tab.1.right" timestamp="1595800361606">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595782308626" />
+    <state width="1900" height="298" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595800361606" />
     <state x="926" y="168" key="SettingsEditor" timestamp="1595377032751">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="926" y="168" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1595377032750" />
-    <state width="966" height="526" key="XDebugger.FullValuePopup" timestamp="1595771633809">
+    <state width="966" height="526" key="XDebugger.FullValuePopup" timestamp="1595796866065">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="966" height="526" key="XDebugger.FullValuePopup/0.0.1920.1050@0.0.1920.1050" timestamp="1595771633809" />
+    <state width="966" height="526" key="XDebugger.FullValuePopup/0.0.1920.1050@0.0.1920.1050" timestamp="1595796866065" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -278,6 +271,10 @@
         <watch expression="img_array.size" />
         <watch expression="field_matrix[0]" />
         <watch expression="environment.specification" />
+        <watch expression="unused_info" />
+        <watch expression="self" />
+        <watch expression="time_step" />
+        <watch expression="time_step" />
       </configuration>
     </watches-manager>
   </component>
