@@ -42,7 +42,7 @@ tf.compat.v1.enable_v2_behavior()
 train_py_env = SusmanHalite()
 eval_py_env = SusmanHalite()
 
-num_iterations = 20000 # @param {type:"integer"}
+num_iterations = 2000000 # @param {type:"integer"}
 
 initial_collect_steps = 1000  # @param {type:"integer"}
 collect_steps_per_iteration = 1  # @param {type:"integer"}
@@ -91,23 +91,26 @@ random_policy = random_tf_policy.RandomTFPolicy(train_env.time_step_spec(),
 
 
 def compute_avg_return(environment, policy, num_episodes=10):
+    print('Computing Avg Return...')
+    total_return = 0.0
+    for _ in range(num_episodes):
+        print(f'Episode {_}')
+        # start a new game
+        time_step = environment.reset()
+        episode_return = 0.0
+        step = 0
+        while not time_step.is_last():
+            step += 1
+            action_step = policy.action(time_step)
+            time_step = environment.step(action_step.action)
+            episode_return += time_step.reward
+            #print(step)
+        total_return += episode_return
 
-  total_return = 0.0
-  for _ in range(num_episodes):
+    avg_return = total_return / num_episodes
+    return avg_return.numpy()[0]
 
-    time_step = environment.reset()
-    episode_return = 0.0
-
-    while not time_step.is_last():
-      action_step = policy.action(time_step)
-      time_step = environment.step(action_step.action)
-      episode_return += time_step.reward
-    total_return += episode_return
-
-  avg_return = total_return / num_episodes
-  return avg_return.numpy()[0]
-
-compute_avg_return(eval_env, random_policy, num_eval_episodes)
+average_return = compute_avg_return(eval_env, random_policy, num_eval_episodes)
 
 replay_buffer = tf_uniform_replay_buffer.TFUniformReplayBuffer(
     data_spec=agent.collect_data_spec,

@@ -23,20 +23,26 @@ from helpers.data import data
 
 class SusmanHalite(py_environment.PyEnvironment):
     def __init__(self):
+        self.action_def = {0: ShipAction.EAST,
+                           1: ShipAction.NORTH,
+                           2: "NOTHING",
+                           3: ShipAction.SOUTH,
+                           4: ShipAction.WEST}
+
         self.board_size = 10
         self.environment = make("halite", configuration={"size": self.board_size, "startingHalite": 1000})
-        self.agent_count = 2
+        self.agent_count = 1
         self.environment.reset(self.agent_count)
         #self.state = self.environment.state[0]
         self.environment.reset()
 
-        board = data.env_to_board(self.environment)
-        observation = data.board_to_state(board)
+        self.board = data.env_to_board(self.environment)
+        observation = data.board_to_state(self.board)
         obs_shape = observation.shape
         state = np.array([observation])
         state_shape = state.shape
         self._action_spec = array_spec.BoundedArraySpec(
-            shape=(), dtype=np.int32, minimum=0, maximum=4, name='action')
+            shape=(1,), dtype=np.int32, minimum=0, maximum=4, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
             shape=state.shape, dtype=np.int32, minimum=0, name='observation')
 
@@ -51,8 +57,8 @@ class SusmanHalite(py_environment.PyEnvironment):
 
     def _reset(self):
         self.environment.reset(self.agent_count)
-        board = data.env_to_board(self.environment)
-        observation = data.board_to_state(board)
+        self.board = data.env_to_board(self.environment)
+        observation = data.board_to_state(self.board)
         obs_shape = observation.shape
         state = np.array([observation])
         state_shape = state.shape
@@ -62,24 +68,40 @@ class SusmanHalite(py_environment.PyEnvironment):
 
     def _step(self, action):
 
-        if self._episode_ended:
+        if self.board.step >= self.environment.configuration.episodeSteps:
             # The last action ended the episode. Ignore the current action and start
             # a new episode.
             return self.reset()
 
-        # Make sure episodes don't go on forever.
-        if action == 1:
-            self._episode_ended = True
-        elif action == 0:
-            new_card = np.random.randint(1, 11)
-            self._state[0] += new_card
-        else:
-            new_card = np.random.randint(1, 11)
-            self._state[0] += new_card
+        cargo = 0
+        cargo_delta = 0
+        current_player = self.board.current_player
+        if current_player.id == 0:
+            for ship in current_player.ships:
+                cargo = ship.halite
+                if self.action_def[action[0]] != "NOTHING":
+                    ship.next_action = self.action_def[action[0]]
+                if self.action_def[action[0]] != "NOTHING":
+                    lol = 1
+                break
+        self.board = self.board.next()
+        current_player = self.board.current_player
+        if current_player.id == 0:
+            for ship in current_player.ships:
+                cargo_delta = ship.halite - cargo
+                if cargo_delta > 0:
+                    lol = 1
+                break
 
-        if self._episode_ended or self._state[0] >= 21:
-            reward = self._state[0] - 21 if self._state[0] <= 21 else -21
-            return ts.termination(np.array([self._state], dtype=np.int32), reward)
+        reward = cargo_delta
+        if reward > 0:
+            lol = 1
+
+        if self.board.step >= self.environment.configuration.episodeSteps:
+            return ts.termination(np.array(self._state, dtype=np.int32), 0.0)
         else:
             return ts.transition(
-                np.array([self._state], dtype=np.int32), reward=0.0, discount=1.0)
+                np.array(self._state, dtype=np.int32), reward=reward, discount=1.0)
+
+
+
