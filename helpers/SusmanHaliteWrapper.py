@@ -19,6 +19,7 @@ import numpy as np
 import PIL.Image
 import pyvirtualdisplay
 from helpers.data import data
+import collections
 
 
 class SusmanHalite(py_environment.PyEnvironment):
@@ -29,7 +30,7 @@ class SusmanHalite(py_environment.PyEnvironment):
                            3: ShipAction.SOUTH,
                            4: ShipAction.WEST}
 
-        self.board_size = 4
+        self.board_size = 3
         self.environment = make("halite", configuration={"size": self.board_size, "startingHalite": 1000})
         self.agent_count = 1
         self.environment.reset(self.agent_count)
@@ -67,7 +68,7 @@ class SusmanHalite(py_environment.PyEnvironment):
         self._state = state
         self._episode_ended = False
         self.total_reward = 0
-        print(f'history:{self.historical_action}')
+        #print(f'history:{self.historical_action}')
         self.historical_action = []
         return ts.restart(np.array(self._state, dtype=np.int32)) #
 
@@ -97,7 +98,7 @@ class SusmanHalite(py_environment.PyEnvironment):
                     reward = 5
                 else:
                     if self.action_def[action[0]] == "NOTHING":
-                        reward = -5
+                        reward = -3
                     else:
                         reward = -1
 
@@ -108,10 +109,12 @@ class SusmanHalite(py_environment.PyEnvironment):
         observation = data.board_to_state(self.board)
         self._state = np.array([observation])
         if self.board.step >= self.environment.configuration.episodeSteps:
-            return ts.termination(np.array(self._state, dtype=np.int32), reward)
+            occurrences = collections.Counter(self.historical_action)
+            print(f'occurrences:{occurrences}')
+            return ts.termination(np.array(self._state, dtype=np.int32), self.total_reward)
         else:
             return ts.transition(
-                np.array(self._state, dtype=np.int32), reward=reward, discount=1.0)
+                np.array(self._state, dtype=np.int32), reward=reward, discount=0.10)
 
 
 
