@@ -19,7 +19,7 @@ import PIL.Image
 import pyvirtualdisplay
 
 from helpers.SusmanHaliteWrapper import SusmanHalite
-
+from datetime import datetime
 import tensorflow as tf
 import os
 from tf_agents.agents.dqn import dqn_agent
@@ -36,8 +36,8 @@ from tf_agents.trajectories import trajectory
 from tf_agents.utils import common
 
 tf.compat.v1.enable_v2_behavior()
-
-
+now = datetime.now()
+script_run_time = now.strftime("%m-%d-%Y-%H-%M-%S")
 
 
 train_py_env = SusmanHalite()
@@ -46,7 +46,7 @@ eval_py_env = SusmanHalite()
 num_iterations = 2000000 # @param {type:"integer"}
 
 initial_collect_steps = 1000  # @param {type:"integer"}
-collect_steps_per_iteration = 1  # @param {type:"integer"}
+collect_steps_per_iteration = 5  # @param {type:"integer"}
 replay_buffer_max_length = 100000  # @param {type:"integer"}
 
 batch_size = 64  # @param {type:"integer"}
@@ -111,8 +111,8 @@ def compute_avg_return(environment, policy, num_episodes=10):
     avg_return = total_return / num_episodes
     return avg_return.numpy()[0]
 
-average_return = compute_avg_return(eval_env, random_policy, num_eval_episodes)
-print(f'Random Return:{average_return}')
+#average_return = compute_avg_return(eval_env, random_policy, num_eval_episodes)
+#print(f'Random Return:{average_return}')
 replay_buffer = tf_uniform_replay_buffer.TFUniformReplayBuffer(
     data_spec=agent.collect_data_spec,
     batch_size=train_env.batch_size,
@@ -135,7 +135,7 @@ def collect_data(env, policy, buffer, steps):
   for _ in range(steps):
     collect_step(env, policy, buffer)
 
-collect_data(train_env, random_policy, replay_buffer, steps=400)
+#collect_data(train_env, random_policy, replay_buffer, steps=400)
 
 dataset = replay_buffer.as_dataset(
     num_parallel_calls=3,
@@ -151,9 +151,10 @@ agent.train = common.function(agent.train)
 agent.train_step_counter.assign(0)
 
 # Evaluate the agent's policy once before training.
-avg_return = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
-returns = [avg_return]
-print(f'Prerun Return:{avg_return}')
+#avg_return = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
+#returns = [avg_return]
+returns = []
+#print(f'Prerun Return:{avg_return}')
 for _ in range(num_iterations):
 
   # Collect a few steps using collect_policy and save to the replay buffer.
@@ -174,5 +175,14 @@ for _ in range(num_iterations):
     print('step = {0}: Average Return = {1}'.format(step, avg_return))
     returns.append(avg_return)
 
-    policy_dir = os.path.join('\\\\SUSMANSERVER\\Active Server Drive\\Neural\\Policy\\Halite', 'policyLaptop')
+    pc_name = os.environ['COMPUTERNAME']
+
+
+    root_directory = 'E:\\Neural\\Policy\\Halite'
+    if pc_name != 'SUSMANSERVER':
+        root_directory = '\\\\SUSMANSERVER\\Active Server Drive\\Neural\\Policy\\Halite'
+
+
+    policy_dir = os.path.join(root_directory, f'{pc_name}-{script_run_time}' )
     tf_policy_saver = policy_saver.PolicySaver(agent.policy)
+    tf_policy_saver.save(policy_dir)

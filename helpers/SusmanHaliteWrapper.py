@@ -94,7 +94,7 @@ class SusmanHalite(py_environment.PyEnvironment):
             for ship in current_player.ships:
                 cargo_delta = ship.halite - cargo
                 if cargo_delta > 0:
-                    reward = 1
+                    reward = 5
                 else:
                     if self.action_def[action[0]] == "NOTHING":
                         reward = -5
@@ -111,7 +111,7 @@ class SusmanHalite(py_environment.PyEnvironment):
             return ts.termination(np.array(self._state, dtype=np.int32), reward)
         else:
             return ts.transition(
-                np.array(self._state, dtype=np.int32), reward=reward, discount=0.5)
+                np.array(self._state, dtype=np.int32), reward=reward, discount=1.0)
 
 
 
