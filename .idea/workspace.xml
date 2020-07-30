@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="17b17302-bd58-4e19-8b68-bc3c854e4095" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/FrozenLake.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DeepQRunner.py" beforeDir="false" afterPath="$PROJECT_DIR$/DeepQRunner.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/helpers/SusmanHaliteWrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/SusmanHaliteWrapper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +43,7 @@
       <recent name="C:\Users\ryans\source\repos\HaliteRunner\database_interface" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.DeepQRunner">
+  <component name="RunManager" selected="Python.FrozenLake">
     <configuration name="DeepQRunner" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="HaliteRunner" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -66,6 +65,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="FrozenLake" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="HaliteRunner" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/FrozenLake.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="data" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="HaliteRunner" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -79,27 +99,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/helpers/data.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="play_and_collect" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="HaliteRunner" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/play_and_collect.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -152,14 +151,15 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.FrozenLake" />
         <item itemvalue="Python.DeepQRunner" />
         <item itemvalue="Python.data" />
         <item itemvalue="Python.q_network" />
         <item itemvalue="Python.play_by_rules" />
-        <item itemvalue="Python.play_and_collect" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -185,38 +185,38 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="1205" y="280" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1595377026007" />
-    <state width="1900" height="298" key="GridCell.Tab.0.bottom" timestamp="1595815392966">
+    <state width="1900" height="285" key="GridCell.Tab.0.bottom" timestamp="1596067380140">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595815392966" />
-    <state width="1900" height="298" key="GridCell.Tab.0.center" timestamp="1595815392966">
+    <state width="1900" height="285" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1596067380140" />
+    <state width="1900" height="285" key="GridCell.Tab.0.center" timestamp="1596067380140">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595815392966" />
-    <state width="1900" height="298" key="GridCell.Tab.0.left" timestamp="1595815392966">
+    <state width="1900" height="285" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1596067380140" />
+    <state width="1900" height="285" key="GridCell.Tab.0.left" timestamp="1596067380140">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595815392966" />
-    <state width="1900" height="298" key="GridCell.Tab.0.right" timestamp="1595815392966">
+    <state width="1900" height="285" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1596067380140" />
+    <state width="1900" height="285" key="GridCell.Tab.0.right" timestamp="1596067380140">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595815392966" />
-    <state width="1900" height="298" key="GridCell.Tab.1.bottom" timestamp="1595815392880">
+    <state width="1900" height="285" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1596067380140" />
+    <state width="1900" height="298" key="GridCell.Tab.1.bottom" timestamp="1596067342374">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1595815392880" />
-    <state width="1900" height="298" key="GridCell.Tab.1.center" timestamp="1595815392880">
+    <state width="1900" height="298" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1596067342374" />
+    <state width="1900" height="298" key="GridCell.Tab.1.center" timestamp="1596067342374">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1595815392880" />
-    <state width="1900" height="298" key="GridCell.Tab.1.left" timestamp="1595815392880">
+    <state width="1900" height="298" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1596067342374" />
+    <state width="1900" height="298" key="GridCell.Tab.1.left" timestamp="1596067342374">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1595815392880" />
-    <state width="1900" height="298" key="GridCell.Tab.1.right" timestamp="1595815392880">
+    <state width="1900" height="298" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1596067342374" />
+    <state width="1900" height="298" key="GridCell.Tab.1.right" timestamp="1596067342374">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="298" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1595815392880" />
+    <state width="1900" height="298" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1596067342374" />
     <state x="926" y="168" key="SettingsEditor" timestamp="1595377032751">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
