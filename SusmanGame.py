@@ -74,19 +74,20 @@ class SusmanGameEnv(gym.Env):
         done = False
         self.this_turn += 1
 
+
         if action == 0: #Move East
             target_e = self.player_location['x'] + 1
             if target_e >= self.board_width:
-                return self.get_observations(reward=-1000, done=True, info='Loose')
+                return self.get_observations(reward=-1000, done=True, info='Loose Fall Off Map')
             self.player_location['x'] += 1
             if self.board[self.player_location['y'], self.player_location['x']] == 1:
-                return self.get_observations(reward=1000, done=True, info='Win')
+                return self.get_observations(reward=1000, done=True, info='Win Got Target')
             else:
                 return self.get_observations(reward=1, done=False, info='Continue')
 
         if action == 1: #Move West
             target_w = self.player_location['x'] - 1
-            if target_w < self.board_width:
+            if target_w < 0:
                 return self.get_observations(reward=-1000, done=True, info='Loose Fall Off Map')
             self.player_location['x'] -= 1
             if self.board[self.player_location['y'], self.player_location['x']] == 1:
@@ -107,12 +108,20 @@ class SusmanGameEnv(gym.Env):
 
     def render(self, mode='human', close=False):
         result = ''
+        precolor_ship = '\x1b[31m'
+        postcolor_ship = '\x1b[0m'
+        precolor_target = '\x1b[32m'
+        postcolor_target = '\x1b[0m'
         for y in range(self.board_height):
             for x in range(self.board_width):
                 result += ' '
+                result += precolor_target
                 result += str(self.board[y, x])
+                result += postcolor_target
                 if self.player_location['x'] == x and self.player_location['y'] == y:
+                    result += precolor_ship
                     result += 'S'
+                    result += postcolor_ship
                 else:
                     result += ' '
                 result += '|'
