@@ -83,7 +83,7 @@ class SusmanGameEnv(gym.Env):
             if self.board[self.player_location['y'], self.player_location['x']] == 1:
                 return self.get_observations(reward=1000, done=True, info='Win Got Target')
             else:
-                return self.get_observations(reward=0, done=False, info='Continue')
+                return self.get_observations(reward=-1, done=False, info='Continue')
 
         if action == 1: #Move West
             target_w = self.player_location['x'] - 1
@@ -93,7 +93,7 @@ class SusmanGameEnv(gym.Env):
             if self.board[self.player_location['y'], self.player_location['x']] == 1:
                 return self.get_observations(reward=1000, done=True, info='Win Got Target')
             else:
-                return self.get_observations(reward=0, done=False, info='Continue')
+                return self.get_observations(reward=-1, done=False, info='Continue')
 
         if self.this_turn == self.max_turns:
             return self.get_observations(reward=-1000, done=True, info='Loose Too Many Moves')
