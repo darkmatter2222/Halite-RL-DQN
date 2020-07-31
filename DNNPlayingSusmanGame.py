@@ -79,6 +79,7 @@ for i in range(episode):
     while not done:
 
         state1 = np.array([env.get_state()])
+
         # 3. Choose an action a in the current world state (s)
         ## First we randomize a number
         exp_exp_tradeoff = np.random.uniform()
@@ -92,6 +93,7 @@ for i in range(episode):
 
         # Training without experience replay
         state2, reward, done, info = env.step(action)
+        env.render()
         state2 = np.array([state2])
         target = (reward + gamma *
                   np.max(model.predict([state2])))
