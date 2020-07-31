@@ -44,6 +44,7 @@ class SusmanGameEnv(gym.Env):
         return state
 
     def set_goal(self):
+        self.set_player()
         rand_y = 0
         rand_x = 0
 
@@ -57,6 +58,17 @@ class SusmanGameEnv(gym.Env):
 
         self.board[rand_y, rand_x] = 1
 
+    def set_player(self):
+        rand_y = 0
+        rand_x = 0
+
+        if self.board_width > 1:
+            rand_x = random.randrange(0, self.board_width - 1)
+        if self.board_height > 1:
+            rand_y = random.randrange(0, self.board_height - 1)
+        self.player_location['x'] = rand_x
+        self.player_location['y'] = rand_y
+
     def step(self, action):
         reward = 0
         done = False
@@ -65,10 +77,10 @@ class SusmanGameEnv(gym.Env):
         if action == 0: #Move East
             target_e = self.player_location['x'] + 1
             if target_e >= self.board_width:
-                return self.get_observations(reward=-10, done=True, info='Loose')
+                return self.get_observations(reward=-1000, done=True, info='Loose')
             self.player_location['x'] += 1
             if self.board[self.player_location['y'], self.player_location['x']] == 1:
-                return self.get_observations(reward=10, done=True, info='Win')
+                return self.get_observations(reward=1000, done=True, info='Win')
             else:
                 return self.get_observations(reward=1, done=False, info='Continue')
 
