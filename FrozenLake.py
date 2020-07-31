@@ -47,7 +47,7 @@ min_epsilon = 0.01  # Minimum exploration probability
 decay_rate = 0.005  # Exponential decay rate for exploration prob
 
 # 2. Load Environment
-env = gym.make("FrozenLake-v0")
+env = gym.make("FrozenLake-v0", is_slippery=False)
 
 # env.obeservation.n, env.action_space.n gives number of states and action in env loaded
 state_space = env.observation_space.n
