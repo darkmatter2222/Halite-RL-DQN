@@ -30,7 +30,7 @@ class SusmanGameEnv(gym.Env):
 
     def get_observations(self, reward = 0, done = False, info = ''):
         #state, reward, done, info
-        return self.get_state(), reward, done, info
+        return self.get_state().tolist(), reward, done, info
 
     def get_state(self):
         state = np.zeros([2, self.board_height, self.board_width])
