@@ -85,7 +85,7 @@ class SusmanGameEnv(gym.Env):
                 return self.get_observations(reward=-1000, done=True, info='Loose Fall Off Map')
             self.player_location['y'] -= 1
             if self.board[self.player_location['y'], self.player_location['x']] == 1:
-                return self.get_observations(reward=1000, done=True, info='Win Got Target')
+                return self.get_observations(reward=10000, done=True, info='Win Got Target')
             else:
                 return self.get_observations(reward=-1, done=False, info='Continue')
 
@@ -95,7 +95,7 @@ class SusmanGameEnv(gym.Env):
                 return self.get_observations(reward=-1000, done=True, info='Loose Fall Off Map')
             self.player_location['x'] += 1
             if self.board[self.player_location['y'], self.player_location['x']] == 1:
-                return self.get_observations(reward=1000, done=True, info='Win Got Target')
+                return self.get_observations(reward=10000, done=True, info='Win Got Target')
             else:
                 return self.get_observations(reward=-1, done=False, info='Continue')
 
@@ -105,7 +105,7 @@ class SusmanGameEnv(gym.Env):
                 return self.get_observations(reward=-1000, done=True, info='Loose Fall Off Map')
             self.player_location['y'] += 1
             if self.board[self.player_location['y'], self.player_location['x']] == 1:
-                return self.get_observations(reward=1000, done=True, info='Win Got Target')
+                return self.get_observations(reward=10000, done=True, info='Win Got Target')
             else:
                 return self.get_observations(reward=-1, done=False, info='Continue')
 
@@ -115,7 +115,7 @@ class SusmanGameEnv(gym.Env):
                 return self.get_observations(reward=-1000, done=True, info='Loose Fall Off Map')
             self.player_location['x'] -= 1
             if self.board[self.player_location['y'], self.player_location['x']] == 1:
-                return self.get_observations(reward=1000, done=True, info='Win Got Target')
+                return self.get_observations(reward=10000, done=True, info='Win Got Target')
             else:
                 return self.get_observations(reward=-1, done=False, info='Continue')
 
