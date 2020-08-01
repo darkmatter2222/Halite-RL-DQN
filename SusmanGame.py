@@ -10,19 +10,19 @@ class SusmanGameEnv(gym.Env):
     def __init__(self):
         super(SusmanGameEnv, self).__init__()
         self.board_width = 10
-        self.board_height = 1
+        self.board_height = 10
         self.board = np.zeros([self.board_height, self.board_width])
         self.player_location = {'x':0, 'y': 0}
         # Define action and observation space
         # They must be gym.spaces objects
         # Example when using discrete actions:
-        self.action_space = spaces.Discrete(2) # East, West
+        self.action_space = spaces.Discrete(4) # East, West
         # Example for using image as input:
         self.observation_space = spaces.Box(low=0, high=1, shape=
                     (2, self.board_height, self.board_width), dtype=np.uint8)
         #Dimension 0 = Board (One Hot)
         #Dimension 1 = Player (One Hot)
-        self.max_turns = 100
+        self.max_turns = 20
         self.this_turn = 0
 
         self.reset_board()
@@ -73,9 +73,19 @@ class SusmanGameEnv(gym.Env):
         reward = 0
         done = False
         self.this_turn += 1
+        # 0=N 1=E 2=S 3=W
 
+        if action == 0: #Move North
+            target_n = self.player_location['y'] + 1
+            if target_n >= self.board_height:
+                return self.get_observations(reward=-1000, done=True, info='Loose Fall Off Map')
+            self.player_location['y'] += 1
+            if self.board[self.player_location['y'], self.player_location['x']] == 1:
+                return self.get_observations(reward=1000, done=True, info='Win Got Target')
+            else:
+                return self.get_observations(reward=-1, done=False, info='Continue')
 
-        if action == 0: #Move East
+        if action == 1: #Move East
             target_e = self.player_location['x'] + 1
             if target_e >= self.board_width:
                 return self.get_observations(reward=-1000, done=True, info='Loose Fall Off Map')
@@ -85,7 +95,17 @@ class SusmanGameEnv(gym.Env):
             else:
                 return self.get_observations(reward=-1, done=False, info='Continue')
 
-        if action == 1: #Move West
+        if action == 2: #Move North
+            target_s = self.player_location['y'] - 1
+            if target_s < 0:
+                return self.get_observations(reward=-1000, done=True, info='Loose Fall Off Map')
+            self.player_location['y'] -= 1
+            if self.board[self.player_location['y'], self.player_location['x']] == 1:
+                return self.get_observations(reward=1000, done=True, info='Win Got Target')
+            else:
+                return self.get_observations(reward=-1, done=False, info='Continue')
+
+        if action == 3: #Move West
             target_w = self.player_location['x'] - 1
             if target_w < 0:
                 return self.get_observations(reward=-1000, done=True, info='Loose Fall Off Map')

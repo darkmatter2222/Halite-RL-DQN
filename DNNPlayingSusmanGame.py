@@ -93,8 +93,8 @@ for i in range(episode):
 
         # Training without experience replay
         state2, reward, done, info = env.step(action)
-        print(info)
-        env.render()
+        #print(info)
+        #env.render()
         state2 = np.array([state2])
         target = (reward + gamma *
                   np.max(model.predict([state2])))
