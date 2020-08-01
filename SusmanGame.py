@@ -9,8 +9,8 @@ class SusmanGameEnv(gym.Env):
 
     def __init__(self):
         super(SusmanGameEnv, self).__init__()
-        self.board_width = 10
-        self.board_height = 10
+        self.board_width = 5
+        self.board_height = 5
         self.board = np.zeros([self.board_height, self.board_width])
         self.player_location = {'x':0, 'y': 0}
         # Define action and observation space

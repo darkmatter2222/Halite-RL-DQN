@@ -8,6 +8,8 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.optimizers import Adam
 from SusmanGame import SusmanGameEnv
+import time
+import os
 
 
 def one_hot_state(state, state_space):
@@ -33,7 +35,14 @@ def experience_replay():
         target_f = model.predict(state)
         target_f[0][action] = target
         # Train the Neural Net with the state and target_f
-        model.fit(state, target_f, epochs=1, verbose=0)
+        model.fit(state, target_f, epochs=1, verbose=0, callbacks=[model_save])
+
+
+base_dir = 'N:\\Halite'
+model_dir = 'Models'
+tensorboard_dir = 'Logs'
+model_name = 'SusmanGameDQNv1'
+
 
 
 # 1. Parameters of Q-leanring
@@ -65,8 +74,12 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(action_space, activation='linear')
 ])
 model.compile(loss='mse',
-              optimizer=Adam(lr=learning_rate))
+              optimizer=Adam(lr=learning_rate), metrics=['accuracy'])
 
+tensor_board = tf.keras.callbacks.TensorBoard(log_dir=f"{base_dir}\\{tensorboard_dir}\\{time.time()}")
+model_save = tf.keras.callbacks.ModelCheckpoint(
+        f'{base_dir}\\{model_dir}\\{model_name}_Checkpoint.h5',
+        monitor='accuracy', verbose=0, save_best_only=True, save_weights_only=False, mode='auto', save_freq='epoch')
 
 model.summary()
 
@@ -101,7 +114,7 @@ for i in range(episode):
 
         target_f = model.predict(state1)
         target_f[0][action] = target
-        model.fit(state1, target_f, epochs=1, verbose=0)
+        model.fit(state1, target_f, epochs=1, verbose=0, callbacks=[model_save])
         total_reward += reward
 
         state = state2
@@ -123,3 +136,5 @@ for i in range(episode):
         print('Episode {} Total Reward: {} Reward Rate {}'.format(i, total_reward, str(sum(reward_array) / i)))
     except:
         lol = 1
+
+model.save(f'{base_dir}\\{model_dir}\\{model_name}_Complete.h5')
