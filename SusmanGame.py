@@ -6,10 +6,10 @@ import random
 class SusmanGameEnv(gym.Env):
     """Custom Environment that follows gym interface"""
     metadata = {'render.modes': ['human']}
-
+    direction_by_int = {0: 'NORTH', 1: 'EAST', 2: 'SOUTH', 3: 'WEST'}
     def __init__(self):
         super(SusmanGameEnv, self).__init__()
-        self.board_width = 5
+        self.board_width = 10
         self.board_height = 5
         self.board = np.zeros([self.board_height, self.board_width])
         self.player_location = {'x':0, 'y': 0}
@@ -72,6 +72,10 @@ class SusmanGameEnv(gym.Env):
     def step(self, action):
         reward = 0
         done = False
+
+        if self.this_turn == self.max_turns:
+            return self.get_observations(reward=-1000, done=True, info='Loose Too Many Moves')
+
         self.this_turn += 1
         # 0=N 1=E 2=S 3=W
 
@@ -115,8 +119,7 @@ class SusmanGameEnv(gym.Env):
             else:
                 return self.get_observations(reward=-1, done=False, info='Continue')
 
-        if self.this_turn == self.max_turns:
-            return self.get_observations(reward=-1000, done=True, info='Loose Too Many Moves')
+
 
         return self.get_observations(reward, done, '')
         # Execute one time step within the environment

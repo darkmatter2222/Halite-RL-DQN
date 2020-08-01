@@ -35,8 +35,8 @@ def experience_replay():
         target_f = model.predict(state)
         target_f[0][action] = target
         # Train the Neural Net with the state and target_f
-        model.fit(state, target_f, epochs=1, verbose=0, callbacks=[model_save])
-
+        history = model.fit(state, target_f, epochs=1, verbose=0, callbacks=[model_save])
+        #print(f"loss:{history.history['loss']} accuracy{history.history['accuracy']}")
 
 base_dir = 'N:\\Halite'
 model_dir = 'Models'
@@ -49,14 +49,14 @@ model_name = 'SusmanGameDQNv1'
 gamma = .9
 learning_rate = 0.002
 episode = 5001
-capacity = 64
-batch_size = 32
+capacity = 128
+batch_size = 64
 
 # Exploration parameters
 epsilon = 1.0  # Exploration rate
 max_epsilon = 1.0  # Exploration probability at start
 min_epsilon = 0.01  # Minimum exploration probability
-decay_rate = 0.005  # Exponential decay rate for exploration prob
+decay_rate = 0.001  # Exponential decay rate for exploration prob
 
 # 2. Load Environment
 env = SusmanGameEnv()
@@ -70,7 +70,7 @@ action_space = env.action_space.n
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=state_space),
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(24, activation='relu'),
+    tf.keras.layers.Dense(48, activation='relu'),
     tf.keras.layers.Dense(action_space, activation='linear')
 ])
 model.compile(loss='mse',
@@ -90,23 +90,27 @@ for i in range(episode):
     total_reward = 0
     done = False
     while not done:
-
+        epsilon -= decay_rate
+        epsilon = max(epsilon, min_epsilon)
         state1 = np.array([env.get_state()])
 
         # 3. Choose an action a in the current world state (s)
         ## First we randomize a number
         exp_exp_tradeoff = np.random.uniform()
 
+        directive = ''
         ## If this number > greater than epsilon --> exploitation (taking the biggest Q value for this state)
         if exp_exp_tradeoff > epsilon:
             action = np.argmax(model.predict(state1))
+            directive = 'Exploite'
         # Else doing a random choice --> exploration
         else:
             action = env.action_space.sample()
+            directive = 'Explore'
 
         # Training without experience replay
         state2, reward, done, info = env.step(action)
-        #print(info)
+        #print(f'Directive:{directive}\tDirection:{env.direction_by_int[action]}\tResult:{info}')
         #env.render()
         state2 = np.array([state2])
         target = (reward + gamma *
@@ -114,7 +118,7 @@ for i in range(episode):
 
         target_f = model.predict(state1)
         target_f[0][action] = target
-        model.fit(state1, target_f, epochs=1, verbose=0, callbacks=[model_save])
+        history = model.fit(state1, target_f, epochs=1, verbose=0, callbacks=[model_save])
         total_reward += reward
 
         state = state2
@@ -133,7 +137,7 @@ for i in range(episode):
     #if i % 10 == 0 and i != 0:
         #print('Episode {} Total Reward: {} Reward Rate {}'.format(i, total_reward, str(sum(reward_array) / i)))
     try:
-        print('Episode {} Total Reward: {} Reward Rate {}'.format(i, total_reward, str(sum(reward_array) / i)))
+        print('Episode {} Total Reward: {} Reward Rate {} Epsilon {}'.format(i, total_reward, str(sum(reward_array) / i), epsilon))
     except:
         lol = 1
 
