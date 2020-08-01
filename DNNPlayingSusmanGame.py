@@ -35,7 +35,7 @@ def experience_replay():
         target_f = model.predict(state)
         target_f[0][action] = target
         # Train the Neural Net with the state and target_f
-        history = model.fit(state, target_f, epochs=1, verbose=0, callbacks=[model_save])
+        history = model.fit(state, target_f, epochs=1, verbose=0)
         #print(f"loss:{history.history['loss']} accuracy{history.history['accuracy']}")
 
 base_dir = 'N:\\Halite'
@@ -47,15 +47,15 @@ model_name = 'SusmanGameDQNv1'
 
 # 1. Parameters of Q-leanring
 gamma = .9
-learning_rate = 0.002
+learning_rate = 0.512
 episode = 5001
-capacity = 128
-batch_size = 64
+capacity = 64 * 4
+batch_size = 32 * 4
 
 # Exploration parameters
 epsilon = 1.0  # Exploration rate
 max_epsilon = 1.0  # Exploration probability at start
-min_epsilon = 0.5  # Minimum exploration probability
+min_epsilon = 0.01  # Minimum exploration probability
 decay_rate = 0.001  # Exponential decay rate for exploration prob
 
 # 2. Load Environment
@@ -70,7 +70,8 @@ action_space = env.action_space.n
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=state_space),
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(48, activation='relu'),
+    tf.keras.layers.Dense(24, activation='relu'),
+    tf.keras.layers.Dense(24, activation='relu'),
     tf.keras.layers.Dense(action_space, activation='linear')
 ])
 model.compile(loss='mse',
@@ -90,8 +91,8 @@ for i in range(episode):
     total_reward = 0
     done = False
     while not done:
-        epsilon -= decay_rate
-        epsilon = max(epsilon, min_epsilon)
+        #epsilon -= decay_rate
+        #epsilon = max(epsilon, min_epsilon)
         state1 = np.array([env.get_state()])
 
         # 3. Choose an action a in the current world state (s)
@@ -109,16 +110,19 @@ for i in range(episode):
             directive = 'Explore'
 
         # Training without experience replay
+        #print('Before')
+        #env.render()
         state2, reward, done, info = env.step(action)
         #print(f'Directive:{directive}\tDirection:{env.direction_by_int[action]}\tResult:{info}')
         #env.render()
+        #print('\n\n')
         state2 = np.array([state2])
         target = (reward + gamma *
                   np.max(model.predict([state2])))
 
         target_f = model.predict(state1)
         target_f[0][action] = target
-        history = model.fit(state1, target_f, epochs=1, verbose=0, callbacks=[model_save])
+        history = model.fit(state1, target_f, epochs=1, verbose=0)
         total_reward += reward
 
         state = state2

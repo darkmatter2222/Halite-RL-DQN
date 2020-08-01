@@ -9,8 +9,8 @@ class SusmanGameEnv(gym.Env):
     direction_by_int = {0: 'NORTH', 1: 'EAST', 2: 'SOUTH', 3: 'WEST'}
     def __init__(self):
         super(SusmanGameEnv, self).__init__()
-        self.board_width = 10
-        self.board_height = 5
+        self.board_width = 3
+        self.board_height = 3
         self.board = np.zeros([self.board_height, self.board_width])
         self.player_location = {'x':0, 'y': 0}
         # Define action and observation space
@@ -80,10 +80,10 @@ class SusmanGameEnv(gym.Env):
         # 0=N 1=E 2=S 3=W
 
         if action == 0: #Move North
-            target_n = self.player_location['y'] + 1
-            if target_n >= self.board_height:
+            target_s = self.player_location['y'] - 1
+            if target_s < 0:
                 return self.get_observations(reward=-1000, done=True, info='Loose Fall Off Map')
-            self.player_location['y'] += 1
+            self.player_location['y'] -= 1
             if self.board[self.player_location['y'], self.player_location['x']] == 1:
                 return self.get_observations(reward=1000, done=True, info='Win Got Target')
             else:
@@ -99,11 +99,11 @@ class SusmanGameEnv(gym.Env):
             else:
                 return self.get_observations(reward=-1, done=False, info='Continue')
 
-        if action == 2: #Move North
-            target_s = self.player_location['y'] - 1
-            if target_s < 0:
+        if action == 2:  # Move South
+            target_n = self.player_location['y'] + 1
+            if target_n >= self.board_height:
                 return self.get_observations(reward=-1000, done=True, info='Loose Fall Off Map')
-            self.player_location['y'] -= 1
+            self.player_location['y'] += 1
             if self.board[self.player_location['y'], self.player_location['x']] == 1:
                 return self.get_observations(reward=1000, done=True, info='Win Got Target')
             else:
@@ -121,7 +121,7 @@ class SusmanGameEnv(gym.Env):
 
 
 
-        return self.get_observations(reward, done, '')
+        return self.get_observations(reward, done, 'WARNING')
         # Execute one time step within the environment
 
     def reset(self):
