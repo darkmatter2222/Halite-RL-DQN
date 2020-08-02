@@ -49,8 +49,8 @@ model_name = 'SusmanGameDQNv1'
 gamma = .9
 learning_rate = 0.002
 episode = 10001
-capacity = 64 * 1
-batch_size = 32 * 1
+capacity = 64 * 10
+batch_size = 32 * 10
 
 # Exploration parameters
 epsilon = 1.0  # Exploration rate
