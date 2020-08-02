@@ -74,12 +74,7 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(action_space, activation='softmax')
 ])
 model.compile(loss='mse',
-              optimizer=Adam(lr=learning_rate), metrics=['accuracy'])
-
-tensor_board = tf.keras.callbacks.TensorBoard(log_dir=f"{base_dir}\\{tensorboard_dir}\\{time.time()}")
-model_save = tf.keras.callbacks.ModelCheckpoint(
-        f'{base_dir}\\{model_dir}\\{model_name}_Checkpoint.h5',
-        monitor='accuracy', verbose=0, save_best_only=True, save_weights_only=False, mode='auto', save_freq='epoch')
+              optimizer='adam')
 
 model.summary()
 
@@ -146,7 +141,7 @@ for i in range(episode):
     #if i % 10 == 0 and i != 0:
         #print('Episode {} Total Reward: {} Reward Rate {}'.format(i, total_reward, str(sum(reward_array) / i)))
     try:
-        print('Episode {} Total Reward: {} Reward Rate {} Epsilon {}'.format(i, total_reward, str(sum(reward_array) / i), epsilon))
+        print(f'Epis:{i} Total R:{total_reward} R Rate {str(sum(reward_array) / i)} R Rate L30 {str(sum(reward_array[-30:]) / 30)} Epsilon {epsilon}')
     except:
         lol = 1
 

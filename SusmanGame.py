@@ -81,7 +81,7 @@ class SusmanGameEnv(gym.Env):
         reward = 0
         info = ''
         done = False
-        continue_reward = 0
+        continue_reward = 1
         win_reward = 100
         loose_reward = -100
         # 0=N 1=E 2=S 3=W
