@@ -49,8 +49,8 @@ model_name = 'SusmanGameDQNv1'
 gamma = .9
 learning_rate = 0.002
 episode = 10001
-capacity = 64 * 3
-batch_size = 32 * 3
+capacity = 64 * 10
+batch_size = 32 * 10
 
 # Exploration parameters
 epsilon = 1.0  # Exploration rate
@@ -73,7 +73,7 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(48, activation='relu'),
     tf.keras.layers.Dense(action_space, activation='softmax')
 ])
-model.compile(loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
+model.compile(loss='mse',
               optimizer=Adam(lr=learning_rate), metrics=['accuracy'])
 
 tensor_board = tf.keras.callbacks.TensorBoard(log_dir=f"{base_dir}\\{tensorboard_dir}\\{time.time()}")
