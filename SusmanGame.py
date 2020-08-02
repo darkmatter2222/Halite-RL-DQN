@@ -83,7 +83,7 @@ class SusmanGameEnv(gym.Env):
         done = False
         continue_reward = 0
         win_reward = 100
-        loose_reward = 0
+        loose_reward = -100
         # 0=N 1=E 2=S 3=W
         if action == 0:  # Move North
             self.player_location['y'] = self.player_location['y'] - 1

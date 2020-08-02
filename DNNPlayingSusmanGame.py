@@ -89,6 +89,8 @@ for i in range(episode):
     state = env.reset()
     total_reward = 0
     done = False
+    info = ''
+    temp_history = []
     while not done:
         #epsilon -= decay_rate
         #epsilon = max(epsilon, min_epsilon)
@@ -133,10 +135,15 @@ for i in range(episode):
 
         # Training with experience replay
         # appending to memory
-        memory.append((state1, action, reward, state2, done))
+        temp_history.append((state1, action, reward, state2, done))
         # experience replay
-    #if i > batch_size:
-        #experience_replay()
+
+    if info == 'Win Got Target':
+        for record in temp_history:
+            memory.append(record)
+
+    if len(memory) > batch_size:
+        experience_replay()
 
     reward_array.append(total_reward)
     # Reduce epsilon (because we need less and less exploration)
