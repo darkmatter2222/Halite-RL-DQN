@@ -92,7 +92,7 @@ for i in range(episode):
     while not done:
         #epsilon -= decay_rate
         #epsilon = max(epsilon, min_epsilon)
-        state1 = np.array([env.get_state()])
+        state1 = np.array([env.get_historical_state()])
 
         # 3. Choose an action a in the current world state (s)
         ## First we randomize a number
@@ -125,7 +125,7 @@ for i in range(episode):
 
         target_f = model.predict(state1)
         target_f[0][action] = target
-        history = model.fit(state1, target_f, epochs=40, verbose=0)
+        history = model.fit(state1, target_f, epochs=5, verbose=0)
         total_reward += reward
 
         state = state2

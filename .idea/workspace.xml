@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="17b17302-bd58-4e19-8b68-bc3c854e4095" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DNNPlayingSusmanGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/DNNPlayingSusmanGame.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SusmanGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/SusmanGame.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,46 +182,46 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="0" y="180" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1596292807777" />
-    <state width="1251" height="466" key="DebuggerActiveHint" timestamp="1596331371272">
+    <state width="1251" height="466" key="DebuggerActiveHint" timestamp="1596335364909">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1251" height="466" key="DebuggerActiveHint/0.0.1920.1050@0.0.1920.1050" timestamp="1596331371272" />
+    <state width="1251" height="466" key="DebuggerActiveHint/0.0.1920.1050@0.0.1920.1050" timestamp="1596335364909" />
     <state x="1205" y="280" key="FileChooserDialogImpl" timestamp="1595377026007">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="1205" y="280" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1595377026007" />
-    <state width="939" height="267" key="GridCell.Tab.0.bottom" timestamp="1596331803008">
+    <state width="1900" height="267" key="GridCell.Tab.0.bottom" timestamp="1596335373022">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="267" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1596331803008" />
-    <state width="939" height="267" key="GridCell.Tab.0.center" timestamp="1596331803008">
+    <state width="1900" height="267" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1596335373022" />
+    <state width="1900" height="267" key="GridCell.Tab.0.center" timestamp="1596335373022">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="267" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1596331803008" />
-    <state width="939" height="267" key="GridCell.Tab.0.left" timestamp="1596331803008">
+    <state width="1900" height="267" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1596335373022" />
+    <state width="1900" height="267" key="GridCell.Tab.0.left" timestamp="1596335373022">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="267" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1596331803008" />
-    <state width="939" height="267" key="GridCell.Tab.0.right" timestamp="1596331803008">
+    <state width="1900" height="267" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1596335373022" />
+    <state width="1900" height="267" key="GridCell.Tab.0.right" timestamp="1596335373022">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="267" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1596331803008" />
-    <state width="939" height="267" key="GridCell.Tab.1.bottom" timestamp="1596331802894">
+    <state width="1900" height="267" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1596335373022" />
+    <state width="1900" height="267" key="GridCell.Tab.1.bottom" timestamp="1596335373022">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="267" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1596331802894" />
-    <state width="939" height="267" key="GridCell.Tab.1.center" timestamp="1596331802894">
+    <state width="1900" height="267" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1596335373022" />
+    <state width="1900" height="267" key="GridCell.Tab.1.center" timestamp="1596335373022">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="267" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1596331802894" />
-    <state width="939" height="267" key="GridCell.Tab.1.left" timestamp="1596331802894">
+    <state width="1900" height="267" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1596335373022" />
+    <state width="1900" height="267" key="GridCell.Tab.1.left" timestamp="1596335373022">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="267" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1596331802894" />
-    <state width="939" height="267" key="GridCell.Tab.1.right" timestamp="1596331802894">
+    <state width="1900" height="267" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1596335373022" />
+    <state width="1900" height="267" key="GridCell.Tab.1.right" timestamp="1596335373022">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="267" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1596331802894" />
+    <state width="1900" height="267" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1596335373022" />
     <state x="926" y="168" key="SettingsEditor" timestamp="1596241421554">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
@@ -273,9 +275,9 @@
           <option name="timeStamp" value="182" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/SusmanGame.py</url>
-          <line>126</line>
-          <option name="timeStamp" value="209" />
+          <url>file://$PROJECT_DIR$/DNNPlayingSusmanGame.py</url>
+          <line>94</line>
+          <option name="timeStamp" value="218" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
