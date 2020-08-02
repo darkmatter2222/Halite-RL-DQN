@@ -56,7 +56,7 @@ batch_size = 32 * 10
 epsilon = 1.0  # Exploration rate
 max_epsilon = 1.0  # Exploration probability at start
 min_epsilon = 0.01  # Minimum exploration probability
-decay_rate = 0.0001  # Exponential decay rate for exploration prob
+decay_rate = 0.001  # Exponential decay rate for exploration prob
 
 # 2. Load Environment
 env = SusmanGameEnv()
