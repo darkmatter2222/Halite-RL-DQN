@@ -49,8 +49,8 @@ history = {'Loose Fall Off Map': 0, 'Win Got Target': 0}
 gamma = .9
 learning_rate = 0.002
 episode = 10001
-capacity = 64 * 10
-batch_size = 32 * 10
+capacity = 64 * 1
+batch_size = 32 * 1
 
 # Exploration parameters
 epsilon = 1.0  # Exploration rate
@@ -70,7 +70,7 @@ action_space = env.action_space.n
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=state_space),
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(48, activation='relu'),
+    tf.keras.layers.Dense(24, activation='relu'),
     tf.keras.layers.Dense(action_space, activation='softmax')
 ])
 model.compile(loss='mse',
@@ -89,8 +89,6 @@ for i in range(episode):
     state = env.reset()
     total_reward = 0
     done = False
-    info = ''
-    temp_history = []
     while not done:
         #epsilon -= decay_rate
         #epsilon = max(epsilon, min_epsilon)
@@ -129,20 +127,16 @@ for i in range(episode):
         target_f = model.predict(state1)
         target_f[0][action] = target
         history = model.fit(state1, target_f, epochs=1, verbose=0)
+        after_target_f = model.predict(state1)
         total_reward += reward
 
         state = state2
 
         # Training with experience replay
         # appending to memory
-        temp_history.append((state1, action, reward, state2, done))
+        memory.append((state1, action, reward, state2, done))
         # experience replay
-
-    if info == 'Win Got Target':
-        for record in temp_history:
-            memory.append(record)
-
-    if len(memory) > batch_size:
+    if i > batch_size:
         experience_replay()
 
     reward_array.append(total_reward)
