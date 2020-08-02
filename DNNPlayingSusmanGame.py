@@ -56,7 +56,7 @@ batch_size = 32 * 10
 epsilon = 1.0  # Exploration rate
 max_epsilon = 1.0  # Exploration probability at start
 min_epsilon = 0.01  # Minimum exploration probability
-decay_rate = 0.001  # Exponential decay rate for exploration prob
+decay_rate = 0.0001  # Exponential decay rate for exploration prob
 
 # 2. Load Environment
 env = SusmanGameEnv()
@@ -70,7 +70,7 @@ action_space = env.action_space.n
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=state_space),
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(24, activation='relu'),
+    tf.keras.layers.Dense(48, activation='relu'),
     tf.keras.layers.Dense(action_space, activation='softmax')
 ])
 model.compile(loss='mse',
