@@ -35,7 +35,7 @@ def experience_replay():
         target_f = model.predict(state)
         target_f[0][action] = target
         # Train the Neural Net with the state and target_f
-        history = model.fit(state, target_f, epochs=1, verbose=0)
+        history = model.fit(state, target_f, epochs=40, verbose=0)
         #print(f"loss:{history.history['loss']} accuracy{history.history['accuracy']}")
 
 base_dir = 'N:\\Halite'
@@ -49,8 +49,8 @@ model_name = 'SusmanGameDQNv1'
 gamma = .9
 learning_rate = 0.002
 episode = 10001
-capacity = 64 * 10
-batch_size = 32 * 10
+capacity = 64 * 1
+batch_size = 32 * 1
 
 # Exploration parameters
 epsilon = 1.0  # Exploration rate
@@ -116,12 +116,16 @@ for i in range(episode):
         #env.render()
         #print('\n\n')
         state2 = np.array([state2])
-        target = (reward + gamma *
-                  np.max(model.predict([state2])))
+        prediction_results = model.predict([state2])
+        prediction = np.max(prediction_results)
+        if reward > 0:
+            lol = 1
+
+        target = (reward + gamma * prediction)
 
         target_f = model.predict(state1)
         target_f[0][action] = target
-        history = model.fit(state1, target_f, epochs=1, verbose=0)
+        history = model.fit(state1, target_f, epochs=40, verbose=0)
         total_reward += reward
 
         state = state2

@@ -9,8 +9,8 @@ class SusmanGameEnv(gym.Env):
     direction_by_int = {0: 'NORTH', 1: 'EAST', 2: 'SOUTH', 3: 'WEST'}
     def __init__(self):
         super(SusmanGameEnv, self).__init__()
-        self.board_width = 10
-        self.board_height = 10
+        self.board_width = 5
+        self.board_height = 5
         self.board = np.zeros([self.board_height, self.board_width])
         self.player_location = {'x':0, 'y': 0}
         # Define action and observation space
@@ -72,8 +72,8 @@ class SusmanGameEnv(gym.Env):
     def step(self, action):
         reward = 0
         done = False
-        continue_reward = -1
-        win_reward = 10000
+        continue_reward = 0
+        win_reward = 1000
         loose_reward = -1000
 
         #if self.this_turn == self.max_turns:
