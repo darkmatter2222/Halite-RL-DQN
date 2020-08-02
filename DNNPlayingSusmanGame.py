@@ -70,7 +70,7 @@ action_space = env.action_space.n
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=state_space),
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(48, activation='relu'),
+    tf.keras.layers.Dense(24, activation='relu'),
     tf.keras.layers.Dense(action_space, activation='softmax')
 ])
 model.compile(loss='mse',
