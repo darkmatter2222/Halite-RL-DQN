@@ -35,7 +35,7 @@ def experience_replay():
         target_f = model.predict(state)
         target_f[0][action] = target
         # Train the Neural Net with the state and target_f
-        history = model.fit(state, target_f, epochs=40, verbose=0)
+        history = model.fit(state, target_f, epochs=1, verbose=0)
         #print(f"loss:{history.history['loss']} accuracy{history.history['accuracy']}")
 
 base_dir = 'N:\\Halite'
@@ -43,7 +43,7 @@ model_dir = 'Models'
 tensorboard_dir = 'Logs'
 model_name = 'SusmanGameDQNv1'
 
-
+history = {'Loose Fall Off Map': 0, 'Win Got Target': 0}
 
 # 1. Parameters of Q-leanring
 gamma = .9
@@ -101,7 +101,8 @@ for i in range(episode):
         directive = ''
         ## If this number > greater than epsilon --> exploitation (taking the biggest Q value for this state)
         if exp_exp_tradeoff > epsilon:
-            action = np.argmax(model.predict(state1))
+            prediction_results1 = model.predict(state1)
+            action = np.argmax(prediction_results1)
             directive = 'Exploite'
         # Else doing a random choice --> exploration
         else:
@@ -125,7 +126,7 @@ for i in range(episode):
 
         target_f = model.predict(state1)
         target_f[0][action] = target
-        history = model.fit(state1, target_f, epochs=5, verbose=0)
+        history = model.fit(state1, target_f, epochs=1, verbose=0)
         total_reward += reward
 
         state = state2
@@ -134,8 +135,8 @@ for i in range(episode):
         # appending to memory
         memory.append((state1, action, reward, state2, done))
         # experience replay
-    if i > batch_size:
-        experience_replay()
+    #if i > batch_size:
+        #experience_replay()
 
     reward_array.append(total_reward)
     # Reduce epsilon (because we need less and less exploration)

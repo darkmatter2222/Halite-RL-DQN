@@ -9,7 +9,7 @@ class SusmanGameEnv(gym.Env):
     direction_by_int = {0: 'NORTH', 1: 'EAST', 2: 'SOUTH', 3: 'WEST'}
     def __init__(self):
         super(SusmanGameEnv, self).__init__()
-        self.max_turns = 100
+        self.max_turns = 10
         self.board_width = 5
         self.board_height = 5
         self.board = np.zeros([self.board_height, self.board_width])
@@ -81,9 +81,9 @@ class SusmanGameEnv(gym.Env):
         reward = 0
         info = ''
         done = False
-        continue_reward = -1
-        win_reward = 1000
-        loose_reward = -1000
+        continue_reward = 0
+        win_reward = 100
+        loose_reward = 0
         # 0=N 1=E 2=S 3=W
         if action == 0:  # Move North
             self.player_location['y'] = self.player_location['y'] - 1
@@ -107,6 +107,11 @@ class SusmanGameEnv(gym.Env):
             info = 'Win Got Target'
             done = True
             reward = win_reward
+        # Max Tries?
+        elif self.this_turn == self.max_turns - 1:
+            info = 'Max Tries'
+            done = True
+            reward = loose_reward
         else:
             info = 'Continue'
             done = False
