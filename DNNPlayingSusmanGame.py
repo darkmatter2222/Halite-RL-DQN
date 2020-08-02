@@ -47,10 +47,10 @@ model_name = 'SusmanGameDQNv1'
 
 # 1. Parameters of Q-leanring
 gamma = .9
-learning_rate = 0.512
-episode = 5001
-capacity = 64 * 4
-batch_size = 32 * 4
+learning_rate = 0.002
+episode = 10001
+capacity = 64 * 3
+batch_size = 32 * 3
 
 # Exploration parameters
 epsilon = 1.0  # Exploration rate
@@ -70,11 +70,10 @@ action_space = env.action_space.n
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=state_space),
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(24, activation='relu'),
-    tf.keras.layers.Dense(24, activation='relu'),
-    tf.keras.layers.Dense(action_space, activation='linear')
+    tf.keras.layers.Dense(48, activation='relu'),
+    tf.keras.layers.Dense(action_space, activation='softmax')
 ])
-model.compile(loss='mse',
+model.compile(loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
               optimizer=Adam(lr=learning_rate), metrics=['accuracy'])
 
 tensor_board = tf.keras.callbacks.TensorBoard(log_dir=f"{base_dir}\\{tensorboard_dir}\\{time.time()}")
