@@ -84,6 +84,8 @@ for i in range(episode):
     state = env.reset()
     total_reward = 0
     done = False
+    last_r_rate = 0
+    last_r_rate_30 = 0
     while not done:
         #epsilon -= decay_rate
         #epsilon = max(epsilon, min_epsilon)
@@ -104,18 +106,12 @@ for i in range(episode):
             action = env.action_space.sample()
             directive = 'Explore'
 
-        # Training without experience replay
-        #print('Before')
-        #env.render()
+
         state2, reward, done, info = env.step(action)
-        #print(f'Directive:{directive}\tDirection:{env.direction_by_int[action]}\tResult:{info}')
-        #env.render()
-        #print('\n\n')
+
         state2 = np.array([state2])
         prediction_results = model.predict([state2])
         prediction = np.max(prediction_results)
-        if reward > 0:
-            lol = 1
 
         target = (reward + gamma * prediction)
 
@@ -141,7 +137,25 @@ for i in range(episode):
     #if i % 10 == 0 and i != 0:
         #print('Episode {} Total Reward: {} Reward Rate {}'.format(i, total_reward, str(sum(reward_array) / i)))
     try:
-        print(f'Epis:{i} Total R:{total_reward} R Rate {str(sum(reward_array) / i)} R Rate L30 {str(sum(reward_array[-30:]) / 30)} Epsilon {epsilon}')
+        r_rate = sum(reward_array) / i
+        r_rate_30 = sum(reward_array[-30:]) / 30
+        r_rate_color = ''
+        r_rate_30_color = ''
+
+        if r_rate > last_r_rate:
+            r_rate_color = f'\x1b[31m{r_rate}\x1b[0m'
+        else:
+            r_rate_color = f'\x1b[32m{r_rate}\x1b[0m'
+
+        if r_rate_30 > last_r_rate_30:
+            r_rate_30_color = f'\x1b[31m{r_rate_30}\x1b[0m'
+        else:
+            r_rate_30_color = f'\x1b[32m{r_rate_30}\x1b[0m'
+
+        last_r_rate = r_rate
+        last_r_rate_30 = r_rate_30
+
+        print(f'Epis:{i} Total R:{total_reward} R Rate {r_rate_color} R Rate L30 {r_rate_30_color} Epsilon {epsilon}')
     except:
         lol = 1
 
