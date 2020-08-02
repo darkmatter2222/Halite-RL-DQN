@@ -82,6 +82,7 @@ reward_array = []
 memory = deque([], maxlen=capacity)
 last_r_rate = 0
 last_r_rate_30 = 0
+trend = 0
 for i in range(episode):
     state = env.reset()
     total_reward = 0
@@ -141,21 +142,27 @@ for i in range(episode):
         r_rate_30 = sum(reward_array[-30:]) / 30
         r_rate_color = ''
         r_rate_30_color = ''
+        round_to = 2
 
         if r_rate > last_r_rate:
-            r_rate_color = f'\x1b[31m{r_rate}\x1b[0m'
+            r_rate_color = f'\x1b[31m{round(r_rate, round_to)}\x1b[0m'
         else:
-            r_rate_color = f'\x1b[32m{r_rate}\x1b[0m'
+            r_rate_color = f'\x1b[32m{round(r_rate, round_to)}\x1b[0m'
 
         if r_rate_30 > last_r_rate_30:
-            r_rate_30_color = f'\x1b[31m{r_rate_30}\x1b[0m'
+            r_rate_30_color = f'\x1b[31m{round(r_rate_30, round_to)}\x1b[0m'
+            trend -= 1
         else:
-            r_rate_30_color = f'\x1b[32m{r_rate_30}\x1b[0m'
+            r_rate_30_color = f'\x1b[32m{round(r_rate_30, round_to)}\x1b[0m'
+            trend += 1
+
 
         last_r_rate = r_rate
         last_r_rate_30 = r_rate_30
 
-        print(f'Epis:{i} Total R:{total_reward} R Rate {r_rate_color} R Rate L30 {r_rate_30_color} Epsilon {epsilon}')
+        print(f'Epis:{i}\t Total R:{total_reward}\t R Rate {r_rate_color}\t '
+              f'R Rate L30 {r_rate_30_color}\t Epsilon {round(epsilon, 4)}\t'
+              f'Trend:{trend}')
     except:
         lol = 1
 
