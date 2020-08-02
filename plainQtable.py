@@ -2,37 +2,40 @@ import gym
 import numpy as np
 from SusmanGame import SusmanGameEnv
 # 1. Load Environment and Q-table structure
-env = SusmanGameEnv()
-Q = np.zeros([6,2,3,3,4])
+env = gym.make('FrozenLake8x8-v0')
+Q = np.zeros([env.observation_space.n,env.action_space.n])
 # env.obeservation.n, env.action_space.n gives number of states and action in env loaded
 # 2. Parameters of Q-leanring
 eta = .628
-gma = .9
-epis = 5000
+gamma = .9
+episodes = 5000
 rev_list = [] # rewards per episode calculate
 # 3. Q-learning Algorithm
-for i in range(epis):
+for i in range(episodes):
     # Reset environment
-    s = env.reset()
+    state = env.reset()
     rAll = 0
-    d = False
-    j = 0
+    done = False
+    turn = 0
     #The Q-Table learning algorithm
-    while j < 99:
+    while turn < 99:
         env.render()
-        j+=1
+        turn += 1
         # Choose action from Q table
-        a = np.argmax(Q[s,:] + np.random.randn(1,env.action_space.n)*(1./(i+1)))
+        multiplier = (1. / (i + 1))
+        random_result = np.random.randn(1, env.action_space.n )
+        random_result *= multiplier
+        action = np.argmax(Q[state, :] + random_result)
         #Get new state & reward from environment
-        s1,r,d,_ = env.step(a)
+        state1, reward, done, info = env.step(action)
         #Update Q-Table with new knowledge
-        Q[s,a] = Q[s,a] + eta*(r + gma*np.max(Q[s1,:]) - Q[s,a])
-        rAll += r
-        s = s1
-        if d == True:
+        Q[state, action] = Q[state, action] + eta * (reward + gamma * np.max(Q[state1, :]) - Q[state, action])
+        rAll += reward
+        state = state1
+        if done == True:
             break
     rev_list.append(rAll)
     env.render()
-print ("Reward Sum on all episodes " + str(sum(rev_list)/epis))
+print ("Reward Sum on all episodes " + str(sum(rev_list) / episodes))
 print ("Final Values Q-Table")
 print (Q)
