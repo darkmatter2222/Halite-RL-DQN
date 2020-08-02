@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="17b17302-bd58-4e19-8b68-bc3c854e4095" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DNNPlayingSusmanGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/DNNPlayingSusmanGame.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plainQtable.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SusmanGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/SusmanGame.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,27 +57,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/DNNPlayingSusmanGame.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="DeepQRunner" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="HaliteRunner" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/DeepQRunner.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -150,13 +128,34 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="plainQtable" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="HaliteRunner" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/plainQtable.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.DNNPlayingSusmanGame" />
+        <item itemvalue="Python.plainQtable" />
         <item itemvalue="Python.SusmanGame" />
         <item itemvalue="Python.FrozenLake" />
         <item itemvalue="Python.Tester" />
-        <item itemvalue="Python.DeepQRunner" />
       </list>
     </recent_temporary>
   </component>
@@ -182,46 +181,46 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="0" y="180" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1050@0.0.1920.1050" timestamp="1596292807777" />
-    <state width="1477" height="466" key="DebuggerActiveHint" timestamp="1596377059703">
+    <state width="1477" height="466" key="DebuggerActiveHint" timestamp="1596377871660">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1477" height="466" key="DebuggerActiveHint/0.0.1920.1050@0.0.1920.1050" timestamp="1596377059703" />
+    <state width="1477" height="466" key="DebuggerActiveHint/0.0.1920.1050@0.0.1920.1050" timestamp="1596377871660" />
     <state x="1205" y="280" key="FileChooserDialogImpl" timestamp="1595377026007">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="1205" y="280" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1595377026007" />
-    <state width="1900" height="342" key="GridCell.Tab.0.bottom" timestamp="1596377535002">
+    <state width="1900" height="267" key="GridCell.Tab.0.bottom" timestamp="1596378211065">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="342" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1596377535002" />
-    <state width="1900" height="342" key="GridCell.Tab.0.center" timestamp="1596377535002">
+    <state width="1900" height="267" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1596378211065" />
+    <state width="1900" height="267" key="GridCell.Tab.0.center" timestamp="1596378211064">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="342" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1596377535002" />
-    <state width="1900" height="342" key="GridCell.Tab.0.left" timestamp="1596377535002">
+    <state width="1900" height="267" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1596378211064" />
+    <state width="1900" height="267" key="GridCell.Tab.0.left" timestamp="1596378211064">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="342" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1596377535002" />
-    <state width="1900" height="342" key="GridCell.Tab.0.right" timestamp="1596377535002">
+    <state width="1900" height="267" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1596378211064" />
+    <state width="1900" height="267" key="GridCell.Tab.0.right" timestamp="1596378211065">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="342" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1596377535002" />
-    <state width="1900" height="267" key="GridCell.Tab.1.bottom" timestamp="1596377342352">
+    <state width="1900" height="267" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1596378211065" />
+    <state width="1900" height="267" key="GridCell.Tab.1.bottom" timestamp="1596378211065">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="267" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1596377342352" />
-    <state width="1900" height="267" key="GridCell.Tab.1.center" timestamp="1596377342352">
+    <state width="1900" height="267" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1596378211065" />
+    <state width="1900" height="267" key="GridCell.Tab.1.center" timestamp="1596378211065">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="267" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1596377342352" />
-    <state width="1900" height="267" key="GridCell.Tab.1.left" timestamp="1596377342352">
+    <state width="1900" height="267" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1596378211065" />
+    <state width="1900" height="267" key="GridCell.Tab.1.left" timestamp="1596378211065">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="267" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1596377342352" />
-    <state width="1900" height="267" key="GridCell.Tab.1.right" timestamp="1596377342352">
+    <state width="1900" height="267" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1596378211065" />
+    <state width="1900" height="267" key="GridCell.Tab.1.right" timestamp="1596378211065">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="267" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1596377342352" />
+    <state width="1900" height="267" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1596378211065" />
     <state x="926" y="168" key="SettingsEditor" timestamp="1596241421554">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
@@ -273,6 +272,11 @@
           <url>file://$PROJECT_DIR$/FrozenLake.py</url>
           <line>92</line>
           <option name="timeStamp" value="182" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/plainQtable.py</url>
+          <line>5</line>
+          <option name="timeStamp" value="235" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

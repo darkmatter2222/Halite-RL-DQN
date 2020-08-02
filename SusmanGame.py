@@ -131,6 +131,8 @@ class SusmanGameEnv(gym.Env):
         self.this_turn = 0
         self.reset_board()
         self.set_goal()
+        self.append_to_state()
+        return self.get_historical_state()
 
     def render(self, mode='human', close=False):
         result = ''
