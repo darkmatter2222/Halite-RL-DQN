@@ -80,12 +80,12 @@ model.summary()
 
 reward_array = []
 memory = deque([], maxlen=capacity)
+last_r_rate = 0
+last_r_rate_30 = 0
 for i in range(episode):
     state = env.reset()
     total_reward = 0
     done = False
-    last_r_rate = 0
-    last_r_rate_30 = 0
     while not done:
         #epsilon -= decay_rate
         #epsilon = max(epsilon, min_epsilon)
