@@ -49,16 +49,16 @@ history = {'Loose Fall Off Map': 0, 'Win Got Target': 0}
 
 # 1. Parameters of Q-leanring
 gamma = .999
-learning_rate = 0.02
+learning_rate = 0.002
 episode = 10001
-capacity = 64 * 5
-batch_size = 32 * 5
+capacity = 64 * 1
+batch_size = 32 * 1
 
 # Exploration parameters
 epsilon = 1.0  # Exploration rate
 max_epsilon = 1.0  # Exploration probability at start
 min_epsilon = 0.01  # Minimum exploration probability
-decay_rate = 0.00001  # Exponential decay rate for exploration prob
+decay_rate = 0.001  # Exponential decay rate for exploration prob
 
 # 2. Load Environment
 env = SusmanGameEnv()
@@ -127,6 +127,8 @@ for i in range(episode):
 
         state = state2
 
+        #env.render()
+
         # Training with experience replay
         # appending to memory
         memory.append((state1, action, reward, state2, done))
@@ -162,7 +164,7 @@ for i in range(episode):
         r_rate_array.append(r_rate)
         last_r_rate_30 = r_rate_30
 
-        print(f'Epi:{i}\t Total R:{total_reward}\t R Rate {r_rate_color}\t '
+        print(f'Epi:{i}\t Total R:{round(total_reward, 2)}\t R Rate {r_rate_color}\t '
               f'R Rate L30 {r_rate_30_color}\t Epsilon {round(epsilon, 4)}\t')
     except:
         lol = 1

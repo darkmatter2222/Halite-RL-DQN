@@ -2,6 +2,7 @@ import gym
 from gym import spaces
 import numpy as np
 import random
+import scipy as sp
 
 class SusmanGameEnv(gym.Env):
     """Custom Environment that follows gym interface"""
@@ -9,7 +10,7 @@ class SusmanGameEnv(gym.Env):
     direction_by_int = {0: 'NORTH', 1: 'EAST', 2: 'SOUTH', 3: 'WEST'}
     def __init__(self):
         super(SusmanGameEnv, self).__init__()
-        self.max_turns = 6
+        self.max_turns = 25
         self.max_turns_no_reward = 2
         self.board_width = 5
         self.board_height = 5
@@ -66,7 +67,14 @@ class SusmanGameEnv(gym.Env):
             if self.player_location['x'] != rand_x or self.player_location['y'] != rand_y:
                 break
 
-        self.board[rand_y, rand_x] = 1
+        self.board[rand_y, rand_x] = 100
+
+        sigma_y = 1.0
+        sigma_x = 1.0
+        # Apply gaussian filter
+        sigma = [sigma_y, sigma_x]
+        self.board = sp.ndimage.filters.gaussian_filter(self.board, sigma, mode='constant')
+        lol = 1
 
     def set_player(self):
         rand_y = 0
@@ -83,7 +91,7 @@ class SusmanGameEnv(gym.Env):
         reward = 0
         info = ''
         done = False
-        continue_reward = 1
+        continue_reward = 0
         win_reward = 100
         loose_reward = -100
         # 0=N 1=E 2=S 3=W
@@ -98,26 +106,26 @@ class SusmanGameEnv(gym.Env):
         else:
             raise ValueError
 
-        # Loose Fall Off Map?
-        if self.player_location['y'] < 0 or self.player_location['x'] < 0 or\
-                self.player_location['x'] >= self.board_width or self.player_location['y'] >= self.board_height:
-            info = 'Loose Fall Off Map'
-            done = True
-            reward = loose_reward
-        # Win Got Target?
-        elif self.board[self.player_location['y'], self.player_location['x']] == 1:
-            info = 'Win Got Target'
-            done = True
-            reward = win_reward
         # Max Tries?
-        elif self.this_turn == self.max_turns - 1:
+        if self.this_turn == self.max_turns - 1:
             info = 'Max Tries'
             done = True
             reward = loose_reward
         else:
-            info = 'Continue'
-            done = False
-            reward = continue_reward
+            # Loose Fall Off Map?
+            if self.player_location['y'] < 0 or self.player_location['x'] < 0 or\
+                    self.player_location['x'] >= self.board_width or self.player_location['y'] >= self.board_height:
+                info = 'Loose Fall Off Map'
+                done = True
+                reward = loose_reward
+            elif self.board[self.player_location['y'], self.player_location['x']] != 0:
+                info = 'Continue With Points'
+                done = False
+                reward = self.board[self.player_location['y'], self.player_location['x']]
+            else:
+                info = 'Continue'
+                done = False
+                reward = continue_reward
 
         self.append_to_state()
 
