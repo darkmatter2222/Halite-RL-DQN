@@ -23,7 +23,7 @@ class SusmanGameEnv(gym.Env):
         self.action_space = spaces.Discrete(4) # East, West
         # Example for using image as input:
         self.observation_space = spaces.Box(low=0, high=1, shape=
-                    (self.max_turns, 2, self.board_height, self.board_width), dtype=np.uint8)
+                    (2, self.board_height, self.board_width), dtype=np.uint8)
         #Dimension 0 = Board (One Hot)
         #Dimension 1 = Player (One Hot)
 
@@ -34,7 +34,7 @@ class SusmanGameEnv(gym.Env):
 
     def get_observations(self, reward = 0, done = False, info = ''):
         #state, reward, done, info
-        return self.get_historical_state().tolist(), reward, done, info
+        return self.get_current_state().tolist(), reward, done, info
 
     def get_current_state(self):
         state = np.zeros([2, self.board_height, self.board_width])

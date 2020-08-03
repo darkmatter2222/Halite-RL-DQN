@@ -49,6 +49,7 @@ history = {'Loose Fall Off Map': 0, 'Win Got Target': 0}
 
 # 1. Parameters of Q-leanring
 gamma = .999
+q_learning_rate = .628
 learning_rate = 0.002
 episode = 10001
 capacity = 64 * 1
@@ -72,8 +73,9 @@ action_space = env.action_space.n
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=state_space),
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(24, activation='relu'),
-    tf.keras.layers.Dense(action_space, activation='softmax')
+    tf.keras.layers.Dense(5, activation='relu'),
+    tf.keras.layers.Dense(5, activation='relu'),
+    tf.keras.layers.Dense(action_space)
 ])
 model.compile(loss='mse',
               optimizer='adam')
@@ -93,7 +95,7 @@ for i in range(episode):
     while not done:
         #epsilon -= decay_rate
         #epsilon = max(epsilon, min_epsilon)
-        state1 = np.array([env.get_historical_state()])
+        state1 = np.array([env.get_current_state()])
 
         # 3. Choose an action a in the current world state (s)
         ## First we randomize a number
@@ -120,7 +122,7 @@ for i in range(episode):
         target = (reward + gamma * prediction)
 
         target_f = model.predict(state1)
-        target_f[0][action] = target
+        target_f[0][action] = target_f[0][action] + q_learning_rate * target
         history = model.fit(state1, target_f, epochs=1, verbose=0)
         total_reward += reward
 
