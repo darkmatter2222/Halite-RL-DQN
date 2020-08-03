@@ -10,11 +10,13 @@ class SusmanGameEnv(gym.Env):
     def __init__(self):
         super(SusmanGameEnv, self).__init__()
         self.max_turns = 6
-        self.board_width = 3
-        self.board_height = 3
+        self.max_turns_no_reward = 2
+        self.board_width = 5
+        self.board_height = 5
         self.board = np.zeros([self.board_height, self.board_width])
         self.player_location = {'x':0, 'y': 0}
         self.this_turn = 0
+        self.running_reward = 0
         # Define action and observation space
         # They must be gym.spaces objects
         # Example when using discrete actions:
@@ -132,6 +134,7 @@ class SusmanGameEnv(gym.Env):
         self.reset_board()
         self.set_goal()
         self.append_to_state()
+        self.running_reward = 0
         return self.get_historical_state()
 
     def render(self, mode='human', close=False):

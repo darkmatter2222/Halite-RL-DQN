@@ -10,6 +10,8 @@ from tensorflow.keras.optimizers import Adam
 from SusmanGame import SusmanGameEnv
 import time
 import os
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
 
 def one_hot_state(state, state_space):
@@ -46,7 +48,7 @@ model_name = 'SusmanGameDQNv1'
 history = {'Loose Fall Off Map': 0, 'Win Got Target': 0}
 
 # 1. Parameters of Q-leanring
-gamma = .9
+gamma = .999
 learning_rate = 0.002
 episode = 10001
 capacity = 64 * 1
@@ -79,6 +81,7 @@ model.compile(loss='mse',
 model.summary()
 
 reward_array = []
+r_rate_array = []
 memory = deque([], maxlen=capacity)
 last_r_rate = 0
 last_r_rate_30 = 0
@@ -119,7 +122,6 @@ for i in range(episode):
         target_f = model.predict(state1)
         target_f[0][action] = target
         history = model.fit(state1, target_f, epochs=1, verbose=0)
-        after_target_f = model.predict(state1)
         total_reward += reward
 
         state = state2
@@ -156,11 +158,13 @@ for i in range(episode):
 
 
         last_r_rate = r_rate
+        r_rate_array.append(r_rate)
         last_r_rate_30 = r_rate_30
 
-        print(f'Epis:{i}\t Total R:{total_reward}\t R Rate {r_rate_color}\t '
+        print(f'Epi:{i}\t Total R:{total_reward}\t R Rate {r_rate_color}\t '
               f'R Rate L30 {r_rate_30_color}\t Epsilon {round(epsilon, 4)}\t')
     except:
         lol = 1
+
 
 model.save(f'{base_dir}\\{model_dir}\\{model_name}_Complete.h5')
