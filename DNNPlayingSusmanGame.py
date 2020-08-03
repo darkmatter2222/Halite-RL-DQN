@@ -49,17 +49,16 @@ history = {'Loose Fall Off Map': 0, 'Win Got Target': 0}
 
 # 1. Parameters of Q-leanring
 gamma = .999
-q_learning_rate = .628
-learning_rate = 0.002
+learning_rate = 0.02
 episode = 10001
-capacity = 64 * 1
-batch_size = 32 * 1
+capacity = 64 * 5
+batch_size = 32 * 5
 
 # Exploration parameters
 epsilon = 1.0  # Exploration rate
 max_epsilon = 1.0  # Exploration probability at start
 min_epsilon = 0.01  # Minimum exploration probability
-decay_rate = 0.001  # Exponential decay rate for exploration prob
+decay_rate = 0.00001  # Exponential decay rate for exploration prob
 
 # 2. Load Environment
 env = SusmanGameEnv()
@@ -122,7 +121,7 @@ for i in range(episode):
         target = (reward + gamma * prediction)
 
         target_f = model.predict(state1)
-        target_f[0][action] = target_f[0][action] + q_learning_rate * target
+        target_f[0][action] = target
         history = model.fit(state1, target_f, epochs=1, verbose=0)
         total_reward += reward
 
