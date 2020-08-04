@@ -15,6 +15,7 @@ class SusmanGameEnv(gym.Env):
         self.board_width = 5
         self.board_height = 5
         self.board = np.zeros([self.board_height, self.board_width])
+        self.reward_heatmap = np.zeros([self.board_height, self.board_width])
         self.player_location = {'x':0, 'y': 0}
         self.this_turn = 0
         self.running_reward = 0
@@ -67,13 +68,14 @@ class SusmanGameEnv(gym.Env):
             if self.player_location['x'] != rand_x or self.player_location['y'] != rand_y:
                 break
 
-        self.board[rand_y, rand_x] = 100
+        self.board[rand_y, rand_x] = 1
+        self.reward_heatmap[rand_y, rand_x] = 100
 
-        sigma_y = 1.0
-        sigma_x = 1.0
+        sigma_y = 2.0
+        sigma_x = 2.0
         # Apply gaussian filter
         sigma = [sigma_y, sigma_x]
-        self.board = sp.ndimage.filters.gaussian_filter(self.board, sigma, mode='constant')
+        self.reward_heatmap = sp.ndimage.filters.gaussian_filter(self.reward_heatmap, sigma, mode='constant')
         lol = 1
 
     def set_player(self):
@@ -92,8 +94,8 @@ class SusmanGameEnv(gym.Env):
         info = ''
         done = False
         continue_reward = 0
-        win_reward = 100
-        loose_reward = -100
+        win_reward = 10
+        loose_reward = -10
         # 0=N 1=E 2=S 3=W
         if action == 0:  # Move North
             self.player_location['y'] = self.player_location['y'] - 1
@@ -118,10 +120,14 @@ class SusmanGameEnv(gym.Env):
                 info = 'Loose Fall Off Map'
                 done = True
                 reward = loose_reward
-            elif self.board[self.player_location['y'], self.player_location['x']] != 0:
-                info = 'Continue With Points'
+            elif self.board[self.player_location['y'], self.player_location['x']] == 1:
+                info = 'Won Got the Goal'
                 done = False
-                reward = self.board[self.player_location['y'], self.player_location['x']]
+                reward = win_reward
+            elif self.reward_heatmap[self.player_location['y'], self.player_location['x']] != 0:
+                info = 'Continue w/ reward'
+                done = False
+                reward = self.reward_heatmap[self.player_location['y'], self.player_location['x']]
             else:
                 info = 'Continue'
                 done = False
@@ -171,3 +177,4 @@ class SusmanGameEnv(gym.Env):
 
     def reset_board(self):
         self.board = np.zeros([self.board_height, self.board_width])
+        self.reward_heatmap = np.zeros([self.board_height, self.board_width])
