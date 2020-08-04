@@ -24,11 +24,12 @@ class SusmanGameEnv(gym.Env):
         self.action_space = spaces.Discrete(4) # East, West
         # Example for using image as input:
         self.observation_space = spaces.Box(low=0, high=1, shape=
-                    (2, self.board_height, self.board_width), dtype=np.uint8)
-        #Dimension 0 = Board (One Hot)
-        #Dimension 1 = Player (One Hot)
+                    (3, self.board_height, self.board_width), dtype=np.uint8)
+        # Dimension 0 = Board (One Hot)
+        # Dimension 1 = Player (One Hot)
+        # Dimension 2 = Reward Heat Map (One Hot)
 
-        self.history = np.zeros([self.max_turns, 2, self.board_height, self.board_width])
+        self.history = np.zeros([self.max_turns, 3, self.board_height, self.board_width])
         self.reset_board()
         self.set_goal()
         self.append_to_state()
@@ -38,11 +39,12 @@ class SusmanGameEnv(gym.Env):
         return self.get_current_state().tolist(), reward, done, info
 
     def get_current_state(self):
-        state = np.zeros([2, self.board_height, self.board_width])
+        state = np.zeros([3, self.board_height, self.board_width])
 
         for y in range(self.board_height):
             for x in range(self.board_width):
                 state[0, y, x] = self.board[y, x]
+                state[2, y, x] = self.reward_heatmap[y, x]
                 if self.player_location['x'] == x and self.player_location['y'] == y:
                     state[1, y, x] = 1
 
@@ -142,7 +144,7 @@ class SusmanGameEnv(gym.Env):
 
 
     def reset(self):
-        self.history = np.zeros([self.max_turns, 2, self.board_height, self.board_width])
+        self.history = np.zeros([self.max_turns, 3, self.board_height, self.board_width])
         self.this_turn = 0
         self.reset_board()
         self.set_goal()

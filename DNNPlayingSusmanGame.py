@@ -51,8 +51,8 @@ history = {'Loose Fall Off Map': 0, 'Win Got Target': 0}
 gamma = .999
 learning_rate = 0.002
 episode = 10001
-capacity = 64 * 1
-batch_size = 32 * 1
+capacity = 64 * 5
+batch_size = 32 * 5
 
 # Exploration parameters
 epsilon = 1.0  # Exploration rate
