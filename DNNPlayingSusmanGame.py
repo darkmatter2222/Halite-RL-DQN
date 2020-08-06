@@ -72,7 +72,7 @@ action_space = env.action_space.n
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=state_space),
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(24, activation='relu'),
+    tf.keras.layers.Dense(24 * 5, activation='relu'),
     tf.keras.layers.Dense(action_space, activation='softmax')
 ])
 model.compile(loss='mse',
@@ -132,8 +132,8 @@ for i in range(episode):
         # appending to memory
         memory.append((state1, action, reward, state2, done))
         # experience replay
-    if i > batch_size:
-        experience_replay()
+    #if i > batch_size:
+        #experience_replay()
 
     reward_array.append(total_reward)
     # Reduce epsilon (because we need less and less exploration)
