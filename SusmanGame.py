@@ -113,7 +113,7 @@ class SusmanGameEnv(gym.Env):
         if self.this_turn == self.max_turns - 1:
             info = 'Max Tries'
             done = True
-            reward = loose_reward
+            reward = 0
         else:
             # Loose Fall Off Map?
             if self.player_location['y'] < 0 or self.player_location['x'] < 0 or\

@@ -49,7 +49,7 @@ history = {'Loose Fall Off Map': 0, 'Win Got Target': 0}
 
 # 1. Parameters of Q-leanring
 gamma = .999
-learning_rate = 0.002
+learning_rate = 0.02
 episode = 10001
 capacity = 64 * 5
 batch_size = 32 * 5
