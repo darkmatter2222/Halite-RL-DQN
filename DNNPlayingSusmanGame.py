@@ -12,6 +12,7 @@ import time
 import os
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+from PIL import Image
 
 
 def one_hot_state(state, state_space):
@@ -48,11 +49,11 @@ model_name = 'SusmanGameDQNv1'
 history = {'Loose Fall Off Map': 0, 'Win Got Target': 0}
 
 # 1. Parameters of Q-leanring
-gamma = .999
-learning_rate = 0.02
+gamma = .9
+learning_rate = 0.002
 episode = 10001
-capacity = 64 * 5
-batch_size = 32 * 5
+capacity = 64 * 1
+batch_size = 32 * 1
 
 # Exploration parameters
 epsilon = 1.0  # Exploration rate
@@ -75,7 +76,7 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(24 * 5, activation='relu'),
     tf.keras.layers.Dense(action_space, activation='softmax')
 ])
-model.compile(loss='mse',
+model.compile(loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
               optimizer='adam')
 
 model.summary()
@@ -132,8 +133,8 @@ for i in range(episode):
         # appending to memory
         memory.append((state1, action, reward, state2, done))
         # experience replay
-    #if i > batch_size:
-        #experience_replay()
+    if i > batch_size:
+        experience_replay()
 
     reward_array.append(total_reward)
     # Reduce epsilon (because we need less and less exploration)

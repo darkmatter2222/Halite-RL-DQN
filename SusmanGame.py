@@ -10,8 +10,8 @@ class SusmanGameEnv(gym.Env):
     direction_by_int = {0: 'NORTH', 1: 'EAST', 2: 'SOUTH', 3: 'WEST'}
     def __init__(self):
         super(SusmanGameEnv, self).__init__()
-        self.board_width = 25
-        self.board_height = 25
+        self.board_width = 3
+        self.board_height = 3
         self.max_turns = self.board_width + self.board_height * 30
         self.board = np.zeros([self.board_height, self.board_width])
         self.reward_heatmap = np.zeros([self.board_height, self.board_width])
@@ -70,10 +70,12 @@ class SusmanGameEnv(gym.Env):
                 break
 
         self.board[rand_y, rand_x] = 1
-        self.reward_heatmap[rand_y, rand_x] = 4 * (self.board_height * self.board_width)
+        #self.reward_heatmap[rand_y, rand_x] = 100 * (self.board_height * self.board_width)
+        self.reward_heatmap[rand_y, rand_x] = 1
 
-        sigma_y = self.board_height / 2
-        sigma_x = self.board_width / 2
+
+        sigma_y = 1
+        sigma_x = 1
         # Apply gaussian filter
         sigma = [sigma_y, sigma_x]
         self.reward_heatmap = sp.ndimage.filters.gaussian_filter(self.reward_heatmap, sigma, mode='constant')
@@ -94,9 +96,9 @@ class SusmanGameEnv(gym.Env):
         reward = 0
         info = ''
         done = False
-        continue_reward = 0
-        win_reward = 10000
-        loose_reward = -100
+        continue_reward = -1
+        win_reward = 100
+        loose_reward = 0
         # 0=N 1=E 2=S 3=W
         if action == 0:  # Move North
             self.player_location['y'] = self.player_location['y'] - 1
@@ -123,12 +125,12 @@ class SusmanGameEnv(gym.Env):
                 reward = loose_reward
             elif self.board[self.player_location['y'], self.player_location['x']] == 1:
                 info = 'Won Got the Goal'
-                done = False
+                done = True
                 reward = win_reward
-            elif self.reward_heatmap[self.player_location['y'], self.player_location['x']] != 0:
-                info = 'Continue w/ reward'
-                done = False
-                reward = self.reward_heatmap[self.player_location['y'], self.player_location['x']]
+            #elif self.reward_heatmap[self.player_location['y'], self.player_location['x']] != 0:
+                #info = 'Continue w/ reward'
+                #done = False
+                #reward = self.reward_heatmap[self.player_location['y'], self.player_location['x']]
             else:
                 info = 'Continue'
                 done = False
