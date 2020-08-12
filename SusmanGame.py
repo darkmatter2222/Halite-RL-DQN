@@ -10,8 +10,8 @@ class SusmanGameEnv(gym.Env):
     direction_by_int = {0: 'NORTH', 1: 'EAST', 2: 'SOUTH', 3: 'WEST'}
     def __init__(self):
         super(SusmanGameEnv, self).__init__()
-        self.board_width = 3
-        self.board_height = 3
+        self.board_width = 4
+        self.board_height = 4
         self.max_turns = self.board_width + self.board_height * 30
         self.board = np.zeros([self.board_height, self.board_width])
         self.reward_heatmap = np.zeros([self.board_height, self.board_width])
@@ -127,10 +127,10 @@ class SusmanGameEnv(gym.Env):
                 info = 'Won Got the Goal'
                 done = True
                 reward = win_reward
-            #elif self.reward_heatmap[self.player_location['y'], self.player_location['x']] != 0:
-                #info = 'Continue w/ reward'
-                #done = False
-                #reward = self.reward_heatmap[self.player_location['y'], self.player_location['x']]
+            elif self.reward_heatmap[self.player_location['y'], self.player_location['x']] != 0:
+                info = 'Continue w/ reward'
+                done = False
+                reward = continue_reward - self.reward_heatmap[self.player_location['y'], self.player_location['x']]
             else:
                 info = 'Continue'
                 done = False

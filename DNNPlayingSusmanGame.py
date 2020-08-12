@@ -13,7 +13,13 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from PIL import Image
+import cv2
 
+def render_image(state):
+    npimage=np.array(state)
+
+    cv2.imshow('image',npimage)
+    cv2.waitKey(1)
 
 def one_hot_state(state, state_space):
     state_m = np.zeros(state_space)
