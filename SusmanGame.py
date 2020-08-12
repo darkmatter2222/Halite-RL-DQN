@@ -10,8 +10,8 @@ class SusmanGameEnv(gym.Env):
     direction_by_int = {0: 'NORTH', 1: 'EAST', 2: 'SOUTH', 3: 'WEST'}
     def __init__(self):
         super(SusmanGameEnv, self).__init__()
-        self.board_width = 4
-        self.board_height = 4
+        self.board_width = 6
+        self.board_height = 6
         self.max_turns = self.board_width + self.board_height * 30
         self.board = np.zeros([self.board_height, self.board_width])
         self.reward_heatmap = np.zeros([self.board_height, self.board_width])
@@ -71,11 +71,11 @@ class SusmanGameEnv(gym.Env):
 
         self.board[rand_y, rand_x] = 1
         #self.reward_heatmap[rand_y, rand_x] = 100 * (self.board_height * self.board_width)
-        self.reward_heatmap[rand_y, rand_x] = 1
+        self.reward_heatmap[rand_y, rand_x] = 10
 
 
-        sigma_y = 1
-        sigma_x = 1
+        sigma_y = 2
+        sigma_x = 2
         # Apply gaussian filter
         sigma = [sigma_y, sigma_x]
         self.reward_heatmap = sp.ndimage.filters.gaussian_filter(self.reward_heatmap, sigma, mode='constant')
@@ -98,7 +98,7 @@ class SusmanGameEnv(gym.Env):
         done = False
         continue_reward = -1
         win_reward = 100
-        loose_reward = 0
+        loose_reward = -100
         # 0=N 1=E 2=S 3=W
         if action == 0:  # Move North
             self.player_location['y'] = self.player_location['y'] - 1

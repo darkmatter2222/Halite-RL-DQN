@@ -15,10 +15,30 @@ from matplotlib.animation import FuncAnimation
 from PIL import Image
 import cv2
 
-def render_image(state):
+def render_image(env, state, directive):
+
     npimage=np.array(state)
 
-    cv2.imshow('image',npimage)
+    new_image = np.zeros([env.board_height, env.board_width, 3])
+
+
+    for height in range(env.board_height):
+        for width in range(env.board_width):
+            new_image[height][width] = (0, npimage[2][height][width], 0)
+            if npimage[0][height][width] == 1:
+                new_image[height][width] = (0, 254, 0)
+            if npimage[1][height][width] == 1:
+                if directive == 'Exploite':
+                    new_image[height][width] = (254, 0, 0)
+                elif directive == 'Explore':
+                    new_image[height][width] = (0, 0, 254)
+                else:
+                    new_image[height][width] = (254, 0, 254)
+
+
+    n = 100
+    new_image = new_image.repeat(n,axis=0).repeat(n,axis=1)
+    cv2.imshow('image',new_image)
     cv2.waitKey(1)
 
 def one_hot_state(state, state_space):
@@ -119,7 +139,7 @@ for i in range(episode):
 
 
         state2, reward, done, info = env.step(action)
-
+        render_image(env, state2, directive)
         state2 = np.array([state2])
         prediction_results = model.predict([state2])
         prediction = np.max(prediction_results)
@@ -139,8 +159,8 @@ for i in range(episode):
         # appending to memory
         memory.append((state1, action, reward, state2, done))
         # experience replay
-    if i > batch_size:
-        experience_replay()
+    #if i > batch_size:
+        #experience_replay()
 
     reward_array.append(total_reward)
     # Reduce epsilon (because we need less and less exploration)
