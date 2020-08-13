@@ -99,7 +99,7 @@ action_space = env.action_space.n
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=state_space),
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(24 * 5, activation='relu'),
+    tf.keras.layers.Dense(24 * 10, activation='relu'),
     tf.keras.layers.Dense(action_space, activation='softmax')
 ])
 model.compile(loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
@@ -117,6 +117,7 @@ for i in range(episode):
     state = env.reset()
     total_reward = 0
     done = False
+    runnin_history = []
     while not done:
         #epsilon -= decay_rate
         #epsilon = max(epsilon, min_epsilon)
@@ -150,7 +151,7 @@ for i in range(episode):
         target_f[0][action] = target
         history = model.fit(state1, target_f, epochs=1, verbose=0)
         total_reward += reward
-
+        runnin_history.append(history.history["loss"])
         state = state2
 
         #env.render()
@@ -191,7 +192,8 @@ for i in range(episode):
         last_r_rate_30 = r_rate_30
 
         print(f'Epi:{i}\t Total R:{round(total_reward, 2)}\t R Rate {r_rate_color}\t '
-              f'R Rate L30 {r_rate_30_color}\t Epsilon {round(epsilon, 4)}\t')
+              f'R Rate L30 {r_rate_30_color}\t Epsilon {round(epsilon, 4)}\t '
+              f'A Loss:{sum(runnin_history[0]) / len(runnin_history[0]) }')
     except:
         lol = 1
 
