@@ -2,56 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="17b17302-bd58-4e19-8b68-bc3c854e4095" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/RrealTimeCharting.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/HaliteRunner.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/HaliteRunner.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DNNPlayingSusmanGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/DNNPlayingSusmanGame.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SusmanGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/SusmanGame.py" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SusmanGame.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="102" column="25" selection-start-line="102" selection-start-column="25" selection-end-line="102" selection-end-column="25" />
-              <folding>
-                <element signature="e#0#10#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DNNPlayingSusmanGame.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="657">
-              <caret line="147" column="14" selection-start-line="147" selection-start-column="8" selection-end-line="147" selection-end-column="14" />
-              <folding>
-                <element signature="e#0#10#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/RrealTimeCharting.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="23" column="5" lean-forward="true" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -63,42 +23,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/DNNPlayingSusmanGame.py" />
-        <option value="$PROJECT_DIR$/SusmanGame.py" />
-        <option value="$PROJECT_DIR$/RrealTimeCharting.py" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-7" />
-    <option name="width" value="1294" />
-    <option name="height" value="647" />
-  </component>
   <component name="ProjectId" id="1euVoW7aylMlBx1HqpTMvXdqVMP" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
-  </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="Halite-DNN" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Halite-DNN" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-    </panes>
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -118,18 +45,6 @@
       <recent name="C:\Users\ryans\source\repos\Halite-DNN" />
       <recent name="C:\Users\ryans\source\repos\HaliteRunner\database_interface" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Python.DNNPlayingSusmanGame">
     <configuration name="DNNPlayingSusmanGame" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -247,7 +162,7 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="false" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -260,29 +175,6 @@
       <updated>1594570237477</updated>
     </task>
     <servers />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2576" height="1426" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10441292" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3101315" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39984533" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="10" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-    </layout>
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
@@ -300,46 +192,46 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="1205" y="280" key="FileChooserDialogImpl/0.0.1920.1050@0.0.1920.1050" timestamp="1595377026007" />
-    <state width="939" height="387" key="GridCell.Tab.0.bottom" timestamp="1596678729556">
+    <state width="1900" height="224" key="GridCell.Tab.0.bottom" timestamp="1597359418700">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="387" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1596678729556" />
-    <state width="939" height="387" key="GridCell.Tab.0.center" timestamp="1596678729556">
+    <state width="1900" height="224" key="GridCell.Tab.0.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1597359418700" />
+    <state width="1900" height="224" key="GridCell.Tab.0.center" timestamp="1597359418700">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="387" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1596678729556" />
-    <state width="939" height="387" key="GridCell.Tab.0.left" timestamp="1596678729555">
+    <state width="1900" height="224" key="GridCell.Tab.0.center/0.0.1920.1050@0.0.1920.1050" timestamp="1597359418700" />
+    <state width="1900" height="224" key="GridCell.Tab.0.left" timestamp="1597359418700">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="387" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1596678729555" />
-    <state width="939" height="387" key="GridCell.Tab.0.right" timestamp="1596678729556">
+    <state width="1900" height="224" key="GridCell.Tab.0.left/0.0.1920.1050@0.0.1920.1050" timestamp="1597359418700" />
+    <state width="1900" height="224" key="GridCell.Tab.0.right" timestamp="1597359418700">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="939" height="387" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1596678729556" />
-    <state width="1900" height="378" key="GridCell.Tab.1.bottom" timestamp="1596675941066">
+    <state width="1900" height="224" key="GridCell.Tab.0.right/0.0.1920.1050@0.0.1920.1050" timestamp="1597359418700" />
+    <state width="1900" height="224" key="GridCell.Tab.1.bottom" timestamp="1597359418575">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="378" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1596675941066" />
-    <state width="1900" height="378" key="GridCell.Tab.1.center" timestamp="1596675941066">
+    <state width="1900" height="224" key="GridCell.Tab.1.bottom/0.0.1920.1050@0.0.1920.1050" timestamp="1597359418575" />
+    <state width="1900" height="224" key="GridCell.Tab.1.center" timestamp="1597359418575">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="378" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1596675941066" />
-    <state width="1900" height="378" key="GridCell.Tab.1.left" timestamp="1596675941065">
+    <state width="1900" height="224" key="GridCell.Tab.1.center/0.0.1920.1050@0.0.1920.1050" timestamp="1597359418575" />
+    <state width="1900" height="224" key="GridCell.Tab.1.left" timestamp="1597359418575">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="378" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1596675941065" />
-    <state width="1900" height="378" key="GridCell.Tab.1.right" timestamp="1596675941066">
+    <state width="1900" height="224" key="GridCell.Tab.1.left/0.0.1920.1050@0.0.1920.1050" timestamp="1597359418575" />
+    <state width="1900" height="224" key="GridCell.Tab.1.right" timestamp="1597359418575">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1900" height="378" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1596675941066" />
+    <state width="1900" height="224" key="GridCell.Tab.1.right/0.0.1920.1050@0.0.1920.1050" timestamp="1597359418575" />
     <state x="20" y="155" key="SettingsEditor" timestamp="1596595739440">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="20" y="155" key="SettingsEditor/0.0.1920.1050@0.0.1920.1050" timestamp="1596595739440" />
-    <state width="966" height="526" key="XDebugger.FullValuePopup" timestamp="1595796866065">
+    <state width="966" height="526" key="XDebugger.FullValuePopup" timestamp="1597358441342">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="966" height="526" key="XDebugger.FullValuePopup/0.0.1920.1050@0.0.1920.1050" timestamp="1595796866065" />
+    <state width="966" height="526" key="XDebugger.FullValuePopup/0.0.1920.1050@0.0.1920.1050" timestamp="1597358441342" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -399,6 +291,11 @@
           <line>47</line>
           <option name="timeStamp" value="249" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/SusmanGame.py</url>
+          <line>152</line>
+          <option name="timeStamp" value="282" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
@@ -412,54 +309,5 @@
         <watch expression="time_step" />
       </configuration>
     </watches-manager>
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../venvs/Python375x64TensorflowGPU/Lib/site-packages/scipy/ndimage/filters.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="604" selection-start-line="604" selection-end-line="604" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/train_network.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="718">
-          <caret line="56" column="19" selection-start-line="56" selection-start-column="19" selection-end-line="56" selection-end-column="76" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SusmanGame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="102" column="25" selection-start-line="102" selection-start-column="25" selection-end-line="102" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DNNPlayingSusmanGame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="657">
-          <caret line="147" column="14" selection-start-line="147" selection-start-column="8" selection-end-line="147" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/RrealTimeCharting.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="5" lean-forward="true" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
   </component>
 </project>

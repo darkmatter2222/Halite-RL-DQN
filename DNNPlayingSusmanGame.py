@@ -139,6 +139,8 @@ for i in range(episode):
             directive = 'Explore'
 
 
+
+
         state2, reward, done, info = env.step(action)
         render_image(env, state2, directive)
         state2 = np.array([state2])

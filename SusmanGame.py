@@ -10,8 +10,8 @@ class SusmanGameEnv(gym.Env):
     direction_by_int = {0: 'NORTH', 1: 'EAST', 2: 'SOUTH', 3: 'WEST'}
     def __init__(self):
         super(SusmanGameEnv, self).__init__()
-        self.board_width = 10
-        self.board_height = 10
+        self.board_width = 5
+        self.board_height = 5
         self.sigma_y = self.board_width / 2
         self.sigma_x = self.board_height / 2
         self.heatmap_reward = self.board_height * self.board_width
@@ -81,6 +81,9 @@ class SusmanGameEnv(gym.Env):
         # Apply gaussian filter
         sigma = [self.sigma_y, self.sigma_x]
         self.reward_heatmap = sp.ndimage.filters.gaussian_filter(self.reward_heatmap, sigma, mode='constant')
+
+        #self.reward_heatmap = np.gradient(self.reward_heatmap)
+
         lol = 1
 
     def set_player(self):
@@ -98,18 +101,43 @@ class SusmanGameEnv(gym.Env):
         reward = 0
         info = ''
         done = False
+        map_edge_exist = False
         continue_reward = -1
         win_reward = 1
         loose_reward = -1
         # 0=N 1=E 2=S 3=W
         if action == 0:  # Move North
-            self.player_location['y'] = self.player_location['y'] - 1
+            if map_edge_exist:
+                self.player_location['y'] = self.player_location['y'] - 1
+            else:
+                if self.player_location['y'] == 0:
+                    self.player_location['y'] = self.board_height - 1
+                else:
+                    self.player_location['y'] = self.player_location['y'] - 1
         elif action == 1:  # Move East
-            self.player_location['x'] = self.player_location['x'] + 1
+            if map_edge_exist:
+                self.player_location['x'] = self.player_location['y'] + 1
+            else:
+                if self.player_location['x'] == self.board_width - 1:
+                    self.player_location['x'] = 0
+                else:
+                    self.player_location['x'] = self.player_location['x'] + 1
         elif action == 2:  # Move South
-            self.player_location['y'] = self.player_location['y'] + 1
+            if map_edge_exist:
+                self.player_location['y'] = self.player_location['y'] + 1
+            else:
+                if self.player_location['y'] == self.board_height - 1:
+                    self.player_location['y'] = 0
+                else:
+                    self.player_location['y'] = self.player_location['y'] + 1
         elif action == 3:  # Move West
-            self.player_location['x'] = self.player_location['x'] - 1
+            if map_edge_exist:
+                self.player_location['x'] = self.player_location['x'] - 1
+            else:
+                if self.player_location['x'] == 0:
+                    self.player_location['x'] = self.board_width - 1
+                else:
+                    self.player_location['x'] = self.player_location['x'] - 1
         else:
             raise ValueError
 
