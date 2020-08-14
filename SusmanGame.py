@@ -160,7 +160,7 @@ class SusmanGameEnv(gym.Env):
             elif self.reward_heatmap[self.player_location['y'], self.player_location['x']] != 0:
                 info = 'Continue w/ reward'
                 done = False
-                reward = continue_reward - self.reward_heatmap[self.player_location['y'], self.player_location['x']]
+                reward = continue_reward + self.reward_heatmap[self.player_location['y'], self.player_location['x']]
             else:
                 info = 'Continue'
                 done = False

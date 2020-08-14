@@ -76,7 +76,7 @@ history = {'Loose Fall Off Map': 0, 'Win Got Target': 0}
 
 # 1. Parameters of Q-leanring
 gamma = .9
-learning_rate = 0.002
+learning_rate = 0.8
 episode = 10001
 capacity = 64 * 1
 batch_size = 32 * 1
@@ -103,7 +103,7 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(action_space, activation='softmax')
 ])
 model.compile(loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
-              optimizer='adam')
+              optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate))
 
 model.summary()
 
