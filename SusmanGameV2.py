@@ -16,6 +16,7 @@ from tf_agents.environments import suite_gym
 from tf_agents.trajectories import time_step as ts
 import random
 import scipy as sp
+import cv2
 
 
 tf.compat.v1.enable_v2_behavior()
@@ -89,8 +90,29 @@ class SusmanGameV2(py_environment.PyEnvironment):
         self.total_reward = 0
         self.heatmap_reward = self.board_height * self.board_width
         self.player_location = {'y': 0, 'x': 0}
-        self.set_player()
         self.set_goal()
+
+    def render_image(self, directive='unknown'):
+
+        new_image = np.zeros([self.board_height, self.board_width, 3])
+
+        for height in range(self.board_height):
+            for width in range(self.board_width):
+                #new_image[height][width] = (0, self._state[height][width][2], 0)
+                if self._state[height][width][0] == 1:
+                    new_image[height][width] = (0, 254, 0)
+                if self._state[height][width][1] == 1:
+                    if directive == 'Exploite':
+                        new_image[height][width] = (254, 0, 0)
+                    elif directive == 'Explore':
+                        new_image[height][width] = (0, 0, 254)
+                    else:
+                        new_image[height][width] = (254, 254, 254)
+
+        n = 100
+        new_image = new_image.repeat(n, axis=0).repeat(n, axis=1)
+        cv2.imshow('image', new_image)
+        cv2.waitKey(1)
 
     def set_goal(self):
         self.set_player()
@@ -99,9 +121,9 @@ class SusmanGameV2(py_environment.PyEnvironment):
 
         while True:
             if self.board_width > 1:
-                rand_x = random.randrange(0, self.board_width - 1)
+                rand_x = random.randrange(0, self.board_width)
             if self.board_height > 1:
-                rand_y = random.randrange(0, self.board_height - 1)
+                rand_y = random.randrange(0, self.board_height)
             if self.player_location['x'] != rand_x or self.player_location['y'] != rand_y:
                 break
 
@@ -143,7 +165,6 @@ class SusmanGameV2(py_environment.PyEnvironment):
         self.total_reward = 0
         self.player_location = {'y': 0, 'x': 0}
         self.this_turn = 0
-        self.set_player()
         self.set_goal()
         return_object = ts.restart(np.array([self._state], dtype=np.int32))
         return return_object
@@ -154,7 +175,7 @@ class SusmanGameV2(py_environment.PyEnvironment):
             # a new episode.
             return_object = self.reset()
             return return_object
-
+        self.render_image()
         reward = 0
         info = ''
         map_edge_exist = True

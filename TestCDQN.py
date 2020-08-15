@@ -34,7 +34,7 @@ tf.compat.v1.enable_v2_behavior()
 
 
 env_name = "CartPole-v1" # @param {type:"string"}
-num_iterations = 15000 # @param {type:"integer"}
+num_iterations = 15000000 # @param {type:"integer"}
 
 initial_collect_steps = 1000  # @param {type:"integer"}
 collect_steps_per_iteration = 1  # @param {type:"integer"}
