@@ -36,21 +36,21 @@ tf.compat.v1.enable_v2_behavior()
 env_name = "CartPole-v1" # @param {type:"string"}
 num_iterations = 15000000 # @param {type:"integer"}
 
-initial_collect_steps = 1000  # @param {type:"integer"}
+initial_collect_steps = 10000  # @param {type:"integer"}
 collect_steps_per_iteration = 1  # @param {type:"integer"}
 replay_buffer_capacity = 100000  # @param {type:"integer"}
 
-fc_layer_params = (100,)
+fc_layer_params = (10000,)
 
-batch_size = 64  # @param {type:"integer"}
+batch_size = 64 * 4  # @param {type:"integer"}
 learning_rate = 1e-3  # @param {type:"number"}
 gamma = 0.99
 log_interval = 200  # @param {type:"integer"}
 
-num_atoms = 51  # @param {type:"integer"}
-min_q_value = -20  # @param {type:"integer"}
-max_q_value = 20  # @param {type:"integer"}
-n_step_update = 2  # @param {type:"integer"}
+num_atoms = 4  # @param {type:"integer"}
+min_q_value = -301  # @param {type:"integer"}
+max_q_value = 1  # @param {type:"integer"}
+n_step_update = 10  # @param {type:"integer"}
 
 num_eval_episodes = 10  # @param {type:"integer"}
 eval_interval = 1000  # @param {type:"integer"}
@@ -93,19 +93,20 @@ agent.initialize()
 
 def compute_avg_return(environment, policy, num_episodes=10):
 
-  total_return = 0.0
-  for _ in range(num_episodes):
-    time_step = environment.reset()
-    episode_return = 0.0
+    
+    total_return = 0.0
+    for _ in range(num_episodes):
+        time_step = environment.reset()
+        episode_return = 0.0
 
-    while not time_step.is_last():
-      action_step = policy.action(time_step)
-      time_step = environment.step(action_step.action)
-      episode_return += time_step.reward
-    total_return += episode_return
+        while not time_step.is_last():
+            action_step = policy.action(time_step)
+            time_step = environment.step(action_step.action)
+            episode_return += time_step.reward
+            total_return += episode_return
 
-  avg_return = total_return / num_episodes
-  return avg_return.numpy()[0]
+    avg_return = total_return / num_episodes
+    return avg_return.numpy()[0]
 
 
 random_policy = random_tf_policy.RandomTFPolicy(train_env.time_step_spec(),

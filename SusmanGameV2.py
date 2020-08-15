@@ -17,6 +17,7 @@ from tf_agents.trajectories import time_step as ts
 import random
 import scipy as sp
 import cv2
+import uuid
 
 
 tf.compat.v1.enable_v2_behavior()
@@ -71,8 +72,9 @@ class CardGameEnv(py_environment.PyEnvironment):
 
 class SusmanGameV2(py_environment.PyEnvironment):
     def __init__(self):
-        self.board_width = 4
-        self.board_height = 4
+        self.board_width = 7
+        self.board_height = 7
+        self.uuid = str(uuid.uuid1())
         self.sigma_y = self.board_width / 2
         self.sigma_x = self.board_height / 2
         self.channels = 2
@@ -91,6 +93,7 @@ class SusmanGameV2(py_environment.PyEnvironment):
         self.heatmap_reward = self.board_height * self.board_width
         self.player_location = {'y': 0, 'x': 0}
         self.set_goal()
+        self.game_history = []
 
     def render_image(self, directive='unknown'):
 
@@ -111,7 +114,7 @@ class SusmanGameV2(py_environment.PyEnvironment):
 
         n = 100
         new_image = new_image.repeat(n, axis=0).repeat(n, axis=1)
-        cv2.imshow('image', new_image)
+        cv2.imshow(self.uuid, new_image)
         cv2.waitKey(1)
 
     def set_goal(self):
@@ -151,6 +154,9 @@ class SusmanGameV2(py_environment.PyEnvironment):
         self.player_location['y'] = rand_y
         self._state[rand_y, rand_x][1] = 1
 
+    def get_game_history(self):
+        return self.game_history
+
     def action_spec(self):
         return_object = self._action_spec
         return return_object
@@ -166,6 +172,7 @@ class SusmanGameV2(py_environment.PyEnvironment):
         self.player_location = {'y': 0, 'x': 0}
         self.this_turn = 0
         self.set_goal()
+        self.game_history = []
         return_object = ts.restart(np.array([self._state], dtype=np.int32))
         return return_object
 
@@ -175,7 +182,7 @@ class SusmanGameV2(py_environment.PyEnvironment):
             # a new episode.
             return_object = self.reset()
             return return_object
-        self.render_image()
+
         reward = 0
         info = ''
         map_edge_exist = True
@@ -242,11 +249,13 @@ class SusmanGameV2(py_environment.PyEnvironment):
                 self._episode_ended = False
                 reward = continue_reward
 
+        self.game_history.append(info)
         self.total_reward += reward
         self.this_turn += 1
+        self.render_image()
 
         if self._episode_ended:
-            return_object = ts.termination(np.array([self._state], dtype=np.int32), reward)
+            return_object = ts.termination(np.array([self._state], dtype=np.int32), self.total_reward)
             return return_object
         else:
             return_object = ts.transition(np.array([self._state], dtype=np.int32), reward=0.0, discount=1.0)
