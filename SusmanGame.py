@@ -10,8 +10,8 @@ class SusmanGameEnv(gym.Env):
     direction_by_int = {0: 'NORTH', 1: 'EAST', 2: 'SOUTH', 3: 'WEST'}
     def __init__(self):
         super(SusmanGameEnv, self).__init__()
-        self.board_width = 5
-        self.board_height = 5
+        self.board_width = 4
+        self.board_height = 4
         self.sigma_y = self.board_width / 2
         self.sigma_x = self.board_height / 2
         self.heatmap_reward = self.board_height * self.board_width
@@ -101,7 +101,7 @@ class SusmanGameEnv(gym.Env):
         reward = 0
         info = ''
         done = False
-        map_edge_exist = False
+        map_edge_exist = True
         continue_reward = -1
         win_reward = 1
         loose_reward = -1

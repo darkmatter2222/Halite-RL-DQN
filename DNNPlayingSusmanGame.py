@@ -75,9 +75,9 @@ model_name = 'SusmanGameDQNv1'
 history = {'Loose Fall Off Map': 0, 'Win Got Target': 0}
 
 # 1. Parameters of Q-leanring
-gamma = .9
-learning_rate = 0.8
-episode = 10001
+gamma = .1
+learning_rate = 0.002
+episode = 10000001
 capacity = 64 * 1
 batch_size = 32 * 1
 
@@ -85,7 +85,7 @@ batch_size = 32 * 1
 epsilon = 1.0  # Exploration rate
 max_epsilon = 1.0  # Exploration probability at start
 min_epsilon = 0.01  # Minimum exploration probability
-decay_rate = 0.001  # Exponential decay rate for exploration prob
+decay_rate = 0.0001  # Exponential decay rate for exploration prob
 
 # 2. Load Environment
 env = SusmanGameEnv()
@@ -103,7 +103,7 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(action_space, activation='softmax')
 ])
 model.compile(loss=tf.keras.losses.CategoricalCrossentropy(from_logits=True),
-              optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate))
+              optimizer='adam')
 
 model.summary()
 
