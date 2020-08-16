@@ -22,55 +22,7 @@ import uuid
 
 tf.compat.v1.enable_v2_behavior()
 
-class CardGameEnv(py_environment.PyEnvironment):
-    def __init__(self):
-        self._action_spec = array_spec.BoundedArraySpec(
-            shape=(), dtype=np.int32, minimum=0, maximum=1, name='action')
-        self._observation_spec = array_spec.BoundedArraySpec(
-            shape=(1,), dtype=np.int32, minimum=0, name='observation')
-        self._state = 0
-        self._episode_ended = False
-
-    def action_spec(self):
-        return_object = self._action_spec
-        return return_object
-
-    def observation_spec(self):
-        return_object = self._observation_spec
-        return return_object
-
-    def _reset(self):
-        self._state = 0
-        self._episode_ended = False
-        return_object = ts.restart(np.array([self._state], dtype=np.int32))
-        return return_object
-
-    def _step(self, action):
-        if self._episode_ended:
-            # The last action ended the episode. Ignore the current action and start
-            # a new episode.
-            return_object = self.reset()
-            return return_object
-
-        # Make sure episodes don't go on forever.
-        if action == 1:
-            self._episode_ended = True
-        elif action == 0:
-            new_card = np.random.randint(1, 11)
-            self._state += new_card
-        else:
-            raise ValueError('`action` should be 0 or 1.')
-
-        if self._episode_ended or self._state >= 21:
-            reward = self._state - 21 if self._state <= 21 else -21
-            return_object = ts.termination(np.array([self._state], dtype=np.int32), reward)
-            return return_object
-        else:
-            return_object = ts.transition(np.array([self._state], dtype=np.int32), reward=0.0, discount=1.0)
-            return return_object
-
-
-class SusmanGameV2(py_environment.PyEnvironment):
+class SusmanGameV3(py_environment.PyEnvironment):
     def __init__(self):
         self.board_width = 3
         self.board_height = 3
@@ -78,10 +30,11 @@ class SusmanGameV2(py_environment.PyEnvironment):
         self.sigma_y = self.board_width / 2
         self.sigma_x = self.board_height / 2
         self.channels = 3
+        self.frames = 2
         self._action_spec = array_spec.BoundedArraySpec(
             shape=(), dtype=np.int32, minimum=0, maximum=3, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
-            shape=(1, self.board_height, self.board_width, self.channels), dtype=np.int32, minimum=0, maximum=1, name='observation')
+            shape=(self.frames, self.board_height, self.board_width, self.channels), dtype=np.int32, minimum=0, maximum=1, name='observation')
         self._state = np.zeros([self.board_height, self.board_width, self.channels])
         # 0 = Reward Placement
         # 1 = Player Placement
@@ -94,9 +47,9 @@ class SusmanGameV2(py_environment.PyEnvironment):
         self.player_location = {'y': 0, 'x': 0}
         self.set_goal()
         self.game_history = []
+        self.state_history = [self._state] * self.frames
 
     def render_image(self, directive='unknown'):
-
         new_image = np.zeros([self.board_height, self.board_width, 3])
 
         for height in range(self.board_height):
@@ -178,7 +131,8 @@ class SusmanGameV2(py_environment.PyEnvironment):
         self.this_turn = 0
         self.set_goal()
         self.game_history = []
-        return_object = ts.restart(np.array([self._state], dtype=np.int32))
+        self.state_history = [self._state] * self.frames
+        return_object = ts.restart(np.array(self.state_history, dtype=np.int32))
         return return_object
 
     def _step(self, action):
@@ -260,9 +214,11 @@ class SusmanGameV2(py_environment.PyEnvironment):
         self.this_turn += 1
         self.render_image()
 
+        self.state_history.append(self._state)
+        del self.state_history[:1]
         if self._episode_ended:
-            return_object = ts.termination(np.array([self._state], dtype=np.int32), self.total_reward)
+            return_object = ts.termination(np.array(self.state_history, dtype=np.int32), self.total_reward)
             return return_object
         else:
-            return_object = ts.transition(np.array([self._state], dtype=np.int32), reward=reward, discount=1.0)
+            return_object = ts.transition(np.array(self.state_history, dtype=np.int32), reward=reward, discount=1.0)
             return return_object

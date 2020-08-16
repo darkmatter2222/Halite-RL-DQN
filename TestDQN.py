@@ -16,13 +16,14 @@ from tf_agents.drivers import dynamic_step_driver
 from tf_agents.environments import suite_gym
 from tf_agents.environments import tf_py_environment
 from tf_agents.eval import metric_utils
+import tensorflow_addons as tfa
 from tf_agents.metrics import tf_metrics
 from tf_agents.networks import q_network
 from tf_agents.policies import random_tf_policy
 from tf_agents.replay_buffers import tf_uniform_replay_buffer
 from tf_agents.trajectories import trajectory
 from tf_agents.utils import common
-from SusmanGameV2 import SusmanGameV2
+from SusmanGameV3 import SusmanGameV3
 
 
 tf.compat.v1.enable_v2_behavior()
@@ -35,7 +36,7 @@ collect_steps_per_iteration = 1  # @param {type:"integer"}
 replay_buffer_max_length = 100000  # @param {type:"integer"}
 
 batch_size = 64 * 1000 # @param {type:"integer"}
-learning_rate = 1e-3  # @param {type:"number"}
+learning_rate = 0.0001  # @param {type:"number"}
 log_interval = 200  # @param {type:"integer"}
 
 num_eval_episodes = 1000  # @param {type:"integer"}
@@ -67,8 +68,8 @@ print(next_time_step)
 
 
 
-train_py_env = SusmanGameV2()
-eval_py_env = SusmanGameV2()
+train_py_env = SusmanGameV3()
+eval_py_env = SusmanGameV3()
 
 
 train_env = tf_py_environment.TFPyEnvironment(train_py_env)
@@ -83,6 +84,14 @@ q_net = q_network.QNetwork(
     fc_layer_params=fc_layer_params)
 
 optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=learning_rate)
+lr_schedule=tfa.optimizers.CyclicalLearningRate(initial_learning_rate=0.000001,
+                                                maximal_learning_rate=0.9,
+                                             step_size=1000,
+                                             scale_fn=lambda x:1.,
+                                             scale_mode="cycle",
+                                             name="cyclic_learning_rate")
+lol = lr_schedule.__call__(1)
+callback = tf.keras.callbacks.LearningRateScheduler(lr_schedule)
 
 train_step_counter = tf.Variable(0)
 
@@ -107,7 +116,7 @@ random_policy = random_tf_policy.RandomTFPolicy(train_env.time_step_spec(),
 
 
 example_environment = tf_py_environment.TFPyEnvironment(
-    SusmanGameV2())
+    SusmanGameV3())
 
 
 time_step = example_environment.reset()
@@ -196,7 +205,6 @@ for _ in range(num_iterations):
   train_loss = agent.train(experience).loss
 
   step = agent.train_step_counter.numpy()
-
   if step % log_interval == 0:
     print('step = {0}: loss = {1}'.format(step, train_loss))
 
