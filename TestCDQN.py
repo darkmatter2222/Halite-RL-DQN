@@ -40,17 +40,17 @@ initial_collect_steps = 1000  # @param {type:"integer"}
 collect_steps_per_iteration = 1  # @param {type:"integer"}
 replay_buffer_capacity = 100000  # @param {type:"integer"}
 
-fc_layer_params = (10000,)
+fc_layer_params = (10,)
 
-batch_size = 64 * 4  # @param {type:"integer"}
+batch_size = 64 * 10  # @param {type:"integer"}
 learning_rate = 1e-3  # @param {type:"number"}
 gamma = 0.99
 log_interval = 200  # @param {type:"integer"}
 
-num_atoms = 4  # @param {type:"integer"}
-min_q_value = -311  # @param {type:"integer"}
+num_atoms = 51  # @param {type:"integer"}
+min_q_value = -411  # @param {type:"integer"}
 max_q_value = 10  # @param {type:"integer"}
-n_step_update = 10  # @param {type:"integer"}
+n_step_update = 1  # @param {type:"integer"}
 
 num_eval_episodes = 100  # @param {type:"integer"}
 eval_interval = 1000  # @param {type:"integer"}

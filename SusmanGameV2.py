@@ -72,8 +72,8 @@ class CardGameEnv(py_environment.PyEnvironment):
 
 class SusmanGameV2(py_environment.PyEnvironment):
     def __init__(self):
-        self.board_width = 4
-        self.board_height = 4
+        self.board_width = 3
+        self.board_height = 3
         self.uuid = str(uuid.uuid1())
         self.sigma_y = self.board_width / 2
         self.sigma_x = self.board_height / 2
@@ -188,7 +188,7 @@ class SusmanGameV2(py_environment.PyEnvironment):
         map_edge_exist = True
         continue_reward = -1
         win_reward = 10
-        loose_reward = -10
+        loose_reward = -100
         # 0=N 1=E 2=S 3=W
         if action == 0:  # Move North
             if map_edge_exist:
@@ -259,5 +259,5 @@ class SusmanGameV2(py_environment.PyEnvironment):
             return_object = ts.termination(np.array([self._state], dtype=np.int32), self.total_reward)
             return return_object
         else:
-            return_object = ts.transition(np.array([self._state], dtype=np.int32), reward=0.0, discount=1.0)
+            return_object = ts.transition(np.array([self._state], dtype=np.int32), reward=reward, discount=1.0)
             return return_object
