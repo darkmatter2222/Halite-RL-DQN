@@ -116,7 +116,7 @@ class SusmanGameEnv(gym.Env):
                     self.player_location['y'] = self.player_location['y'] - 1
         elif action == 1:  # Move East
             if map_edge_exist:
-                self.player_location['x'] = self.player_location['y'] + 1
+                self.player_location['x'] = self.player_location['x'] + 1
             else:
                 if self.player_location['x'] == self.board_width - 1:
                     self.player_location['x'] = 0

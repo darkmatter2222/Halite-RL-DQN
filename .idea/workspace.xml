@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="17b17302-bd58-4e19-8b68-bc3c854e4095" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/SusmanGameV2.py" beforeDir="false" afterPath="$PROJECT_DIR$/SusmanGameV2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestCDQN.py" beforeDir="false" afterPath="$PROJECT_DIR$/TestCDQN.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SusmanGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/SusmanGame.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,11 +11,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/SusmanGame.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="22" column="31" lean-forward="true" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
+            <state relative-caret-position="255">
+              <caret line="99" column="27" lean-forward="true" selection-start-line="99" selection-start-column="27" selection-end-line="99" selection-end-column="27" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -48,11 +47,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SusmanGameV2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="202" column="67" selection-start-line="202" selection-start-column="67" selection-end-line="202" selection-end-column="67" />
+            <state relative-caret-position="259">
+              <caret line="204" column="64" selection-start-line="204" selection-start-column="53" selection-end-line="204" selection-end-column="64" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
                 <element signature="e#627#2317#0" />
@@ -84,9 +83,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/DNNPlayingSusmanGame.py" />
-        <option value="$PROJECT_DIR$/SusmanGame.py" />
         <option value="$PROJECT_DIR$/TestCDQN.py" />
         <option value="$PROJECT_DIR$/SusmanGameV2.py" />
+        <option value="$PROJECT_DIR$/SusmanGame.py" />
       </list>
     </option>
   </component>
@@ -280,7 +279,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2576" height="1426" extended-state="6" />
+    <frame x="-7" y="0" width="1294" height="1417" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.10441292" />
@@ -288,7 +287,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32946634" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3101315" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3123053" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.2575406" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -524,16 +523,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SusmanGame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="31" lean-forward="true" selection-start-line="22" selection-start-column="31" selection-end-line="22" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/DNNPlayingSusmanGame.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="578">
@@ -556,11 +545,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/SusmanGameV2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="202" column="67" selection-start-line="202" selection-start-column="67" selection-end-line="202" selection-end-column="67" />
+        <state relative-caret-position="259">
+          <caret line="204" column="64" selection-start-line="204" selection-start-column="53" selection-end-line="204" selection-end-column="64" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
             <element signature="e#627#2317#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SusmanGame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="99" column="27" lean-forward="true" selection-start-line="99" selection-start-column="27" selection-end-line="99" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
