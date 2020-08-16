@@ -77,7 +77,7 @@ class SusmanGameV2(py_environment.PyEnvironment):
         self.uuid = str(uuid.uuid1())
         self.sigma_y = self.board_width / 2
         self.sigma_x = self.board_height / 2
-        self.channels = 2
+        self.channels = 3
         self._action_spec = array_spec.BoundedArraySpec(
             shape=(), dtype=np.int32, minimum=0, maximum=3, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
@@ -101,7 +101,7 @@ class SusmanGameV2(py_environment.PyEnvironment):
 
         for height in range(self.board_height):
             for width in range(self.board_width):
-                #new_image[height][width] = (0, self._state[height][width][2], 0)
+                new_image[height][width] = (0, self._state[height][width][2], 0)
                 if self._state[height][width][0] == 1:
                     new_image[height][width] = (0, 254, 0)
                 if self._state[height][width][1] == 1:
@@ -132,13 +132,18 @@ class SusmanGameV2(py_environment.PyEnvironment):
 
         self._state[rand_y, rand_x][0] = 1
 
-        #self._state[rand_y, rand_x][2] = self.heatmap_reward
-
-
+        reward_heatmap = np.zeros([self.board_height, self.board_width])
+        reward_heatmap[rand_y, rand_x] = self.board_height * self.board_width
+        sigma_y = self.board_width / 2
+        sigma_x = self.board_height / 2
 
         # Apply gaussian filter
-        #sigma = [self.sigma_y, self.sigma_x]
-        #self._state[::2] = sp.ndimage.filters.gaussian_filter(self._state[::2], sigma, mode='constant')
+        sigma = [sigma_y, sigma_x]
+        reward_heatmap = sp.ndimage.filters.gaussian_filter(reward_heatmap, sigma, mode='constant')
+
+        for height in range(self.board_height):
+            for width in range(self.board_width):
+                self._state[height][width][2] = reward_heatmap[height, width]
 
         lol = 1
 
@@ -147,9 +152,9 @@ class SusmanGameV2(py_environment.PyEnvironment):
         rand_x = 0
 
         if self.board_width > 1:
-            rand_x = random.randrange(0, self.board_width - 1)
+            rand_x = random.randrange(0, self.board_width)
         if self.board_height > 1:
-            rand_y = random.randrange(0, self.board_height - 1)
+            rand_y = random.randrange(0, self.board_height)
         self.player_location['x'] = rand_x
         self.player_location['y'] = rand_y
         self._state[rand_y, rand_x][1] = 1
@@ -187,8 +192,8 @@ class SusmanGameV2(py_environment.PyEnvironment):
         info = ''
         map_edge_exist = True
         continue_reward = -1
-        win_reward = 10
-        loose_reward = -100
+        win_reward = 1
+        loose_reward = -1
         # 0=N 1=E 2=S 3=W
         if action == 0:  # Move North
             if map_edge_exist:
@@ -241,10 +246,10 @@ class SusmanGameV2(py_environment.PyEnvironment):
                 info = 'Won Got the Goal'
                 self._episode_ended = True
                 reward = win_reward
-            #elif self._state[self.player_location['y'], self.player_location['x']][2] != 0:
-                #info = 'Continue w/ reward'
-                #self._episode_ended = False
-                #reward = continue_reward + self._state[self.player_location['y'], self.player_location['x']][0]
+            elif self._state[self.player_location['y'], self.player_location['x']][2] != 0:
+                info = 'Continue w/ reward'
+                self._episode_ended = False
+                reward = continue_reward + self._state[self.player_location['y'], self.player_location['x']][0]
             else:
                 info = 'Continue'
                 self._episode_ended = False

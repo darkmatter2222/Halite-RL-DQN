@@ -34,11 +34,11 @@ initial_collect_steps = 1000  # @param {type:"integer"}
 collect_steps_per_iteration = 1  # @param {type:"integer"}
 replay_buffer_max_length = 100000  # @param {type:"integer"}
 
-batch_size = 64  # @param {type:"integer"}
+batch_size = 64 * 1000 # @param {type:"integer"}
 learning_rate = 1e-3  # @param {type:"number"}
 log_interval = 200  # @param {type:"integer"}
 
-num_eval_episodes = 10  # @param {type:"integer"}
+num_eval_episodes = 1000  # @param {type:"integer"}
 eval_interval = 1000  # @param {type:"integer"}
 
 
@@ -115,7 +115,7 @@ time_step = example_environment.reset()
 random_policy.action(time_step)
 
 def compute_avg_return(environment, policy, num_episodes=10):
-
+  score = {'win': 0, 'loss': 0, 'timeout': 0}
   total_return = 0.0
   for _ in range(num_episodes):
 
@@ -127,9 +127,17 @@ def compute_avg_return(environment, policy, num_episodes=10):
       time_step = environment.step(action_step.action)
       episode_return += time_step.reward
     total_return += episode_return
+    history = environment._env.envs[0].get_game_history()
+    final_step = history[len(history) - 1]
+    if final_step == 'Max Tries':
+        score['timeout'] += 1
+    elif final_step == 'Loose Fall Off Map':
+        score['loss'] += 1
+    elif final_step == 'Won Got the Goal':
+        score['win'] += 1
 
   avg_return = total_return / num_episodes
-  return avg_return.numpy()[0]
+  return avg_return.numpy()[0], score
 
 compute_avg_return(eval_env, random_policy, num_eval_episodes)
 
@@ -173,7 +181,7 @@ agent.train = common.function(agent.train)
 agent.train_step_counter.assign(0)
 
 # Evaluate the agent's policy once before training.
-avg_return = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
+avg_return, score = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
 returns = [avg_return]
 iterator = iter(dataset)
 
@@ -193,8 +201,8 @@ for _ in range(num_iterations):
     print('step = {0}: loss = {1}'.format(step, train_loss))
 
   if step % eval_interval == 0:
-    avg_return = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
-    print('step = {0}: Average Return = {1}'.format(step, avg_return))
+    avg_return, score = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
+    print('step = {0}: Average Return = {1:.2f}, score {2}'.format(step, avg_return, score))
     returns.append(avg_return)
 
 
