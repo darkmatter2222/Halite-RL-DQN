@@ -200,7 +200,7 @@ class SusmanGameV2(py_environment.PyEnvironment):
                     self.player_location['y'] = self.player_location['y'] - 1
         elif action == 1:  # Move East
             if map_edge_exist:
-                self.player_location['x'] = self.player_location['y'] + 1
+                self.player_location['x'] = self.player_location['x'] + 1
             else:
                 if self.player_location['x'] == self.board_width - 1:
                     self.player_location['x'] = 0
@@ -229,6 +229,7 @@ class SusmanGameV2(py_environment.PyEnvironment):
         if self.this_turn == self.max_turns - 1:
             info = 'Max Tries'
             self._episode_ended = True
+            reward = loose_reward
         else:
             # Loose Fall Off Map?
             if self.player_location['y'] < 0 or self.player_location['x'] < 0 or \
