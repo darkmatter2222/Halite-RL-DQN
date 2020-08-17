@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="17b17302-bd58-4e19-8b68-bc3c854e4095" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/HaliteDQNV0.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HaliteWrapperV0.py" beforeDir="false" afterPath="$PROJECT_DIR$/HaliteWrapperV0.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SusmanGameV3.py" beforeDir="false" afterPath="$PROJECT_DIR$/SusmanGameV3.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestDQN.py" beforeDir="false" afterPath="$PROJECT_DIR$/TestDQN.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/helpers/SusmanHaliteWrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/SusmanHaliteWrapper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,23 +20,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/HaliteDQNV0.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="32" column="54" lean-forward="true" selection-start-line="32" selection-start-column="54" selection-end-line="32" selection-end-column="54" />
-              <folding>
-                <element signature="e#0#64#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SusmanGameV3.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="27" column="28" lean-forward="true" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
+            <state relative-caret-position="493">
+              <caret line="42" column="8" lean-forward="true" selection-start-line="42" selection-start-column="8" selection-end-line="42" selection-end-column="35" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -49,10 +33,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HaliteDQNV0.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-924">
+              <caret line="33" column="59" lean-forward="true" selection-start-line="33" selection-start-column="59" selection-end-line="33" selection-end-column="59" />
+              <folding>
+                <element signature="e#0#64#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/HaliteWrapperV0.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="130">
-              <caret line="27" column="21" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
+            <state relative-caret-position="694">
+              <caret line="93" column="29" selection-start-line="93" selection-start-column="29" selection-end-line="93" selection-end-column="29" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -96,8 +92,8 @@
         <option value="$PROJECT_DIR$/helpers/SusmanHaliteWrapper.py" />
         <option value="$PROJECT_DIR$/TestDQN.py" />
         <option value="$PROJECT_DIR$/SusmanGameV3.py" />
-        <option value="$PROJECT_DIR$/HaliteWrapperV0.py" />
         <option value="$PROJECT_DIR$/HaliteDQNV0.py" />
+        <option value="$PROJECT_DIR$/HaliteWrapperV0.py" />
       </list>
     </option>
   </component>
@@ -166,8 +162,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.TestDQN">
-    <configuration name="SusmanGameV2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.HaliteDQNV0">
+    <configuration name="HaliteDQNV0" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="HaliteRunner" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -179,7 +175,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/SusmanGameV2.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/HaliteDQNV0.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -274,11 +270,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.HaliteDQNV0" />
         <item itemvalue="Python.TestDQN" />
         <item itemvalue="Python.SusmanGameV3" />
         <item itemvalue="Python.research" />
         <item itemvalue="Python.sendexDQN" />
-        <item itemvalue="Python.SusmanGameV2" />
       </list>
     </recent_temporary>
   </component>
@@ -305,8 +301,8 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32946634" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3101315" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.2575406" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3101315" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.2575406" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -553,16 +549,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SusmanGameV3.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="27" column="28" lean-forward="true" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sendexDQN.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -587,10 +573,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HaliteWrapperV0.py">
+    <entry file="file://$PROJECT_DIR$/SusmanGameV3.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="27" column="21" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
+        <state relative-caret-position="493">
+          <caret line="42" column="8" lean-forward="true" selection-start-line="42" selection-start-column="8" selection-end-line="42" selection-end-column="35" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
@@ -599,10 +585,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/HaliteDQNV0.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="32" column="54" lean-forward="true" selection-start-line="32" selection-start-column="54" selection-end-line="32" selection-end-column="54" />
+        <state relative-caret-position="-924">
+          <caret line="33" column="59" lean-forward="true" selection-start-line="33" selection-start-column="59" selection-end-line="33" selection-end-column="59" />
           <folding>
             <element signature="e#0#64#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HaliteWrapperV0.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="694">
+          <caret line="93" column="29" selection-start-line="93" selection-start-column="29" selection-end-line="93" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>

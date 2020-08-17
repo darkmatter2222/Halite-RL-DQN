@@ -28,32 +28,37 @@ tf.compat.v1.enable_v2_behavior()
 class HaliteWrapperV0(py_environment.PyEnvironment):
     def __init__(self):
         # game parms
-        self.board_size = 3
-        self.frames = 400
-        self.agent_count = 1
-
-        # game dicts
-        self.action_def = {0: ShipAction.EAST,
+        self._board_size = 3
+        self._frames = 400
+        self._max_turns = self._frames
+        self._agent_count = 1
+        self._channels = 2
+        self._action_def = {0: ShipAction.EAST,
                            1: ShipAction.NORTH,
                            2: "NOTHING",
                            3: ShipAction.SOUTH,
                            4: ShipAction.WEST}
 
+
+        # runtime_parms
+        self.turns_counter = 0
+        self.episode_ended = False
+
         # initialize game
-        self.environment = make("halite", configuration={"size": self.board_size, "startingHalite": 1000})
-        self.environment.reset(self.agent_count)
+        self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000})
+        self.environment.reset(self._agent_count)
 
         self._action_spec = array_spec.BoundedArraySpec(
-            shape=(), dtype=np.int32, minimum=0, maximum=len(self.action_def), name='action')
+            shape=(), dtype=np.int32, minimum=0, maximum=len(self._action_def), name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
-            shape=(self.frames, self.board_size, self.board_size, self.channels), dtype=np.int32, minimum=0,
+            shape=(self._frames, self._board_size, self._board_size, self._channels), dtype=np.int32, minimum=0,
             maximum=1, name='observation')
 
-        self._state = np.zeros([self.board_size, self.board_size, self.channels])
+        self.state = np.zeros([self._board_size, self._board_size, self._channels])
         # 0 = Halite 0-1
         # 1 = Friendly Ships (This One Hot, rest are .75)
 
-        self.state_history = [self._state] * self.frames
+        self.state_history = [self.state] * self._frames
 
 
 
@@ -67,17 +72,27 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
         return return_object
 
     def _reset(self):
+        self.turns_counter = 0
+        self.episode_ended = False
         return_object = ts.restart(np.array(self.state_history, dtype=np.int32))
         return return_object
 
     def _step(self, action):
-        if self._episode_ended:
+        if self.episode_ended:
             # The last action ended the episode. Ignore the current action and start
             # a new episode.
             return_object = self.reset()
             return return_object
 
-        if self._episode_ended:
+        if self.turns_counter == self._max_turns:
+            self.episode_ended = True
+
+
+
+        # final wrap up
+        self.turns_counter += 1
+        # final
+        if self.episode_ended:
             return_object = ts.termination(np.array(self.state_history, dtype=np.int32), 0.0)
             return return_object
         else:
