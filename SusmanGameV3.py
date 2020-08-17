@@ -25,13 +25,13 @@ tf.compat.v1.enable_v2_behavior()
 
 class SusmanGameV3(py_environment.PyEnvironment):
     def __init__(self):
-        self.board_width = 1
-        self.board_height = 10
+        self.board_width = 6
+        self.board_height = 6
         self.uuid = str(uuid.uuid1())
         self.sigma_y = self.board_width / 2
         self.sigma_x = self.board_height / 2
         self.channels = 3
-        self.frames = 10
+        self.frames = self.board_width * self.board_height
         self._action_spec = array_spec.BoundedArraySpec(
             shape=(), dtype=np.int32, minimum=0, maximum=3, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
@@ -42,7 +42,7 @@ class SusmanGameV3(py_environment.PyEnvironment):
         # 2 = Heat Map
         self._episode_ended = False
         self.this_turn = 0
-        self.max_turns = 10
+        self.max_turns = self.frames
         self.total_reward = 0
         self.heatmap_reward = self.board_height * self.board_width
         self.player_location = {'y': 0, 'x': 0}
@@ -217,10 +217,10 @@ class SusmanGameV3(py_environment.PyEnvironment):
                 info = 'Won Got the Goal'
                 self._episode_ended = True
                 reward += win_reward
-            #elif self._state[self.player_location['y'], self.player_location['x']][2] != 0:
-                #info = 'Continue w/ reward'
-                #self._episode_ended = False
-                #reward += continue_reward + self._state[self.player_location['y'], self.player_location['x']][0]
+            elif self._state[self.player_location['y'], self.player_location['x']][2] != 0:
+                info = 'Continue w/ reward'
+                self._episode_ended = False
+                reward += continue_reward + self._state[self.player_location['y'], self.player_location['x']][0]
             else:
                 info = 'Continue'
                 self._episode_ended = False
@@ -228,7 +228,7 @@ class SusmanGameV3(py_environment.PyEnvironment):
 
         # preference
         if (action == 0 or action == 2) and self.this_turn < 2:
-            reward += 0.5
+            reward += 0.1
 
         self.render_new_state()
 
@@ -244,5 +244,5 @@ class SusmanGameV3(py_environment.PyEnvironment):
             return_object = ts.termination(np.array(self.state_history, dtype=np.int32), self.total_reward)
             return return_object
         else:
-            return_object = ts.transition(np.array(self.state_history, dtype=np.int32), reward=reward, discount=1.0)
+            return_object = ts.transition(np.array(self.state_history, dtype=np.int32), reward=0.0, discount=1.0)
             return return_object
