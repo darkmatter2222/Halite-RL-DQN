@@ -18,19 +18,20 @@ import random
 import scipy as sp
 import cv2
 import uuid
+import matplotlib
 
 
 tf.compat.v1.enable_v2_behavior()
 
 class SusmanGameV3(py_environment.PyEnvironment):
     def __init__(self):
-        self.board_width = 3
-        self.board_height = 3
+        self.board_width = 1
+        self.board_height = 10
         self.uuid = str(uuid.uuid1())
         self.sigma_y = self.board_width / 2
         self.sigma_x = self.board_height / 2
         self.channels = 3
-        self.frames = 2
+        self.frames = 10
         self._action_spec = array_spec.BoundedArraySpec(
             shape=(), dtype=np.int32, minimum=0, maximum=3, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
@@ -41,34 +42,40 @@ class SusmanGameV3(py_environment.PyEnvironment):
         # 2 = Heat Map
         self._episode_ended = False
         self.this_turn = 0
-        self.max_turns = 300
+        self.max_turns = 10
         self.total_reward = 0
         self.heatmap_reward = self.board_height * self.board_width
         self.player_location = {'y': 0, 'x': 0}
         self.set_goal()
         self.game_history = []
         self.state_history = [self._state] * self.frames
+        self.save_image = False
+        self.image_render_counter = 0
 
     def render_image(self, directive='unknown'):
         new_image = np.zeros([self.board_height, self.board_width, 3])
-
+        font = cv2.FONT_HERSHEY_SIMPLEX
         for height in range(self.board_height):
             for width in range(self.board_width):
                 new_image[height][width] = (0, self._state[height][width][2], 0)
                 if self._state[height][width][0] == 1:
-                    new_image[height][width] = (0, 254, 0)
+                    new_image[height][width] = (0, 1, 0)
                 if self._state[height][width][1] == 1:
                     if directive == 'Exploite':
-                        new_image[height][width] = (254, 0, 0)
+                        new_image[height][width] = (1, 0, 0)
                     elif directive == 'Explore':
-                        new_image[height][width] = (0, 0, 254)
+                        new_image[height][width] = (0, 0, 1)
                     else:
-                        new_image[height][width] = (254, 254, 254)
+                        new_image[height][width] = (1, 1, 1)
 
         n = 100
         new_image = new_image.repeat(n, axis=0).repeat(n, axis=1)
-        cv2.imshow(self.uuid, new_image)
+        cv2.putText(new_image, self.uuid, (10, 60), font, 1, (0, 0, 1), 2)
+        cv2.imshow('Real Time Play', new_image)
         cv2.waitKey(1)
+        if self.save_image:
+            matplotlib.image.imsave(f"N:\\Halite\\Images\\{str(self.image_render_counter)}.jpeg", new_image)
+            self.image_render_counter += 1
 
     def set_goal(self):
         self.set_player()
@@ -99,6 +106,15 @@ class SusmanGameV3(py_environment.PyEnvironment):
                 self._state[height][width][2] = reward_heatmap[height, width]
 
         lol = 1
+
+    def render_new_state(self):
+        for height in range(self.board_height):
+            for width in range(self.board_width):
+                self._state[height, width][1] = 0
+        try:
+            self._state[self.player_location['y'], self.player_location['x']][1] = 1
+        except:
+            lol = 1 # because player can move off map
 
     def set_player(self):
         rand_y = 0
@@ -132,6 +148,7 @@ class SusmanGameV3(py_environment.PyEnvironment):
         self.set_goal()
         self.game_history = []
         self.state_history = [self._state] * self.frames
+        self.render_image()
         return_object = ts.restart(np.array(self.state_history, dtype=np.int32))
         return return_object
 
@@ -147,7 +164,7 @@ class SusmanGameV3(py_environment.PyEnvironment):
         map_edge_exist = True
         continue_reward = -1
         win_reward = 10
-        loose_reward = -1
+        loose_reward = -10
         # 0=N 1=E 2=S 3=W
         if action == 0:  # Move North
             if map_edge_exist:
@@ -188,26 +205,33 @@ class SusmanGameV3(py_environment.PyEnvironment):
         if self.this_turn == self.max_turns - 1:
             info = 'Max Tries'
             self._episode_ended = True
-            reward = loose_reward
+            reward += loose_reward
         else:
             # Loose Fall Off Map?
             if self.player_location['y'] < 0 or self.player_location['x'] < 0 or \
                     self.player_location['x'] >= self.board_width or self.player_location['y'] >= self.board_height:
                 info = 'Loose Fall Off Map'
                 self._episode_ended = True
-                reward = loose_reward
+                reward += loose_reward
             elif self._state[self.player_location['y'], self.player_location['x']][0] == 1:
                 info = 'Won Got the Goal'
                 self._episode_ended = True
-                reward = win_reward
-            elif self._state[self.player_location['y'], self.player_location['x']][2] != 0:
-                info = 'Continue w/ reward'
-                self._episode_ended = False
-                reward = continue_reward + self._state[self.player_location['y'], self.player_location['x']][0]
+                reward += win_reward
+            #elif self._state[self.player_location['y'], self.player_location['x']][2] != 0:
+                #info = 'Continue w/ reward'
+                #self._episode_ended = False
+                #reward += continue_reward + self._state[self.player_location['y'], self.player_location['x']][0]
             else:
                 info = 'Continue'
                 self._episode_ended = False
-                reward = continue_reward
+                reward += continue_reward
+
+        # preference
+        if (action == 0 or action == 2) and self.this_turn < 2:
+            reward += 0.5
+
+        self.render_new_state()
+
 
         self.game_history.append(info)
         self.total_reward += reward

@@ -31,16 +31,16 @@ tf.compat.v1.enable_v2_behavior()
 
 num_iterations = 20000000 # @param {type:"integer"}
 
-initial_collect_steps = 1000  # @param {type:"integer"}
-collect_steps_per_iteration = 1  # @param {type:"integer"}
+initial_collect_steps = 100  # @param {type:"integer"}
+collect_steps_per_iteration = 10  # @param {type:"integer"}
 replay_buffer_max_length = 100000  # @param {type:"integer"}
 
-batch_size = 64 * 1000 # @param {type:"integer"}
+batch_size = 64 * 10 # @param {type:"integer"}
 learning_rate = 0.0001  # @param {type:"number"}
 log_interval = 200  # @param {type:"integer"}
 
-num_eval_episodes = 1000  # @param {type:"integer"}
-eval_interval = 1000  # @param {type:"integer"}
+num_eval_episodes = 100  # @param {type:"integer"}
+eval_interval = 400  # @param {type:"integer"}
 
 
 env_name = 'CartPole-v0'
@@ -73,10 +73,11 @@ eval_py_env = SusmanGameV3()
 
 
 train_env = tf_py_environment.TFPyEnvironment(train_py_env)
+train_env._env._envs[0].uuid = 'Training...'
 eval_env = tf_py_environment.TFPyEnvironment(eval_py_env)
+eval_env._env._envs[0].uuid = 'Testing...'
 
-
-fc_layer_params = (100,)
+fc_layer_params = (512,)
 
 q_net = q_network.QNetwork(
     train_env.observation_spec(),
@@ -209,7 +210,9 @@ for _ in range(num_iterations):
     print('step = {0}: loss = {1}'.format(step, train_loss))
 
   if step % eval_interval == 0:
+    eval_env._env._envs[0].save_image = False
     avg_return, score = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
+    eval_env._env._envs[0].save_image = False
     print('step = {0}: Average Return = {1:.2f}, score {2}'.format(step, avg_return, score))
     returns.append(avg_return)
 
