@@ -109,8 +109,13 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
                 break
                 # TODO just because we only have 1 ship
 
+        reward = 0
+
         # commit
         self.board = self.board.next()
+
+        # calculate reward
+
         # get new state
         self.state = self.get_state()
 
