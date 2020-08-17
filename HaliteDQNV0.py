@@ -124,7 +124,7 @@ agent.train = common.function(agent.train)
 
 agent.train_step_counter.assign(0)
 
-avg_return, score = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
+avg_return = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
 returns = [avg_return]
 iterator = iter(dataset)
 
@@ -143,7 +143,7 @@ for _ in tqdm(range(num_iterations)):
         eval_env._env._envs[0].save_image = False
         avg_return, score = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
         eval_env._env._envs[0].save_image = False
-        print('step = {0}: Average Return = {1:.2f}, score {2}'.format(step, avg_return, score))
+        print('step = {0}: Average Return = {1:.2f}'.format(step, avg_return))
         returns.append(avg_return)
 
 

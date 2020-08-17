@@ -27,29 +27,29 @@ tf.compat.v1.enable_v2_behavior()
 
 class HaliteWrapperV0(py_environment.PyEnvironment):
     def __init__(self):
-        # game parms
+        # game parameters
         self._board_size = 3
-        self._frames = 400
+        self._frames = 10
         self._max_turns = self._frames
         self._agent_count = 1
-        self._channels = 2
+        self._channels = 3
         self._action_def = {0: ShipAction.EAST,
-                           1: ShipAction.NORTH,
-                           2: "NOTHING",
-                           3: ShipAction.SOUTH,
-                           4: ShipAction.WEST}
+                            1: ShipAction.NORTH,
+                            2: "NOTHING",
+                            3: ShipAction.SOUTH,
+                            4: ShipAction.WEST}
 
-
-        # runtime_parms
+        # runtime parameters
         self.turns_counter = 0
         self.episode_ended = False
 
         # initialize game
-        self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000})
+        self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000,
+                                                         "episodeSteps": self._frames})
         self.environment.reset(self._agent_count)
 
         self._action_spec = array_spec.BoundedArraySpec(
-            shape=(), dtype=np.int32, minimum=0, maximum=len(self._action_def), name='action')
+            shape=(), dtype=np.int32, minimum=0, maximum=len(self._action_def)-1, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
             shape=(self._frames, self._board_size, self._board_size, self._channels), dtype=np.int32, minimum=0,
             maximum=1, name='observation')
@@ -60,8 +60,8 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
 
         self.state_history = [self.state] * self._frames
 
-
-
+        # get board
+        self.board = self.get_board()
 
     def action_spec(self):
         return_object = self._action_spec
@@ -74,6 +74,12 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
     def _reset(self):
         self.turns_counter = 0
         self.episode_ended = False
+        # initialize game
+        self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000,
+                                                         "episodeSteps": self._frames})
+        self.environment.reset(self._agent_count)
+        # get board
+        self.board = self.get_board()
         return_object = ts.restart(np.array(self.state_history, dtype=np.int32))
         return return_object
 
@@ -84,13 +90,34 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
             return_object = self.reset()
             return return_object
 
+        # max turns?
         if self.turns_counter == self._max_turns:
             self.episode_ended = True
 
+        # take action
+        current_player = self.board.current_player
+        if current_player.id == 0:
+            for ship in current_player.ships:
+                cargo = ship.halite
+                int_action = int(action)
+                if self._action_def[int_action] != "NOTHING":
+                    ship.next_action = self._action_def[int_action]
+                elif self._action_def[int_action] == "NOTHING":
+                    lol = 1
+                else:
+                    raise Exception('invalid action received')
+                break
+                # TODO just because we only have 1 ship
 
+        # commit
+        self.board = self.board.next()
+        # get new state
+        self.state = self.get_state()
 
         # final wrap up
         self.turns_counter += 1
+        self.state_history.append(self.state)
+        del self.state_history[:1]
         # final
         if self.episode_ended:
             return_object = ts.termination(np.array(self.state_history, dtype=np.int32), 0.0)
@@ -98,3 +125,33 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
         else:
             return_object = ts.transition(np.array(self.state_history, dtype=np.int32), reward=0.0, discount=1.0)
             return return_object
+
+    def get_board(self):
+        obs = self.environment.state[0].observation
+        config = self.environment.configuration
+        actions = [agent.action for agent in self.environment.state]
+        return Board(obs, config, actions)
+
+    def get_state(self):
+        size = self.board.configuration.size
+        pixels = []
+        for x in range(0, size):
+            row = []
+            for y in range(0, size):
+                cell = self.board[(x, size - y - 1)]
+                # cell_halite = int(9.0 * cell.halite / float(board.configuration.max_cell_halite))
+                cell_halite = 1.0 * cell.halite / float(self.board.configuration.max_cell_halite)
+
+                pixel = [0, 0, 0]
+                if cell.ship is not None:
+                    pixel[1] = 1
+                if cell.shipyard is not None:
+                    pixel[2] = 1
+                pixel[0] = cell_halite
+                # 0 = Halite (normalized)
+                # 1 = Ship Presence
+                # 2 = Shipyard Presence
+
+                row.append(np.array(pixel))
+            pixels.append(np.array(row))
+        return np.array(pixels)
