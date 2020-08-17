@@ -24,6 +24,7 @@ from tf_agents.replay_buffers import tf_uniform_replay_buffer
 from tf_agents.trajectories import trajectory
 from tf_agents.utils import common
 from SusmanGameV3 import SusmanGameV3
+from tqdm import tqdm
 
 
 tf.compat.v1.enable_v2_behavior()
@@ -127,7 +128,7 @@ random_policy.action(time_step)
 def compute_avg_return(environment, policy, num_episodes=10):
   score = {'win': 0, 'loss': 0, 'timeout': 0}
   total_return = 0.0
-  for _ in range(num_episodes):
+  for _ in tqdm(range(num_episodes)):
 
     time_step = environment.reset()
     episode_return = 0.0
@@ -169,7 +170,7 @@ def collect_step(environment, policy, buffer):
   buffer.add_batch(traj)
 
 def collect_data(env, policy, buffer, steps):
-  for _ in range(steps):
+  for _ in tqdm(range(steps)):
     collect_step(env, policy, buffer)
 
 collect_data(train_env, random_policy, replay_buffer, steps=100)
@@ -195,8 +196,8 @@ avg_return, score = compute_avg_return(eval_env, agent.policy, num_eval_episodes
 returns = [avg_return]
 iterator = iter(dataset)
 
-for _ in range(num_iterations):
 
+for _ in tqdm(range(num_iterations)):
   # Collect a few steps using collect_policy and save to the replay buffer.
   for _ in range(collect_steps_per_iteration):
     collect_step(train_env, agent.collect_policy, replay_buffer)

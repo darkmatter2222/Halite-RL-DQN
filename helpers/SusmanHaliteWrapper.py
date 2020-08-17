@@ -52,6 +52,35 @@ class SusmanHalite(py_environment.PyEnvironment):
         self.total_reward = 0
         self.historical_action = []
 
+    def env_to_board(self, env):
+        obs = env.state[0].observation
+        config = env.configuration
+        actions = [agent.action for agent in env.state]
+        return Board(obs, config, actions)
+
+    def board_to_state(self, board):
+        size = board.configuration.size
+        pixels = []
+        for x in range(0, size):
+            row = []
+            for y in range(0, size):
+                cell = board[(x, size - y - 1)]
+                # cell_halite = int(9.0 * cell.halite / float(board.configuration.max_cell_halite))
+                cell_halite = 1.0 * cell.halite / float(board.configuration.max_cell_halite)
+
+                # cell_halite = cell.halite
+                # Normalized Halite, Ship, Shipyard
+                pixel = [0, 0, 0]
+                if cell.ship is not None:
+                    pixel[1] = 1
+                if cell.shipyard is not None:
+                    pixel[2] = 1
+                pixel[0] = cell_halite
+                row.append(np.array(pixel))
+            pixels.append(np.array(row))
+        return np.array(pixels)
+
+
     def action_spec(self):
         return self._action_spec
 

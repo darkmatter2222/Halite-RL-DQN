@@ -25,8 +25,8 @@ tf.compat.v1.enable_v2_behavior()
 
 class SusmanGameV3(py_environment.PyEnvironment):
     def __init__(self):
-        self.board_width = 12
-        self.board_height = 12
+        self.board_width = 3
+        self.board_height = 3
         self.uuid = str(uuid.uuid1())
         self.sigma_y = self.board_width / 2
         self.sigma_x = self.board_height / 2
@@ -50,9 +50,14 @@ class SusmanGameV3(py_environment.PyEnvironment):
         self.game_history = []
         self.state_history = [self._state] * self.frames
         self.save_image = False
+        self.enable_render_image = False
         self.image_render_counter = 0
 
     def render_image(self, directive='unknown'):
+
+        if self.enable_render_image != True:
+            return
+
         new_image = np.zeros([self.board_height, self.board_width, 3])
         font = cv2.FONT_HERSHEY_SIMPLEX
         for height in range(self.board_height):
