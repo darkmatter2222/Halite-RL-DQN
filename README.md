@@ -1,5 +1,5 @@
 # Halite-RL-DQN
-Exploring building a Deep Neural Network to play Halite, specifically the version of Halite on https://www.kaggle.com/c/halite
+Exploring Deep Rnforcement Larning to play Halite, specifically the version of Halite on https://www.kaggle.com/c/halite
 
 # Baby Steps
 This was my first attempt at reinforcement learning, before chomping off a huge bite, lets train a simple bot.  
