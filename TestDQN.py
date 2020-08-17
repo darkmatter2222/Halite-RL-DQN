@@ -40,8 +40,8 @@ batch_size = 64 * 10 # @param {type:"integer"}
 learning_rate = 0.0001  # @param {type:"number"}
 log_interval = 200  # @param {type:"integer"}
 
-num_eval_episodes = 100  # @param {type:"integer"}
-eval_interval = 400  # @param {type:"integer"}
+num_eval_episodes = 1  # @param {type:"integer"}
+eval_interval = 100  # @param {type:"integer"}
 
 
 env_name = 'CartPole-v0'
@@ -211,7 +211,7 @@ for _ in tqdm(range(num_iterations)):
     print('step = {0}: loss = {1}'.format(step, train_loss))
 
   if step % eval_interval == 0:
-    eval_env._env._envs[0].save_image = False
+    eval_env._env._envs[0].save_image = True
     avg_return, score = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
     eval_env._env._envs[0].save_image = False
     print('step = {0}: Average Return = {1:.2f}, score {2}'.format(step, avg_return, score))

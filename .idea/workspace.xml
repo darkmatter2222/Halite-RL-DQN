@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="17b17302-bd58-4e19-8b68-bc3c854e4095" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/HaliteDQNV0.py" beforeDir="false" afterPath="$PROJECT_DIR$/HaliteDQNV0.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HaliteWrapperV0.py" beforeDir="false" afterPath="$PROJECT_DIR$/HaliteWrapperV0.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SusmanGameV3.py" beforeDir="false" afterPath="$PROJECT_DIR$/SusmanGameV3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestDQN.py" beforeDir="false" afterPath="$PROJECT_DIR$/TestDQN.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -13,11 +13,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/TestDQN.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="44" selection-end-line="220" />
+            <state relative-caret-position="572">
+              <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+              <folding>
+                <element signature="e#0#64#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -25,8 +28,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SusmanGameV3.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3842">
-              <caret line="246" column="8" selection-start-line="246" selection-start-column="8" selection-end-line="246" selection-end-column="34" />
+            <state relative-caret-position="1462">
+              <caret line="86" lean-forward="true" selection-start-line="86" selection-end-line="86" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -37,7 +40,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/HaliteDQNV0.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="606">
+            <state relative-caret-position="317">
               <caret line="120" column="14" lean-forward="true" selection-start-line="120" selection-start-column="14" selection-end-line="120" selection-end-column="14" />
               <folding>
                 <element signature="e#0#64#0" expanded="true" />
@@ -46,7 +49,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/HaliteWrapperV0.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="187">
@@ -93,14 +96,14 @@
       <list>
         <option value="$PROJECT_DIR$/helpers/data.py" />
         <option value="$PROJECT_DIR$/helpers/SusmanHaliteWrapper.py" />
-        <option value="$PROJECT_DIR$/TestDQN.py" />
-        <option value="$PROJECT_DIR$/SusmanGameV3.py" />
         <option value="$PROJECT_DIR$/HaliteWrapperV0.py" />
         <option value="$PROJECT_DIR$/HaliteDQNV0.py" />
+        <option value="$PROJECT_DIR$/SusmanGameV3.py" />
+        <option value="$PROJECT_DIR$/TestDQN.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="409" />
     <option name="y" value="-8" />
     <option name="width" value="1294" />
@@ -160,7 +163,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.HaliteDQNV0">
+  <component name="RunManager" selected="Python.TestDQN">
     <configuration name="HaliteDQNV0" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="HaliteRunner" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -268,8 +271,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.HaliteDQNV0" />
         <item itemvalue="Python.TestDQN" />
+        <item itemvalue="Python.HaliteDQNV0" />
         <item itemvalue="Python.SusmanGameV3" />
         <item itemvalue="Python.research" />
         <item itemvalue="Python.sendexDQN" />
@@ -291,7 +294,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2576" height="1426" extended-state="6" />
+    <frame x="-8" y="-8" width="2576" height="1426" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10441292" />
@@ -577,37 +580,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TestDQN.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="44" selection-end-line="220" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SusmanGameV3.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3842">
-          <caret line="246" column="8" selection-start-line="246" selection-start-column="8" selection-end-line="246" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../venvs/Python375x64TensorflowGPU/Lib/site-packages/tf_agents/environments/py_environment.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="872">
           <caret line="173" selection-start-line="173" selection-end-line="173" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HaliteDQNV0.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="606">
-          <caret line="120" column="14" lean-forward="true" selection-start-line="120" selection-start-column="14" selection-end-line="120" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#64#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -627,6 +603,36 @@
           <caret line="98" column="21" lean-forward="true" selection-start-line="98" selection-start-column="21" selection-end-line="98" selection-end-column="21" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HaliteDQNV0.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="317">
+          <caret line="120" column="14" lean-forward="true" selection-start-line="120" selection-start-column="14" selection-end-line="120" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#64#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SusmanGameV3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1462">
+          <caret line="86" lean-forward="true" selection-start-line="86" selection-end-line="86" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/TestDQN.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="572">
+          <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
+          <folding>
+            <element signature="e#0#64#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -19,14 +19,16 @@ import scipy as sp
 import cv2
 import uuid
 import matplotlib
+from PIL import Image
+
 
 
 tf.compat.v1.enable_v2_behavior()
 
 class SusmanGameV3(py_environment.PyEnvironment):
     def __init__(self):
-        self.board_width = 3
-        self.board_height = 3
+        self.board_width = 5
+        self.board_height = 5
         self.uuid = str(uuid.uuid1())
         self.sigma_y = self.board_width / 2
         self.sigma_x = self.board_height / 2
@@ -50,11 +52,11 @@ class SusmanGameV3(py_environment.PyEnvironment):
         self.game_history = []
         self.state_history = [self._state] * self.frames
         self.save_image = False
-        self.enable_render_image = False
+        self.enable_render_image = True
         self.image_render_counter = 0
+        self.image_history = []
 
     def render_image(self, directive='unknown'):
-
         if self.enable_render_image != True:
             return
 
@@ -73,14 +75,15 @@ class SusmanGameV3(py_environment.PyEnvironment):
                     else:
                         new_image[height][width] = (1, 1, 1)
 
-        n = 15
+        n = 50
         new_image = new_image.repeat(n, axis=0).repeat(n, axis=1)
-        cv2.putText(new_image, self.uuid, (10, 60), font, 1, (0, 0, 1), 2)
+        cv2.putText(new_image, f'Step:{self.image_render_counter}', (10, 60), font, 1, (0, 0, 1), 2)
         cv2.imshow('Real Time Play', new_image)
         cv2.waitKey(1)
         if self.save_image:
             matplotlib.image.imsave(f"N:\\Halite\\Images\\{str(self.image_render_counter)}.jpeg", new_image)
             self.image_render_counter += 1
+
 
     def set_goal(self):
         self.set_player()
@@ -152,6 +155,7 @@ class SusmanGameV3(py_environment.PyEnvironment):
         self.this_turn = 0
         self.set_goal()
         self.game_history = []
+        self.image_history = []
         self.state_history = [self._state] * self.frames
         self.render_image()
         return_object = ts.restart(np.array(self.state_history, dtype=np.int32))
