@@ -1,15 +1,7 @@
-import gym
 import numpy as np
-import random
-from collections import deque
-from tensorflow.keras.models import Sequential
 import tensorflow as tf
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Flatten
 from tensorflow.keras.optimizers import Adam
-from SusmanGame import SusmanGameEnv
-import time
-import os
+from SusmanGameResearch.SusmanGame import SusmanGameEnv
 
 learning_rate = .628
 gamma = .9

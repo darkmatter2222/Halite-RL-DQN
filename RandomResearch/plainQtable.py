@@ -1,6 +1,6 @@
 import gym
 import numpy as np
-from SusmanGame import SusmanGameEnv
+
 # 1. Load Environment and Q-table structure
 env = gym.make('FrozenLake8x8-v0')
 Q = np.zeros([env.observation_space.n,env.action_space.n])

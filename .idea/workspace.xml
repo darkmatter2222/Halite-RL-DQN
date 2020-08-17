@@ -2,8 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="17b17302-bd58-4e19-8b68-bc3c854e4095" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/SusmanGameV3.py" beforeDir="false" afterPath="$PROJECT_DIR$/SusmanGameV3.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TestDQN.py" beforeDir="false" afterPath="$PROJECT_DIR$/TestDQN.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DNNPlayingSusmanGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/DNNPlayingSusmanGame.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SusmanDQNPlayer.py" beforeDir="false" afterPath="$PROJECT_DIR$/SusmanGameResearch/SusmanDQNPlayer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SusmanGame.py" beforeDir="false" afterPath="$PROJECT_DIR$/SusmanGameResearch/SusmanGame.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SusmanGameV2.py" beforeDir="false" afterPath="$PROJECT_DIR$/SusmanGameResearch/SusmanGameV2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SusmanGameV3.py" beforeDir="false" afterPath="$PROJECT_DIR$/SusmanGameResearch/SusmanGameV3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestCDQN.py" beforeDir="false" afterPath="$PROJECT_DIR$/SusmanGameResearch/TestCDQN.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TestDQN.py" beforeDir="false" afterPath="$PROJECT_DIR$/SusmanGameResearch/TestDQN.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tester.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tester.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plainQtable.py" beforeDir="false" afterPath="$PROJECT_DIR$/plainQtable.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tensorflowDQNTest.py" beforeDir="false" afterPath="$PROJECT_DIR$/tensorflowDQNTest.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,42 +22,6 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/TestDQN.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="572">
-              <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
-              <folding>
-                <element signature="e#0#64#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SusmanGameV3.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1462">
-              <caret line="86" lean-forward="true" selection-start-line="86" selection-end-line="86" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/HaliteDQNV0.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="317">
-              <caret line="120" column="14" lean-forward="true" selection-start-line="120" selection-start-column="14" selection-end-line="120" selection-end-column="14" />
-              <folding>
-                <element signature="e#0#64#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/HaliteWrapperV0.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="187">
@@ -100,10 +72,11 @@
         <option value="$PROJECT_DIR$/HaliteDQNV0.py" />
         <option value="$PROJECT_DIR$/SusmanGameV3.py" />
         <option value="$PROJECT_DIR$/TestDQN.py" />
+        <option value="$PROJECT_DIR$/SusmanGameResearch/TestDQN.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="409" />
     <option name="y" value="-8" />
     <option name="width" value="1294" />
@@ -125,6 +98,16 @@
             <path>
               <item name="Halite-RL-DQN" type="b2602c69:ProjectViewProjectNode" />
               <item name="Halite-RL-DQN" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Halite-RL-DQN" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Halite-RL-DQN" type="462c0819:PsiDirectoryNode" />
+              <item name="logs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Halite-RL-DQN" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Halite-RL-DQN" type="462c0819:PsiDirectoryNode" />
+              <item name="SusmanGameResearch" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -176,7 +159,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/HaliteDQNV0.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\ryans\source\repos\Halite-RL-DQN\Halite\HaliteDQNV0.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -197,7 +180,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/SusmanGameV3.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\ryans\source\repos\Halite-RL-DQN\SusmanGameResearch\SusmanGameV3.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -218,7 +201,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/TestDQN.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\ryans\source\repos\Halite-RL-DQN\SusmanGameResearch\TestDQN.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -239,7 +222,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/research.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\ryans\source\repos\Halite-RL-DQN\RandomResearch\research.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -260,7 +243,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sendexDQN.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\ryans\source\repos\Halite-RL-DQN\RandomResearch\sendexDQN.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -294,15 +277,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2576" height="1426" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="2576" height="1426" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10441292" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10441292" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32946634" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3101315" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3101315" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.2575406" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -437,7 +419,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/tensorflowDQNTest.py</url>
-          <line>41</line>
+          <line>21</line>
           <option name="timeStamp" value="239" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -485,7 +467,7 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/SusmanGameV2.py">
+    <entry file="file://$PROJECT_DIR$/SusmanGameResearch/SusmanGameV2.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
           <caret line="182" selection-start-line="182" selection-end-line="182" />
@@ -496,7 +478,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/TestCDQN.py">
+    <entry file="file://$PROJECT_DIR$/SusmanGameResearch/TestCDQN.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="456">
           <caret line="46" selection-start-line="46" selection-end-line="46" selection-end-column="12" />
@@ -523,7 +505,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SusmanGame.py">
+    <entry file="file://$PROJECT_DIR$/SusmanGameResearch/SusmanGame.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-578">
           <caret line="14" selection-start-line="14" selection-end-line="15" selection-end-column="44" />
@@ -597,10 +579,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HaliteWrapperV0.py">
+    <entry file="file://$PROJECT_DIR$/SusmanGameResearch/TestDQN.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="98" column="21" lean-forward="true" selection-start-line="98" selection-start-column="21" selection-end-line="98" selection-end-column="21" />
+        <state relative-caret-position="572">
+          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+          <folding>
+            <element signature="e#0#64#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SusmanGameResearch/SusmanGameV3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1462">
+          <caret line="86" lean-forward="true" selection-start-line="86" selection-end-line="86" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
@@ -617,22 +609,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SusmanGameV3.py">
+    <entry file="file://$PROJECT_DIR$/HaliteWrapperV0.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1462">
-          <caret line="86" lean-forward="true" selection-start-line="86" selection-end-line="86" />
+        <state relative-caret-position="187">
+          <caret line="98" column="21" lean-forward="true" selection-start-line="98" selection-start-column="21" selection-end-line="98" selection-end-column="21" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/TestDQN.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="45" lean-forward="true" selection-start-line="45" selection-end-line="45" />
-          <folding>
-            <element signature="e#0#64#0" expanded="true" />
           </folding>
         </state>
       </provider>

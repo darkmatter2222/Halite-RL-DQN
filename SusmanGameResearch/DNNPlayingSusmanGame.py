@@ -1,18 +1,8 @@
-import gym
 import numpy as np
 import random
 from collections import deque
-from tensorflow.keras.models import Sequential
 import tensorflow as tf
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Flatten
-from tensorflow.keras.optimizers import Adam
-from SusmanGame import SusmanGameEnv
-import time
-import os
-import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
-from PIL import Image
+from SusmanGameResearch.SusmanGame import SusmanGameEnv
 import cv2
 
 def render_image(env, state, directive):

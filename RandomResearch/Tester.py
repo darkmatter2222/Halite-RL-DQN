@@ -1,4 +1,4 @@
-from SusmanGame import SusmanGameEnv
+from SusmanGameResearch.SusmanGame import SusmanGameEnv
 
 env = SusmanGameEnv()
 
