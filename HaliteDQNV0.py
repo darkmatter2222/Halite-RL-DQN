@@ -141,7 +141,7 @@ for _ in tqdm(range(num_iterations)):
 
     if step % eval_interval == 0:
         eval_env._env._envs[0].save_image = False
-        avg_return, score = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
+        avg_return = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
         eval_env._env._envs[0].save_image = False
         print('step = {0}: Average Return = {1:.2f}'.format(step, avg_return))
         returns.append(avg_return)

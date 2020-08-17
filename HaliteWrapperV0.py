@@ -42,6 +42,7 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
         # runtime parameters
         self.turns_counter = 0
         self.episode_ended = False
+        self.total_reward = 0
 
         # initialize game
         self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000,
@@ -74,6 +75,7 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
     def _reset(self):
         self.turns_counter = 0
         self.episode_ended = False
+        self.total_reward = 0
         # initialize game
         self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000,
                                                          "episodeSteps": self._frames})
@@ -108,14 +110,19 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
                     raise Exception('invalid action received')
                 break
                 # TODO just because we only have 1 ship
-
         reward = 0
 
         # commit
         self.board = self.board.next()
 
         # calculate reward
+        if current_player.id == 0:
+            for ship in current_player.ships:
+                cargo_delta = ship.halite - cargo
+                reward = cargo_delta
+                break
 
+        self.total_reward += reward
         # get new state
         self.state = self.get_state()
 
@@ -125,10 +132,10 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
         del self.state_history[:1]
         # final
         if self.episode_ended:
-            return_object = ts.termination(np.array(self.state_history, dtype=np.int32), 0.0)
+            return_object = ts.termination(np.array(self.state_history, dtype=np.int32), reward)
             return return_object
         else:
-            return_object = ts.transition(np.array(self.state_history, dtype=np.int32), reward=0.0, discount=1.0)
+            return_object = ts.transition(np.array(self.state_history, dtype=np.int32), reward=reward, discount=1.0)
             return return_object
 
     def get_board(self):
