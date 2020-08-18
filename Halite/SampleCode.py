@@ -4,9 +4,13 @@ import random
 import numpy as np
 import pandas as pd
 from tf_agents.environments import py_environment
+from tf_agents.environments import gym_wrapper
+from tf_agents.environments.wrappers import ActionDiscretizeWrapper
 from collections import OrderedDict
 
 from gym import Env, spaces
+from tf_agents.trajectories import time_step as ts
+from tf_agents.specs import array_spec
 from kaggle_environments import make, evaluate
 from kaggle_environments.envs.halite.helpers import Board, Point
 
@@ -239,14 +243,23 @@ class HaliteGym(py_environment.PyEnvironment):
 
         self.config = halite_env.configuration
 
+
+
         self.action_space = spaces.MultiDiscrete([N_SHIP_ACTIONS] * MAX_SHIPS +
                                                  [N_YARD_ACTIONS] * MAX_YARDS)
+        self.action_space = gym_wrapper.spec_from_gym_space(space=self.action_space, name='action')
 
         self.observation_space = spaces.Box(low=0, high=1,
                                             shape=(self.config.size,
                                                    self.config.size,
                                                    N_FEATURES),
                                             dtype=np.float32)
+        self.observation_space = gym_wrapper.spec_from_gym_space(space=self.observation_space, name='observation')
+
+        self.observation_space = array_spec.BoundedArraySpec(
+            shape=(self.config.size, self.config.size, N_FEATURES), dtype=np.int32, minimum=0,
+            maximum=1, name='observation')
+
 
         self.reward_range = (REWARD_LOST, REWARD_WON)
 
@@ -256,13 +269,22 @@ class HaliteGym(py_environment.PyEnvironment):
         self.spec = None
         self.metadata = None
 
-    def reset(self):
+    def action_spec(self):
+        return_object = self.action_space
+        return return_object
+
+    def observation_spec(self):
+        return_object = self.observation_space
+        return return_object
+
+    def _reset(self):
         self.last_obs = None
         self.obs = self.env.reset()
         x_obs = transform_observation(self.obs, self.config)
+        x_obs = ts.restart(np.array(x_obs, dtype=np.int32))
         return x_obs
 
-    def step(self, actions):
+    def _step(self, actions):
         next_actions = transform_actions(actions, self.obs, self.config)
 
         self.last_obs = self.obs
@@ -271,7 +293,12 @@ class HaliteGym(py_environment.PyEnvironment):
         x_obs = transform_observation(self.obs, self.config)
         x_reward = transform_reward(done, self.last_obs, self.obs, self.config)
 
+
+        # final
         if x_reward <= REWARD_LOST:
             done, info = True, {}
-        return x_obs, x_reward, done, info
-
+            return_object = ts.termination(np.array(x_obs, dtype=np.int32), x_reward)
+            return return_object
+        else:
+            return_object = ts.transition(np.array(x_obs, dtype=np.int32), reward=x_reward, discount=1.0)
+            return return_object

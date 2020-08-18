@@ -28,9 +28,12 @@ tf.compat.v1.enable_v2_behavior()
 class HaliteWrapperV0(py_environment.PyEnvironment):
     def __init__(self):
         # game parameters
-        self._board_size = 5
-        self._frames = 100
-        self._max_turns = self._frames
+        self._board_size = 4
+        self._max_turns = 400
+        if self._max_turns > 10:
+            self._frames = 10
+        else:
+            self._frames = self._max_turns
         self._agent_count = 1
         self._channels = 3
         self._action_def = {0: ShipAction.EAST,
@@ -46,7 +49,7 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
 
         # initialize game
         self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000,
-                                                         "episodeSteps": self._frames})
+                                                         "episodeSteps": self._max_turns })
         self.environment.reset(self._agent_count)
 
         self._action_spec = array_spec.BoundedArraySpec(
@@ -78,7 +81,7 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
         self.total_reward = 0
         # initialize game
         self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000,
-                                                         "episodeSteps": self._frames})
+                                                         "episodeSteps": self._max_turns })
         self.environment.reset(self._agent_count)
         # get board
         self.board = self.get_board()
@@ -140,7 +143,7 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
         self.state_history.append(self.state)
         del self.state_history[:1]
 
-        self.renderer()
+        #self.renderer()
 
         # final
         if self.episode_ended:
