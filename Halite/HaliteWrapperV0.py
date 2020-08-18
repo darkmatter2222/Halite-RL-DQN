@@ -28,8 +28,8 @@ tf.compat.v1.enable_v2_behavior()
 class HaliteWrapperV0(py_environment.PyEnvironment):
     def __init__(self):
         # game parameters
-        self._board_size = 3
-        self._frames = 10
+        self._board_size = 5
+        self._frames = 100
         self._max_turns = self._frames
         self._agent_count = 1
         self._channels = 3
@@ -92,9 +92,15 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
             return_object = self.reset()
             return return_object
 
+        self.board = self.get_board()
+
+        reward = 0
+
         # max turns?
         if self.turns_counter == self._max_turns:
             self.episode_ended = True
+
+        cargo = 0
 
         # take action
         current_player = self.board.current_player
@@ -110,17 +116,20 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
                     raise Exception('invalid action received')
                 break
                 # TODO just because we only have 1 ship
-        reward = 0
 
         # commit
         self.board = self.board.next()
 
+        current_player = self.board.current_player
         # calculate reward
         if current_player.id == 0:
             for ship in current_player.ships:
                 cargo_delta = ship.halite - cargo
-                reward = cargo_delta
+                reward += cargo_delta
                 break
+
+        if cargo_delta > 0:
+            lol = 1
 
         self.total_reward += reward
         # get new state
@@ -130,6 +139,9 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
         self.turns_counter += 1
         self.state_history.append(self.state)
         del self.state_history[:1]
+
+        self.renderer()
+
         # final
         if self.episode_ended:
             return_object = ts.termination(np.array(self.state_history, dtype=np.int32), reward)
@@ -167,3 +179,64 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
                 row.append(np.array(pixel))
             pixels.append(np.array(row))
         return np.array(pixels)
+
+    def renderer(self, highlight=None):
+        size = self.board.configuration.size
+        sudo_board = []
+        shift_delta = Point(0, 0)
+        if highlight != None:
+            shift_delta = Point(4, 4) - highlight
+
+        for y in range(size):
+            sudo_board.append(['   '] * 10)
+
+        for y in range(size):
+            for x in range(size):
+                board_cell = self.board[(x, size - y - 1)]
+                bord_cell_halite = int(9.0 * board_cell.halite / float(self.board.configuration.max_cell_halite))
+                precolor = ''
+                postcolor = ''
+
+                if bord_cell_halite > 0:
+                    precolor = '\x1b[32m'
+                    postcolor = '\x1b[0m'
+
+                if board_cell.ship is not None:
+                    precolor = '\x1b[31m'
+                    postcolor = '\x1b[0m'
+                if board_cell.shipyard is not None:
+                    precolor = '\x1b[31m'
+                    postcolor = '\x1b[0m'
+
+                if highlight != None:
+                    if (x, size - y - 1) == highlight:
+                        precolor = '\x1b[36m'
+                        postcolor = '\x1b[0m'
+
+                sudo_cell = ''
+                sudo_cell += precolor
+
+                if board_cell.ship is not None:
+                    sudo_cell += chr(ord('a') + board_cell.ship.player_id)
+                else:
+                    sudo_cell += ' '
+
+                sudo_cell += str(bord_cell_halite)
+
+                if board_cell.shipyard is not None:
+                    sudo_cell += chr(ord('A') + board_cell.shipyard.player_id)
+                else:
+                    sudo_cell += ' '
+
+                sudo_cell += postcolor
+                sudo_board[y][x] = str(sudo_cell)
+
+        shifted_result = ''
+        for y in range(size):
+            for x in range(size):
+                shifted_result += '|'
+                shifted_result += sudo_board[y][x]
+            shifted_result += '|\n'
+
+        # os.system('cls' if os.name == 'nt' else 'clear')
+        print(shifted_result)

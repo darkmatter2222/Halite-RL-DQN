@@ -9,7 +9,7 @@ from tf_agents.policies import random_tf_policy
 from tf_agents.replay_buffers import tf_uniform_replay_buffer
 from tf_agents.trajectories import trajectory
 from tf_agents.utils import common
-from Halite.HaliteWrapperV0 import HaliteWrapperV0
+from Halite.SampleCode import HaliteGym
 from tqdm import tqdm
 
 tf.compat.v1.enable_v2_behavior()
@@ -27,8 +27,8 @@ log_interval = 200  # @param {type:"integer"}
 num_eval_episodes = 100  # @param {type:"integer"}
 eval_interval = 400  # @param {type:"integer"}
 
-train_py_env = HaliteWrapperV0()
-eval_py_env = HaliteWrapperV0()
+train_py_env = HaliteGym()
+eval_py_env = HaliteGym()
 
 train_env = tf_py_environment.TFPyEnvironment(train_py_env)
 train_env._env._envs[0].uuid = 'Training...'
@@ -65,7 +65,7 @@ random_policy = random_tf_policy.RandomTFPolicy(train_env.time_step_spec(),
 
 def compute_avg_return(environment, policy, num_episodes=10):
     total_return = 0.0
-    for _ in tqdm(range(num_episodes)):
+    for _ in range(num_episodes):
         time_step = environment.reset()
         episode_return = 0.0
         while not time_step.is_last():
@@ -126,9 +126,7 @@ for _ in tqdm(range(num_iterations)):
         print('step = {0}: loss = {1}'.format(step, train_loss))
 
     if step % eval_interval == 0:
-        eval_env._env._envs[0].save_image = False
         avg_return = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
-        eval_env._env._envs[0].save_image = False
         print('step = {0}: Average Return = {1:.2f}'.format(step, avg_return))
         returns.append(avg_return)
 
