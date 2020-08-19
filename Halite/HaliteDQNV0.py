@@ -139,6 +139,8 @@ train_checkpointer = common.Checkpointer(
     replay_buffer=replay_buffer,
     global_step=train_step_counter
 )
+policy_dir = os.path.join(tempdir, 'policy')
+tf_policy_saver = policy_saver.PolicySaver(agent.policy)
 
 restore_network = True
 
@@ -162,6 +164,8 @@ while True:
     returns.append(avg_return)
     train_checkpointer.save(train_step_counter)
     print('step = {0}: Average Return = {1:.2f}'.format(step, avg_return))
+    tf_policy_saver.save(policy_dir)
+
 
 policy_dir = os.path.join(tempdir, 'policy')
 tf_policy_saver = policy_saver.PolicySaver(agent.policy)
