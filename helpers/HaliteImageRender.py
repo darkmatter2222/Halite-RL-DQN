@@ -122,20 +122,21 @@ class HaliteImageRender():
                 board_x * sprite_size:board_x * sprite_size + sprite_size] = \
                     self.premade_rendered_sprites[f'circle_sprite_{bord_cell_halite}']
 
-                if board_cell.ship is not None:
-                    master_image[board_h * sprite_size:board_h * sprite_size + sprite_size,
-                    board_x * sprite_size:board_x * sprite_size + sprite_size] =\
-                        self.premade_rendered_sprites[f'ship_sprite_player_{board_cell.ship._player_id}']
-
-                if board_cell.shipyard is not None:
-                    master_image[board_h * sprite_size:board_h * sprite_size + sprite_size,
-                    board_x * sprite_size:board_x * sprite_size + sprite_size] =\
-                        self.premade_rendered_sprites[f'shipyard_sprite_player_{board_cell.shipyard._player_id}']
-
                 if board_cell.shipyard is not None and board_cell.ship is not None:
                     master_image[board_h * sprite_size:board_h * sprite_size + sprite_size,
                     board_x * sprite_size:board_x * sprite_size + sprite_size] =\
                         self.premade_rendered_sprites[f'ship_and_shipyard_sprite_player_{board_cell.shipyard._player_id}']
+                elif board_cell.ship is not None:
+                    master_image[board_h * sprite_size:board_h * sprite_size + sprite_size,
+                    board_x * sprite_size:board_x * sprite_size + sprite_size] =\
+                        self.premade_rendered_sprites[f'ship_sprite_player_{board_cell.ship._player_id}']
+                elif board_cell.shipyard is not None:
+                    master_image[board_h * sprite_size:board_h * sprite_size + sprite_size,
+                    board_x * sprite_size:board_x * sprite_size + sprite_size] =\
+                        self.premade_rendered_sprites[f'shipyard_sprite_player_{board_cell.shipyard._player_id}']
+                else:
+                    # nothing
+                    lol = 1
         # TODO Code Shipyards
         cv2.imshow('Real Time Play', master_image)
         cv2.waitKey(1)
