@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="17b17302-bd58-4e19-8b68-bc3c854e4095" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Halite/HaliteDQNV0.py" beforeDir="false" afterPath="$PROJECT_DIR$/Halite/HaliteDQNV0.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Halite/HaliteWrapperV0.py" beforeDir="false" afterPath="$PROJECT_DIR$/Halite/HaliteWrapperV0.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/helpers/HaliteImageRender.py" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/HaliteImageRender.py" afterDir="false" />
     </list>
@@ -16,17 +17,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Halite/HaliteDQNV0.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1088">
-              <caret line="8" column="61" lean-forward="true" selection-start-line="8" selection-start-column="61" selection-end-line="8" selection-end-column="61" />
+            <state relative-caret-position="386">
+              <caret line="142" column="23" selection-start-line="142" selection-start-column="23" selection-end-line="142" selection-end-column="23" />
+              <folding>
+                <element signature="e#0#64#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/helpers/HaliteImageRender.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="793">
-              <caret line="95" selection-start-line="95" selection-end-line="95" />
+            <state relative-caret-position="483">
+              <caret line="95" column="74" selection-start-line="95" selection-start-column="74" selection-end-line="95" selection-end-column="74" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -34,11 +38,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Halite/HaliteWrapperV0.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="126" selection-start-line="126" selection-end-line="126" />
+            <state relative-caret-position="686">
+              <caret line="116" selection-start-line="116" selection-end-line="116" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -49,8 +53,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/helpers/render.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="595">
-              <caret line="41" column="12" lean-forward="true" selection-start-line="41" selection-start-column="12" selection-end-line="41" selection-end-column="43" />
+            <state relative-caret-position="612">
+              <caret line="54" column="24" selection-start-line="54" selection-start-column="23" selection-end-line="54" selection-end-column="24" />
               <folding>
                 <element signature="e#0#53#0" expanded="true" />
               </folding>
@@ -102,18 +106,18 @@
         <option value="$PROJECT_DIR$/Halite/SampleCode.py" />
         <option value="$PROJECT_DIR$/../venvs/Python375x64TensorflowGPU/Lib/site-packages/tf_agents/agents/dqn/dqn_agent.py" />
         <option value="$PROJECT_DIR$/../venvs/Python375x64TensorflowGPU/Lib/site-packages/tf_agents/environments/wrappers.py" />
-        <option value="$PROJECT_DIR$/Halite/HaliteDQNV0.py" />
         <option value="$PROJECT_DIR$/helpers/tester.py" />
+        <option value="$PROJECT_DIR$/Halite/HaliteDQNV0.py" />
         <option value="$PROJECT_DIR$/Halite/HaliteWrapperV0.py" />
         <option value="$PROJECT_DIR$/helpers/HaliteImageRender.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="2576" />
-    <option name="height" value="1426" />
+    <option name="x" value="507" />
+    <option name="y" value="239" />
+    <option name="width" value="1294" />
+    <option name="height" value="913" />
   </component>
   <component name="ProjectId" id="1euVoW7aylMlBx1HqpTMvXdqVMP" />
   <component name="ProjectLevelVcsManager">
@@ -330,8 +334,8 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32946634" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3101315" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.2575406" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.56148493" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.35266823" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -509,9 +513,9 @@
           <option name="timeStamp" value="383" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/helpers/HaliteImageRender.py</url>
-          <line>95</line>
-          <option name="timeStamp" value="407" />
+          <url>file://$PROJECT_DIR$/Halite/HaliteWrapperV0.py</url>
+          <line>116</line>
+          <option name="timeStamp" value="425" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -787,16 +791,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/helpers/render.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="41" column="12" lean-forward="true" selection-start-line="41" selection-start-column="12" selection-end-line="41" selection-end-column="43" />
-          <folding>
-            <element signature="e#0#53#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/helpers/tester.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -814,29 +808,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Halite/HaliteDQNV0.py">
+    <entry file="file://$PROJECT_DIR$/helpers/render.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1088">
-          <caret line="8" column="61" lean-forward="true" selection-start-line="8" selection-start-column="61" selection-end-line="8" selection-end-column="61" />
+        <state relative-caret-position="612">
+          <caret line="54" column="24" selection-start-line="54" selection-start-column="23" selection-end-line="54" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#53#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Halite/HaliteWrapperV0.py">
+    <entry file="file://$PROJECT_DIR$/Halite/HaliteDQNV0.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="126" selection-start-line="126" selection-end-line="126" />
+        <state relative-caret-position="386">
+          <caret line="142" column="23" selection-start-line="142" selection-start-column="23" selection-end-line="142" selection-end-column="23" />
           <folding>
-            <element signature="e#0#38#0" expanded="true" />
+            <element signature="e#0#64#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/helpers/HaliteImageRender.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="793">
-          <caret line="95" selection-start-line="95" selection-end-line="95" />
+        <state relative-caret-position="483">
+          <caret line="95" column="74" selection-start-line="95" selection-start-column="74" selection-end-line="95" selection-end-column="74" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Halite/HaliteWrapperV0.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="686">
+          <caret line="116" selection-start-line="116" selection-end-line="116" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>

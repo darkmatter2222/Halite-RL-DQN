@@ -140,7 +140,7 @@ train_checkpointer = common.Checkpointer(
     global_step=train_step_counter
 )
 
-restore_network = True
+restore_network = False
 
 if restore_network:
     train_checkpointer.initialize_or_restore()

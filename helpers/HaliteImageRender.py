@@ -28,6 +28,8 @@ class HaliteImageRender():
             2: 'yellow',
             3: 'green'
         }
+        self.premade_rendered_sprites = {}
+
         self.initialize_sprite_models()
 
     def initialize_sprite_models(self):
@@ -49,6 +51,17 @@ class HaliteImageRender():
         self.sprite_models['ship_sprite'] = ship_sprite_model
         self.sprite_models['shipyard_sprite'] = shipyard_sprite_model
 
+        BGR_color = self.BGR_colors['blue']
+        render_ship_sprite = np.zeros([sprite_size, sprite_size, 3])
+        for h in range(sprite_size):
+            for w in range(sprite_size):
+                if self.sprite_models['ship_sprite'][h, w] == 1:
+                    render_ship_sprite[h, w] = BGR_color
+                else:
+                    render_ship_sprite[h, w] = self.BGR_colors['black']
+
+        self.premade_rendered_sprites[f'ship_sprite_player_{0}'] = render_ship_sprite
+
         circle_center = math.floor(sprite_size / 2)
         for s in range(math.floor(sprite_size/10)):
             circle_sprite_model = np.zeros([sprite_size, sprite_size])
@@ -57,6 +70,16 @@ class HaliteImageRender():
             circle_sprite_model[ri, ci] = 1
             self.sprite_models[f'circle_sprite_{s}'] = circle_sprite_model
 
+            render_halite_sprite = np.zeros([sprite_size, sprite_size, 3])
+            BGR_color = self.BGR_colors['cyan']
+            for h in range(sprite_size):
+                for w in range(sprite_size):
+                    if self.sprite_models[f'circle_sprite_{s}'][h, w] == 1:
+                        render_halite_sprite[h, w] = BGR_color
+                    else:
+                        render_halite_sprite[h, w] = self.BGR_colors['black']
+            self.premade_rendered_sprites[f'circle_sprite_{s}'] = render_halite_sprite
+
     def render_board(self, board):
         # calculate sprite size
         sprite_size = math.floor(self._final_image_dimension / self._board_size)
@@ -64,32 +87,20 @@ class HaliteImageRender():
 
         for board_h in range(self._board_size):
             for board_w in range(self._board_size):
-                board_cell = board[(board_w, self._board_size - board_h - 1)]
+                board_y = (self._board_size - board_h - 1)
+                board_x = board_w
+                board_cell = board[board_x, board_y]
                 bord_cell_halite = int(9.0 * board_cell.halite / float(board.configuration.max_cell_halite))
-                render_halite_sprite = np.zeros([sprite_size, sprite_size, 3])
-                BGR_color = self.BGR_colors['cyan']
-                for h in range(sprite_size):
-                    for w in range(sprite_size):
-                        if self.sprite_models[f'circle_sprite_{bord_cell_halite}'][h, w] == 1:
-                            render_halite_sprite[h, w] = BGR_color
-                        else:
-                            render_halite_sprite[h, w] = self.BGR_colors['black']
 
                 master_image[board_h * sprite_size:board_h * sprite_size + sprite_size,
-                (self._board_size - board_w - 1) * sprite_size:(self._board_size - board_w - 1) * sprite_size + sprite_size] = render_halite_sprite
+                board_x * sprite_size:board_x * sprite_size + sprite_size] = \
+                    self.premade_rendered_sprites[f'circle_sprite_{bord_cell_halite}']
 
                 if board_cell.ship is not None:
-                    BGR_color = self.BGR_colors[self.player_colors[board_cell.ship._player_id]]
-                    render_sprite = np.zeros([sprite_size, sprite_size, 3])
-                    for h in range(sprite_size):
-                        for w in range(sprite_size):
-                            if self.sprite_models['ship_sprite'][h, w] == 1:
-                                render_sprite[h, w] = BGR_color
-                            else:
-                                render_sprite[h, w] = self.BGR_colors['black']
                     master_image[board_h * sprite_size:board_h * sprite_size + sprite_size,
-                    (self._board_size - board_w - 1) * sprite_size:(self._board_size - board_w - 1) * sprite_size + sprite_size] = render_sprite
-
+                    board_x * sprite_size:board_x * sprite_size + sprite_size] =\
+                        self.premade_rendered_sprites[f'ship_sprite_player_{0}']
+        # TODO Code Shipyards
         cv2.imshow('Real Time Play', master_image)
         cv2.waitKey(1)
         # ship

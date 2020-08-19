@@ -97,7 +97,7 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
             return_object = self.reset()
             return return_object
 
-        self.board = self.get_board()
+        #self.board = self.get_board()
 
         reward = 0
 
@@ -124,6 +124,8 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
 
         # commit
         self.board = self.board.next()
+        #print(self.board)
+        #self.renderer()
         self.halite_image_render.render_board(self.board)
         current_player = self.board.current_player
         # calculate reward
