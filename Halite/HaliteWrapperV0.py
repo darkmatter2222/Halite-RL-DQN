@@ -106,6 +106,8 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
 
         reward = 0
         self.state, actionable_object_id, actionable_type = self.get_state()
+        ignore_action = False
+
 
         if actionable_type == 'UNKNOWN':
             self.episode_ended = True
@@ -119,13 +121,13 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
             if actionable_type == 'ship':
                 if action == 6:
                     reward += -1000
-                    self.episode_ended = True
+                    ignore_action = True
             else:
                 if action != 6 and action != 2:
                     reward += -1000
-                    self.episode_ended = True
+                    ignore_action = True
 
-        if self.episode_ended == False:
+        if self.episode_ended == False and ignore_action == False:
             if actionable_type == 'ship':
                 if self._action_def[int_action] != "NOTHING":
                     self.board.ships[actionable_object_id].next_action = self._action_def[int_action]
