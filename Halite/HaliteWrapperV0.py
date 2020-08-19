@@ -49,6 +49,8 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
         self.turns_counter = 0
         self.episode_ended = False
         self.total_reward = 0
+        self.ships_idle = []
+        self.shipyards_idle = []
 
         # initialize game
         self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000,
@@ -103,52 +105,50 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
             return return_object
 
         reward = 0
+        self.state, actionable_object_id, actionable_type = self.get_state()
+
+        if actionable_type == 'UNKNOWN':
+            self.episode_ended = True
+
         # global rules
         if self.turns_counter == self._max_turns:
             self.episode_ended = True
 
         if self.episode_ended == False:
-            # ships
-            # is valid ship action?
-            if action == 6:
-                reward += -1000
-                self.episode_ended = True
+            int_action = int(action)
+            if actionable_type == 'ship':
+                if action == 6:
+                    reward += -1000
+                    self.episode_ended = True
+            else:
+                if action != 6 and action != 2:
+                    reward += -1000
+                    self.episode_ended = True
 
         if self.episode_ended == False:
-            ship_cargo_previous = {}
-
-            # take action
-            for ship in self.board.ships:
-                if self.board.ships[ship]._player_id == 0:
-                    ship_cargo_previous[f'{self.board.ships[ship]._id}'] = self.board.ships[ship]._halite
-                    int_action = int(action)
-                    if self._action_def[int_action] != "NOTHING":
-                        self.board.ships[ship].next_action = self._action_def[int_action]
+            if actionable_type == 'ship':
+                if self._action_def[int_action] != "NOTHING":
+                    self.board.ships[actionable_object_id].next_action = self._action_def[int_action]
                 else:
-                    random_action = random.choice(self._action_def)
-                    if random_action != "NOTHING":
-                        self.board.ships[ship].next_action = random_action
+                    self.ships_idle.append(actionable_object_id)
+            else:
+                if self._action_def[int_action] != "NOTHING":
+                    self.board.shipyards[actionable_object_id].next_action = self._action_def[int_action]
+                else:
+                    self.shipyards_idle.append(actionable_object_id)
 
-            # commit
-            self.board = self.board.next()
-            #print(self.board)
-            #self.renderer()
-            self.halite_image_render.render_board(self.board)
-            # calculate reward
-            cargo_delta = 0
-            for ship in self.board.ships:
-                if self.board.ships[ship]._player_id == 0:
-                    cargo_delta += self.board.ships[ship]._halite - ship_cargo_previous[f'{self.board.ships[ship]._id}']
-            reward+= cargo_delta
+        self.state, actionable_object_id, actionable_type = self.get_state()
 
-            # final rules
-            if len(self.board._players[0].ships) < self.previous_ship_count:
-                reward -= 1000
+        self.halite_image_render.render_board(self.board)
 
-            if len(self.board._players[0].ships) < 1:
-                self.episode_ended = True
+        # final rules
+        if len(self.board._players[0].ships) < self.previous_ship_count:
+            reward -= 1000
 
-            self.previous_ship_count = len(self.board._players[0].ships)
+        if len(self.board._players[0].ships) < 1:
+            self.episode_ended = True
+
+        self.previous_ship_count = len(self.board._players[0].ships)
 
         self.total_reward += reward
         # get new state
@@ -158,7 +158,7 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
                 one_hot_ship_id = ship
                 break
 
-        self.state = self.get_state(one_hot_ship_id)
+        self.state, actionable_ship_id = self.get_state(one_hot_ship_id)
 
         # final wrap up
         self.turns_counter += 1
@@ -181,7 +181,38 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
         actions = [agent.action for agent in self.environment.state]
         return Board(obs, config, actions)
 
-    def get_state(self, one_hot_ship_id):
+    def get_state(self):
+        actionable_object_id = None
+        actionable_type = 'UNKNOWN'
+        loop_counter = 0
+
+        while True:
+            # ship check first
+            for ship_id in self.board.ships:
+                if self.board.ships[ship_id]._player_id == 0 and self.board.ships[ship_id].next_action == None \
+                        and ship_id not in self.ships_idle:
+                    actionable_object_id = ship_id
+                    actionable_type = 'ship'
+                    break
+
+            if actionable_type == 'UNKNOWN':
+                for shipyard_id in self.board.shipyards:
+                    if self.board.shipyards[shipyard_id]._player_id == 0 and self.board.shipyards[shipyard_id].next_action == None \
+                        and shipyard_id not in self.shipyards_idle:
+                        actionable_object_id = shipyard_id
+                        actionable_type = 'shipyard'
+                        break
+
+            if actionable_type == 'UNKNOWN':
+                self.board = self.board.next()
+                self.ships_idle = []
+                self.shipyards_idle = []
+                if loop_counter == 1:
+                    break
+                loop_counter += 1
+            else:
+                break
+
         size = self.board.configuration.size
         pixels = []
         for x in range(0, size):
@@ -193,17 +224,20 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
 
                 pixel = [0, 0, 0]
                 if cell.ship is not None:
-                    pixel[1] = 1
+                    if cell.ship.id == ship_id:
+                        pixel[1] = 1
+                    else:
+                        pixel[1] = 0.5
                 if cell.shipyard is not None:
                     pixel[2] = 1
                 pixel[0] = cell_halite
-                # 0 = Halite (normalized)
-                # 1 = Ship Presence
+                # 0 = Halite
+                # 1 = Ship Presence (One Hot 'ship_id', rest 0.5)
                 # 2 = Shipyard Presence
 
                 row.append(np.array(pixel))
             pixels.append(np.array(row))
-        return np.array(pixels)
+        return np.array(pixels), actionable_object_id, actionable_type
 
     def renderer(self, highlight=None):
         size = self.board.configuration.size

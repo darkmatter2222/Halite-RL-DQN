@@ -15,11 +15,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Halite/HaliteDQNV0.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1530">
-              <caret line="30" column="16" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="16" />
-              <folding>
-                <element signature="e#0#64#0" expanded="true" />
-              </folding>
+            <state>
+              <caret column="21" lean-forward="true" selection-start-column="21" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -27,11 +24,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Halite/HaliteWrapperV0.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-204">
-              <caret line="33" selection-start-line="33" selection-end-line="33" />
+            <state relative-caret-position="391">
+              <caret line="152" column="35" selection-start-line="152" selection-start-column="29" selection-end-line="152" selection-end-column="35" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../venvs/Python375x64TensorflowGPU/Lib/site-packages/kaggle_environments/envs/halite/helpers.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2922">
+              <caret line="642" selection-start-line="642" selection-end-line="642" />
             </state>
           </provider>
         </entry>
@@ -151,7 +157,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -313,8 +319,8 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32946634" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.20494974" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.35266823" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.20494974" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.35266823" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -490,6 +496,11 @@
           <url>file://$PROJECT_DIR$/Halite/SampleCode.py</url>
           <line>287</line>
           <option name="timeStamp" value="383" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Halite/HaliteWrapperV0.py</url>
+          <line>208</line>
+          <option name="timeStamp" value="461" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -771,16 +782,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Halite/HaliteDQNV0.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1530">
-          <caret line="30" column="16" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#64#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/helpers/HaliteImageRender.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
@@ -788,13 +789,6 @@
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../venvs/Python375x64TensorflowGPU/Lib/site-packages/tf_agents/environments/batched_py_environment.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="149" selection-start-line="149" selection-end-line="149" />
         </state>
       </provider>
     </entry>
@@ -812,17 +806,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Halite/HaliteDQNV0.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="21" lean-forward="true" selection-start-column="21" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../venvs/Python375x64TensorflowGPU/Lib/site-packages/kaggle_environments/envs/halite/helpers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2922">
+          <caret line="642" selection-start-line="642" selection-end-line="642" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../venvs/Python375x64TensorflowGPU/Lib/site-packages/tf_agents/environments/batched_py_environment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="149" selection-start-line="149" selection-end-line="149" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../venvs/Python375x64TensorflowGPU/Lib/site-packages/tf_agents/environments/py_environment.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="438">
-          <caret line="276" column="6" selection-start-line="276" selection-start-column="6" selection-end-line="276" selection-end-column="6" />
+        <state relative-caret-position="270">
+          <caret line="173" selection-start-line="173" selection-end-line="173" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Halite/HaliteWrapperV0.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-204">
-          <caret line="33" selection-start-line="33" selection-end-line="33" />
+        <state relative-caret-position="391">
+          <caret line="152" column="35" selection-start-line="152" selection-start-column="29" selection-end-line="152" selection-end-column="35" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
