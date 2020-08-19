@@ -151,14 +151,6 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
         self.previous_ship_count = len(self.board._players[0].ships)
 
         self.total_reward += reward
-        # get new state
-        one_hot_ship_id = '99'
-        for ship in self.board.ships:
-            if self.board.ships[ship]._player_id == 0 and self.board.ships[ship].next_action != None:
-                one_hot_ship_id = ship
-                break
-
-        self.state, actionable_ship_id = self.get_state(one_hot_ship_id)
 
         # final wrap up
         self.turns_counter += 1
@@ -185,6 +177,7 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
         actionable_object_id = None
         actionable_type = 'UNKNOWN'
         loop_counter = 0
+        human_complete = False
 
         while True:
             # ship check first
