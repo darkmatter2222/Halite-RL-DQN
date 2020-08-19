@@ -35,7 +35,7 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
             self._frames = 10
         else:
             self._frames = self._max_turns
-        self._agent_count = 1
+        self._agent_count = 4
         self._channels = 3
         self._action_def = {0: ShipAction.EAST,
                             1: ShipAction.NORTH,
@@ -61,13 +61,14 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
 
         self.state = np.zeros([self._board_size, self._board_size, self._channels])
         # 0 = Halite 0-1
-        # 1 = Friendly Ships (This One Hot, rest are .75)
+        # 1 = Ships (This One Hot, rest are .75)
 
         self.state_history = [self.state] * self._frames
 
         # get board
         self.board = self.get_board()
         self.halite_image_render = HaliteImageRender(self._board_size)
+        self.previous_ship_count = 0
 
     def action_spec(self):
         return_object = self._action_spec
@@ -79,6 +80,7 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
 
     def _reset(self):
         self.turns_counter = 0
+        self.previous_ship_count = 0
         self.episode_ended = False
         self.total_reward = 0
         # initialize game
@@ -101,42 +103,44 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
 
         reward = 0
 
-        # max turns?
+        # global rules
         if self.turns_counter == self._max_turns:
             self.episode_ended = True
 
-        cargo = 0
+        if len(self.board._players[0].ships) < self.previous_ship_count:
+            reward -= 1000
 
-        # take action
-        current_player = self.board.current_player
-        if current_player.id == 0:
-            for ship in current_player.ships:
-                cargo = ship.halite
-                int_action = int(action)
-                if self._action_def[int_action] != "NOTHING":
-                    ship.next_action = self._action_def[int_action]
-                elif self._action_def[int_action] == "NOTHING":
-                    lol = 1
+        if len(self.board._players[0].ships) < 1:
+            self.episode_ended = True
+
+        self.previous_ship_count = len(self.board._players[0].ships)
+
+        if self.episode_ended == False:
+            ship_cargo_previous = {}
+
+            # take action
+            for ship in self.board.ships:
+                if self.board.ships[ship]._player_id == 0:
+                    ship_cargo_previous[f'{self.board.ships[ship]._id}'] = self.board.ships[ship]._halite
+                    int_action = int(action)
+                    if self._action_def[int_action] != "NOTHING":
+                        self.board.ships[ship].next_action = self._action_def[int_action]
                 else:
-                    raise Exception('invalid action received')
-                break
-                # TODO just because we only have 1 ship
+                    random_action = random.choice(self._action_def)
+                    if random_action != "NOTHING":
+                        self.board.ships[ship].next_action = random_action
 
-        # commit
-        self.board = self.board.next()
-        #print(self.board)
-        #self.renderer()
-        self.halite_image_render.render_board(self.board)
-        current_player = self.board.current_player
-        # calculate reward
-        if current_player.id == 0:
-            for ship in current_player.ships:
-                cargo_delta = ship.halite - cargo
-                reward += cargo_delta
-                break
-
-        if cargo_delta > 0:
-            lol = 1
+            # commit
+            self.board = self.board.next()
+            #print(self.board)
+            #self.renderer()
+            self.halite_image_render.render_board(self.board)
+            # calculate reward
+            cargo_delta = 0
+            for ship in self.board.ships:
+                if self.board.ships[ship]._player_id == 0:
+                    cargo_delta += self.board.ships[ship]._halite - ship_cargo_previous[f'{self.board.ships[ship]._id}']
+            reward+= cargo_delta
 
         self.total_reward += reward
         # get new state
