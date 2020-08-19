@@ -21,6 +21,7 @@ import scipy as sp
 import cv2
 import uuid
 import matplotlib
+from helpers.HaliteImageRender import HaliteImageRender
 
 
 tf.compat.v1.enable_v2_behavior()
@@ -28,7 +29,7 @@ tf.compat.v1.enable_v2_behavior()
 class HaliteWrapperV0(py_environment.PyEnvironment):
     def __init__(self):
         # game parameters
-        self._board_size = 4
+        self._board_size = 10
         self._max_turns = 400
         if self._max_turns > 10:
             self._frames = 10
@@ -66,6 +67,7 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
 
         # get board
         self.board = self.get_board()
+        self.halite_image_render = HaliteImageRender(self._board_size)
 
     def action_spec(self):
         return_object = self._action_spec
@@ -122,7 +124,7 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
 
         # commit
         self.board = self.board.next()
-
+        self.halite_image_render.render_board(self.board)
         current_player = self.board.current_player
         # calculate reward
         if current_player.id == 0:
