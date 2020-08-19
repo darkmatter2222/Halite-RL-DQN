@@ -15,8 +15,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Halite/HaliteDQNV0.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="386">
-              <caret line="142" column="23" selection-start-line="142" selection-start-column="23" selection-end-line="142" selection-end-column="23" />
+            <state relative-caret-position="368">
+              <caret line="139" column="34" selection-start-line="139" selection-start-column="16" selection-end-line="139" selection-end-column="34" />
               <folding>
                 <element signature="e#0#64#0" expanded="true" />
               </folding>
@@ -27,8 +27,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/helpers/HaliteImageRender.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="58" column="56" lean-forward="true" selection-start-line="58" selection-start-column="56" selection-end-line="58" selection-end-column="56" />
+            <state relative-caret-position="623">
+              <caret line="92" column="32" selection-start-line="92" selection-start-column="16" selection-end-line="92" selection-end-column="32" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -39,7 +39,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Halite/HaliteWrapperV0.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1624">
+            <state relative-caret-position="-1318">
               <caret line="23" selection-start-line="23" selection-end-line="23" />
             </state>
           </provider>
@@ -102,8 +102,8 @@
         <option value="$PROJECT_DIR$/../venvs/Python375x64TensorflowGPU/Lib/site-packages/tf_agents/agents/dqn/dqn_agent.py" />
         <option value="$PROJECT_DIR$/../venvs/Python375x64TensorflowGPU/Lib/site-packages/tf_agents/environments/wrappers.py" />
         <option value="$PROJECT_DIR$/helpers/tester.py" />
-        <option value="$PROJECT_DIR$/Halite/HaliteDQNV0.py" />
         <option value="$PROJECT_DIR$/Halite/HaliteWrapperV0.py" />
+        <option value="$PROJECT_DIR$/Halite/HaliteDQNV0.py" />
         <option value="$PROJECT_DIR$/helpers/HaliteImageRender.py" />
       </list>
     </option>
@@ -330,8 +330,8 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32946634" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.20494974" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.35266823" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.20494974" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.35266823" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -809,10 +809,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../venvs/Python375x64TensorflowGPU/Lib/site-packages/tf_agents/utils/common.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="334">
+          <caret line="982" selection-start-line="982" selection-end-line="982" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Halite/HaliteDQNV0.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="386">
-          <caret line="142" column="23" selection-start-line="142" selection-start-column="23" selection-end-line="142" selection-end-column="23" />
+        <state relative-caret-position="368">
+          <caret line="139" column="34" selection-start-line="139" selection-start-column="16" selection-end-line="139" selection-end-column="34" />
           <folding>
             <element signature="e#0#64#0" expanded="true" />
           </folding>
@@ -821,15 +828,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Halite/HaliteWrapperV0.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1624">
+        <state relative-caret-position="-1318">
           <caret line="23" selection-start-line="23" selection-end-line="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/helpers/HaliteImageRender.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="58" column="56" lean-forward="true" selection-start-line="58" selection-start-column="56" selection-end-line="58" selection-end-column="56" />
+        <state relative-caret-position="623">
+          <caret line="92" column="32" selection-start-line="92" selection-start-column="16" selection-end-line="92" selection-end-column="32" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>

@@ -11,7 +11,7 @@ class HaliteImageRender():
     def __init__(self, this_board_size):
         self._board_size = this_board_size
         self.image_name = 'Default'
-        self._final_image_dimension = 200
+        self._final_image_dimension = 400
         self.sprite_models = {}
         self.BGR_colors = {
             'blue': (255, 0, 0),
@@ -65,7 +65,7 @@ class HaliteImageRender():
         circle_center = math.floor(sprite_size / 2)
         for s in range(10):
             circle_sprite_model = np.zeros([sprite_size, sprite_size])
-            radius = (sprite_size * s) / 100
+            radius = ((sprite_size * (s * 3)) / 100)
             ri, ci = draw.circle(circle_center, circle_center, radius=radius, shape=circle_sprite_model.shape)
             circle_sprite_model[ri, ci] = 1
             self.sprite_models[f'circle_sprite_{s}'] = circle_sprite_model
