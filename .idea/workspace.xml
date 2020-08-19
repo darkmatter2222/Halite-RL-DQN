@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="17b17302-bd58-4e19-8b68-bc3c854e4095" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/Halite/HaliteWrapperV0.py" beforeDir="false" afterPath="$PROJECT_DIR$/Halite/HaliteWrapperV0.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/helpers/HaliteImageRender.py" beforeDir="false" afterPath="$PROJECT_DIR$/helpers/HaliteImageRender.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,8 +27,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Halite/HaliteWrapperV0.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="115" column="68" selection-start-line="115" selection-start-column="68" selection-end-line="115" selection-end-column="68" />
+            <state relative-caret-position="-204">
+              <caret line="33" selection-start-line="33" selection-end-line="33" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -492,16 +491,6 @@
           <line>287</line>
           <option name="timeStamp" value="383" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Halite/HaliteWrapperV0.py</url>
-          <line>110</line>
-          <option name="timeStamp" value="447" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Halite/HaliteWrapperV0.py</url>
-          <line>113</line>
-          <option name="timeStamp" value="448" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
@@ -672,13 +661,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../venvs/Python375x64TensorflowGPU/Lib/site-packages/tf_agents/networks/q_network.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="41" column="17" lean-forward="true" selection-start-line="41" selection-start-column="17" selection-end-line="41" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/codecs.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="566">
@@ -823,17 +805,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../venvs/Python375x64TensorflowGPU/Lib/site-packages/tf_agents/networks/q_network.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="38" selection-start-line="38" selection-end-line="38" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../venvs/Python375x64TensorflowGPU/Lib/site-packages/tf_agents/environments/py_environment.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="173" selection-start-line="173" selection-end-line="173" />
+        <state relative-caret-position="438">
+          <caret line="276" column="6" selection-start-line="276" selection-start-column="6" selection-end-line="276" selection-end-column="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Halite/HaliteWrapperV0.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="115" column="68" selection-start-line="115" selection-start-column="68" selection-end-line="115" selection-end-column="68" />
+        <state relative-caret-position="-204">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>

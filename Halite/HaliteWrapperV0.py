@@ -29,19 +29,21 @@ tf.compat.v1.enable_v2_behavior()
 class HaliteWrapperV0(py_environment.PyEnvironment):
     def __init__(self):
         # game parameters
-        self._board_size = 10
+        self._board_size = 5
         self._max_turns = 400
-        if self._max_turns > 10:
-            self._frames = 10
+        if self._max_turns > 20:
+            self._frames = 20
         else:
             self._frames = self._max_turns
-        self._agent_count = 4
+        self._agent_count = 2
         self._channels = 3
         self._action_def = {0: ShipAction.EAST,
                             1: ShipAction.NORTH,
                             2: "NOTHING",
                             3: ShipAction.SOUTH,
-                            4: ShipAction.WEST}
+                            4: ShipAction.WEST,
+                            5: ShipAction.CONVERT,
+                            6: ShipyardAction.SPAWN}
 
         # runtime parameters
         self.turns_counter = 0
@@ -89,6 +91,7 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
         self.environment.reset(self._agent_count)
         # get board
         self.board = self.get_board()
+        self.state_history = [self.state] * self._frames
         return_object = ts.restart(np.array(self.state_history, dtype=np.int32))
         return return_object
 
@@ -99,21 +102,17 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
             return_object = self.reset()
             return return_object
 
-        #self.board = self.get_board()
-
         reward = 0
-
         # global rules
         if self.turns_counter == self._max_turns:
             self.episode_ended = True
 
-        if len(self.board._players[0].ships) < self.previous_ship_count:
-            reward -= 1000
-
-        if len(self.board._players[0].ships) < 1:
-            self.episode_ended = True
-
-        self.previous_ship_count = len(self.board._players[0].ships)
+        if self.episode_ended == False:
+            # ships
+            # is valid ship action?
+            if action == 6:
+                reward += -1000
+                self.episode_ended = True
 
         if self.episode_ended == False:
             ship_cargo_previous = {}
@@ -142,9 +141,24 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
                     cargo_delta += self.board.ships[ship]._halite - ship_cargo_previous[f'{self.board.ships[ship]._id}']
             reward+= cargo_delta
 
+            # final rules
+            if len(self.board._players[0].ships) < self.previous_ship_count:
+                reward -= 1000
+
+            if len(self.board._players[0].ships) < 1:
+                self.episode_ended = True
+
+            self.previous_ship_count = len(self.board._players[0].ships)
+
         self.total_reward += reward
         # get new state
-        self.state = self.get_state()
+        one_hot_ship_id = '99'
+        for ship in self.board.ships:
+            if self.board.ships[ship]._player_id == 0 and self.board.ships[ship].next_action != None:
+                one_hot_ship_id = ship
+                break
+
+        self.state = self.get_state(one_hot_ship_id)
 
         # final wrap up
         self.turns_counter += 1
@@ -167,7 +181,7 @@ class HaliteWrapperV0(py_environment.PyEnvironment):
         actions = [agent.action for agent in self.environment.state]
         return Board(obs, config, actions)
 
-    def get_state(self):
+    def get_state(self, one_hot_ship_id):
         size = self.board.configuration.size
         pixels = []
         for x in range(0, size):
