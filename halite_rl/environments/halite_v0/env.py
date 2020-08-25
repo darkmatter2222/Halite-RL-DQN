@@ -29,7 +29,7 @@ tf.compat.v1.enable_v2_behavior()
 class halite(py_environment.PyEnvironment):
     def __init__(self, window_name):
         # game parameters
-        self._board_size = 5
+        self._board_size = 10
         self._max_turns = 400
         if self._max_turns > 20:
             self._frames = 20
@@ -98,6 +98,9 @@ class halite(py_environment.PyEnvironment):
         return return_object
 
     def _step(self, action):
+        if action == 5:
+            lol = 1
+
         if self.episode_ended:
             # The last action ended the episode. Ignore the current action and start
             # a new episode.
@@ -121,10 +124,12 @@ class halite(py_environment.PyEnvironment):
             if actionable_type == 'ship':
                 if action == 6:
                     reward += -1000
+                    self.shipyards_idle.append(actionable_object_id)
                     ignore_action = True
             else:
                 if action != 6 and action != 2:
                     reward += -1000
+                    self.shipyards_idle.append(actionable_object_id)
                     ignore_action = True
 
         if self.episode_ended == False and ignore_action == False:
@@ -144,13 +149,15 @@ class halite(py_environment.PyEnvironment):
         self.halite_image_render.render_board(self.board)
 
         # final rules
-        if len(self.board._players[0].ships) < self.previous_ship_count:
+        if len(self.board._players[0].ships) < self.previous_ship_count and action != 5:
             reward -= 1000
 
-        if len(self.board._players[0].ships) < 1:
+        if len(self.board._players[0].ships) + len(self.board._players[0].shipyards) < 1:
             self.episode_ended = True
 
         self.previous_ship_count = len(self.board._players[0].ships)
+
+        reward += self.board.players[0].halite
 
         self.total_reward += reward
 
