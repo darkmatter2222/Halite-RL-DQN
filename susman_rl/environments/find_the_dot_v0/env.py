@@ -11,6 +11,7 @@ import uuid
 import math
 import os
 import json
+import datetime
 
 tf.compat.v1.enable_v2_behavior()
 
@@ -18,6 +19,7 @@ tf.compat.v1.enable_v2_behavior()
 class find_the_dot(py_environment.PyEnvironment):
     def __init__(self, window_name):
         self.score = {'win': 0, 'loss': 0, 'timeout': 0}
+        self.start_time = datetime.datetime.now()
         self.board_width = 5
         self.board_height = 5
         self.master_step_counter = 0
@@ -47,6 +49,7 @@ class find_the_dot(py_environment.PyEnvironment):
         self.save_image = False
         self.enable_render_image = True
         self.image_render_counter = 0
+        self.image_write_counter = 0
         self.image_history = []
         self.episode = 1
         # loading configuration...
@@ -81,20 +84,25 @@ class find_the_dot(py_environment.PyEnvironment):
         new_image = new_image.repeat(n, axis=0).repeat(n, axis=1)
 
         total = self.score['loss'] + self.score['win'] + self.score['timeout']
+        time_delta = (datetime.datetime.now() - self.start_time)
+        total_seconds = time_delta.total_seconds()
 
-        cv2.putText(new_image, f'Episode:{self.episode}', (10, 60), font, 1, (0, 0, 1), 2)
-        cv2.putText(new_image, f'Steps:{self.master_step_counter}', (10, 120), font, 1, (0, 0, 1), 2)
+        cv2.putText(new_image, f'Episode:{self.episode}', (10, 50), font, 1, (0, 0, 1), 2)
+        cv2.putText(new_image, f'Steps:{self.master_step_counter}', (10, 100), font, 1, (0, 0, 1), 2)
         if not total == 0:
-            cv2.putText(new_image, f'Win:{self.score["win"]}', (10, 180), font, 1,
+            cv2.putText(new_image, f'Win:{self.score["win"]}/{math.floor((self.score["win"] * 100) / total)}%', (10, 150), font, 1,
                         (0, 0, 1), 2)
-            cv2.putText(new_image, f'Loss:{self.score["loss"]}', (10, 240), font, 1,
+            cv2.putText(new_image, f'Loss:{self.score["loss"]}/{math.floor((self.score["loss"] * 100) / total)}%', (10, 200), font, 1,
                         (0, 0, 1), 2)
-            cv2.putText(new_image, f'Timeout:{self.score["timeout"]}', (10, 300), font, 1,
+            cv2.putText(new_image, f'Timeout:{self.score["timeout"]}/{math.floor((self.score["timeout"] * 100) / total)}%', (10, 250), font, 1,
+                        (0, 0, 1), 2)
+            cv2.putText(new_image, f'Seconds:{total_seconds}', (10, 300), font, 1,
                         (0, 0, 1), 2)
         cv2.imshow('Real Time Play', new_image)
         new_image = new_image * 254
         if self.episode % 10 == 0:
-            cv2.imwrite(f'{self._images_dir}\\{self.master_step_counter}.jpg', new_image)
+            cv2.imwrite(f'{self._images_dir}\\{self.image_write_counter}.jpg', new_image)
+            self.image_write_counter += 1
         cv2.waitKey(1)
 
 
