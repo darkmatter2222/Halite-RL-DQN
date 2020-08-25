@@ -13,10 +13,10 @@ https://www.tensorflow.org/agents/overview
 **Goal:** The white dot to find the green dot  
 **Avoid:** Falling off the map or taking too many steps  
 
-On a 5x5 Grid and a typical 2018-2020 CPU/GPU, training time can take ~4k steps and 10-15 minutes. w/ >95% Win rate.    
-On a 6x6 Grid and a typical 2018-2020 CPU/GPU, training time can take ~12k steps and 40-60 minutes w/ >95% Win rate.  
-...  
-On a 15x15 Grid and a typical 2018-2020 CPU/GPU, training time can take ~10M-20M steps and 1-2 days w/ >95% Win rate.  
+* On a 5x5 Grid and a typical 2018-2020 CPU/GPU, training time can take ~4k steps and 10-15 minutes. w/ >95% Win rate.    
+* On a 6x6 Grid and a typical 2018-2020 CPU/GPU, training time can take ~12k steps and 40-60 minutes w/ >95% Win rate.  
+* ...  
+* On a 15x15 Grid and a typical 2018-2020 CPU/GPU, training time can take ~10M-20M steps and 1-2 days w/ >95% Win rate.  
 
 
 
