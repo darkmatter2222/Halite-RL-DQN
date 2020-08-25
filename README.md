@@ -1,11 +1,13 @@
 # Halite-RL-DQN :robot:
-Exploring Deep Rnforcement Larning to play Halite, specifically the version of Halite on https://www.kaggle.com/c/halite
+Exploring Deep Rnforcement Larning to play Halite, specifically the version of Halite on:  
+https://www.kaggle.com/c/halite  
+https://github.com/Kaggle/kaggle-environments/tree/master/kaggle_environments/envs/halite  
 
 # Baby Steps First :baby:
 This was my first attempt at reinforcement learning, before chomping off a huge bite, lets train a simple bot. Yes, 
 I studied Q Learning and Q tables, and jumped right into  Deep Reinforcement Learning.:laughing:  
 https://github.com/darkmatter2222/Halite-RL-DQN/blob/master/susman_rl/dqn_bots/find_the_dot_v0/dqn.py  
-This is a mashup of sample code from the tf_agents documentation and my idea for a good challenge similar to Halite::thinking:  
+This is a POC of sample code from the tf_agents documentation and my idea for a good challenge similar to Halite::thinking:  
 https://www.tensorflow.org/agents/overview  
   
 ![Baby Steps]( https://imgur.com/7TEi2NT.gif) (**Speed reduced for GIF representation**)  
