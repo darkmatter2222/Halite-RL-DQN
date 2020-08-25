@@ -21,13 +21,13 @@ import scipy as sp
 import cv2
 import uuid
 import matplotlib
-from helpers.HaliteImageRender import HaliteImageRender
+from halite_rl.environments.halite_v0.helpers.image_render import image_render
 
 
 tf.compat.v1.enable_v2_behavior()
 
 class halite(py_environment.PyEnvironment):
-    def __init__(self):
+    def __init__(self, window_name):
         # game parameters
         self._board_size = 5
         self._max_turns = 400
@@ -71,7 +71,7 @@ class halite(py_environment.PyEnvironment):
 
         # get board
         self.board = self.get_board()
-        self.halite_image_render = HaliteImageRender(self._board_size)
+        self.halite_image_render = image_render(self._board_size)
         self.previous_ship_count = 0
 
     def action_spec(self):

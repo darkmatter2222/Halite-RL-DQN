@@ -4,76 +4,79 @@ from tf_agents.environments import tf_py_environment
 from tf_agents.networks import q_network
 from tf_agents.policies import random_tf_policy
 from tf_agents.replay_buffers import tf_uniform_replay_buffer
-from tf_agents.environments.wrappers import ActionDiscretizeWrapper
 from tf_agents.trajectories import trajectory
 from tf_agents.utils import common
 from halite_rl.environments.halite_v0.env import halite
 from tqdm import tqdm
 import os
+import json
 from tf_agents.policies import policy_saver
 
-print('Initialization...')
+# loading configuration...
+print('loading configuration...')
+_config = {}
+with open('config.json') as f:
+    _config = json.load(f)
+
+# set tensorflow compatibility
 tf.compat.v1.enable_v2_behavior()
 
-num_iterations = 20000000 # @param {type:"integer"}
+# setting hyperparameters
+_num_iterations = 20000000  # @param {type:"integer"}
+_initial_collect_steps = 100  # @param {type:"integer"}
+_collect_steps_per_iteration = 10  # @param {type:"integer"}
+_replay_buffer_max_length = 100000  # @param {type:"integer"}
+_batch_size = 64 * 10  # @param {type:"integer"}
+_learning_rate = 0.0001  # @param {type:"number"}
+_train_steps = 4000  # @param {type:"integer"}
+_num_eval_episodes = 10  # @param {type:"integer"}
 
-initial_collect_steps = 100  # @param {type:"integer"}
-collect_steps_per_iteration = 10  # @param {type:"integer"}
-replay_buffer_max_length = 100000  # @param {type:"integer"}
+# build policy directories
+_save_policy_dir = os.path.join(_config['files']['policy']['base_dir'],
+                                _config['files']['policy']['save_policy']['dir'],
+                                _config['files']['policy']['save_policy']['name'])
 
-batch_size = 64 * 10 # @param {type:"integer"}
-learning_rate = 0.0001  # @param {type:"number"}
-log_interval = 200  # @param {type:"integer"}
+_checkpoint_policy_dir = os.path.join(_config['files']['policy']['base_dir'],
+                                      _config['files']['policy']['checkpoint_policy']['dir'],
+                                      _config['files']['policy']['checkpoint_policy']['name'])
 
-train_steps = 4000 # @param {type:"integer"}
-num_eval_episodes = 10 # @param {type:"integer"}
-eval_interval = 400  # @param {type:"integer"}
+# instantiate two environments. I personally don't feel this is necessary,
+# however google did it in their tutorial...
+_train_py_env = halite(window_name='Training')
+_eval_py_env = halite(window_name='Testing')
 
-base_dir = 'N:\\Halite'
-policy_dir = 'Policy'
-tensorboard_dir = 'Logs'
-model_name = 'v4'
+# wrap the pure python game in a tensorflow wrapper
+_train_env = tf_py_environment.TFPyEnvironment(_train_py_env)
+_eval_env = tf_py_environment.TFPyEnvironment(_eval_py_env)
 
-tempdir = f'{base_dir}\\{policy_dir}'
-
-
-train_py_env = halite()
-eval_py_env = halite()
-
-train_env = tf_py_environment.TFPyEnvironment(train_py_env)
-train_env._env._envs[0].uuid = 'Training...'
-print('Action Spec:', train_env.action_spec())
-eval_env = tf_py_environment.TFPyEnvironment(eval_py_env)
-eval_env._env._envs[0].uuid = 'Testing...'
 
 print('Building Network...')
+_fc_layer_params = (512,)
 
-fc_layer_params = (512,)
+_q_net = q_network.QNetwork(
+    _train_env.observation_spec(),
+    _train_env.action_spec(),
+    fc_layer_params=_fc_layer_params)
 
-q_net = q_network.QNetwork(
-    train_env.observation_spec(),
-    train_env.action_spec(),
-    fc_layer_params=fc_layer_params)
+_optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=_learning_rate)
 
-optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=learning_rate)
+_train_step_counter = tf.Variable(0)
 
-train_step_counter = tf.Variable(0)
-
-agent = dqn_agent.DqnAgent(
-    train_env.time_step_spec(),
-    train_env.action_spec(),
-    q_network=q_net,
-    optimizer=optimizer,
+_agent = dqn_agent.DqnAgent(
+    _train_env.time_step_spec(),
+    _train_env.action_spec(),
+    q_network=_q_net,
+    optimizer=_optimizer,
     td_errors_loss_fn=common.element_wise_squared_loss,
-    train_step_counter=train_step_counter)
+    train_step_counter=_train_step_counter)
 
-agent.initialize()
+_agent.initialize()
 
-eval_policy = agent.policy
-collect_policy = agent.collect_policy
+_eval_policy = _agent.policy
+_collect_policy = _agent.collect_policy
 
-random_policy = random_tf_policy.RandomTFPolicy(train_env.time_step_spec(),
-                                                train_env.action_spec())
+_random_policy = random_tf_policy.RandomTFPolicy(_train_env.time_step_spec(),
+                                                 _train_env.action_spec())
 
 
 def compute_avg_return(environment, policy, num_episodes=10):
@@ -90,12 +93,10 @@ def compute_avg_return(environment, policy, num_episodes=10):
     return avg_return.numpy()[0]
 
 
-#compute_avg_return(eval_env, random_policy, num_eval_episodes)
-
-replay_buffer = tf_uniform_replay_buffer.TFUniformReplayBuffer(
-    data_spec=agent.collect_data_spec,
-    batch_size=train_env.batch_size,
-    max_length=replay_buffer_max_length)
+_replay_buffer = tf_uniform_replay_buffer.TFUniformReplayBuffer(
+    data_spec=_agent.collect_data_spec,
+    batch_size=_train_env.batch_size,
+    max_length=_replay_buffer_max_length)
 
 
 def collect_step(environment, policy, buffer):
@@ -112,32 +113,31 @@ def collect_data(env, policy, buffer, steps):
         collect_step(env, policy, buffer)
 
 
-#collect_data(train_env, random_policy, replay_buffer, steps=100)
+# collect_data(train_env, random_policy, replay_buffer, steps=100)
 
-dataset = replay_buffer.as_dataset(
+dataset = _replay_buffer.as_dataset(
     num_parallel_calls=3,
-    sample_batch_size=batch_size,
+    sample_batch_size=_batch_size,
     num_steps=2).prefetch(3)
 
-agent.train = common.function(agent.train)
+_agent.train = common.function(_agent.train)
 
-agent.train_step_counter.assign(0)
+_agent.train_step_counter.assign(0)
 print('initial collect...')
-avg_return = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
+avg_return = compute_avg_return(_eval_env, _agent.policy, _num_eval_episodes)
 returns = [avg_return]
 iterator = iter(dataset)
 
-checkpoint_dir = os.path.join(tempdir, 'checkpoint')
 train_checkpointer = common.Checkpointer(
-    ckpt_dir=checkpoint_dir,
+    ckpt_dir=_checkpoint_policy_dir,
     max_to_keep=1,
-    agent=agent,
-    policy=agent.policy,
-    replay_buffer=replay_buffer,
-    global_step=train_step_counter
+    agent=_agent,
+    policy=_agent.policy,
+    replay_buffer=_replay_buffer,
+    global_step=_train_step_counter
 )
-policy_dir = os.path.join(tempdir, 'policy')
-tf_policy_saver = policy_saver.PolicySaver(agent.policy)
+
+tf_policy_saver = policy_saver.PolicySaver(_agent.policy)
 
 restore_network = True
 
@@ -146,25 +146,23 @@ if restore_network:
 
 while True:
     print('Training...')
-    for _ in tqdm(range(train_steps)):
-        for _ in range(collect_steps_per_iteration):
-            collect_step(train_env, agent.collect_policy, replay_buffer)
+    for _ in tqdm(range(_train_steps)):
+        for _ in range(_collect_steps_per_iteration):
+            collect_step(_train_env, _agent.collect_policy, _replay_buffer)
 
         experience, unused_info = next(iterator)
-        train_loss = agent.train(experience).loss
+        train_loss = _agent.train(experience).loss
 
-        step = agent.train_step_counter.numpy()
+        step = _agent.train_step_counter.numpy()
 
     print('step = {0}: loss = {1}'.format(step, train_loss))
     print('Eval Started...')
-    avg_return = compute_avg_return(eval_env, agent.policy, num_eval_episodes)
+    avg_return = compute_avg_return(_eval_env, _agent.policy, _num_eval_episodes)
     returns.append(avg_return)
-    train_checkpointer.save(train_step_counter)
+    train_checkpointer.save(_train_step_counter)
     print('step = {0}: Average Return = {1:.2f}'.format(step, avg_return))
-    tf_policy_saver.save(policy_dir)
-
+    tf_policy_saver.save(_save_policy_dir)
 
 policy_dir = os.path.join(tempdir, 'policy')
-tf_policy_saver = policy_saver.PolicySaver(agent.policy)
+tf_policy_saver = policy_saver.PolicySaver(_agent.policy)
 tf_policy_saver.save(policy_dir)
-
