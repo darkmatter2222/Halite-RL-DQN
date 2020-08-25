@@ -8,14 +8,19 @@ import random
 import scipy as sp
 import cv2
 import uuid
+import math
+import os
+import json
 
 tf.compat.v1.enable_v2_behavior()
 
 
 class find_the_dot(py_environment.PyEnvironment):
     def __init__(self, window_name):
+        self.score = {'win': 0, 'loss': 0, 'timeout': 0}
         self.board_width = 5
         self.board_height = 5
+        self.master_step_counter = 0
         self.uuid = window_name
         self.sigma_y = self.board_width / 2
         self.sigma_x = self.board_height / 2
@@ -43,6 +48,15 @@ class find_the_dot(py_environment.PyEnvironment):
         self.enable_render_image = True
         self.image_render_counter = 0
         self.image_history = []
+        self.episode = 1
+        # loading configuration...
+        print('loading configuration...')
+        _config = {}
+        with open('config.json') as f:
+            _config = json.load(f)
+        self._images_dir = os.path.join(_config['files']['policy']['base_dir'],
+                                        _config['files']['policy']['images']['stills']['dir'],
+                                        _config['files']['policy']['images']['stills']['name'])
 
     def render_image(self, directive='unknown'):
         if not self.enable_render_image:
@@ -63,11 +77,26 @@ class find_the_dot(py_environment.PyEnvironment):
                     else:
                         new_image[height][width] = (1, 1, 1)
 
-        n = 50
+        n = 75
         new_image = new_image.repeat(n, axis=0).repeat(n, axis=1)
-        cv2.putText(new_image, f'Step:{self.image_render_counter}', (10, 60), font, 1, (0, 0, 1), 2)
+
+        total = self.score['loss'] + self.score['win'] + self.score['timeout']
+
+        cv2.putText(new_image, f'Episode:{self.episode}', (10, 60), font, 1, (0, 0, 1), 2)
+        cv2.putText(new_image, f'Steps:{self.master_step_counter}', (10, 120), font, 1, (0, 0, 1), 2)
+        if not total == 0:
+            cv2.putText(new_image, f'Win:{self.score["win"]}', (10, 180), font, 1,
+                        (0, 0, 1), 2)
+            cv2.putText(new_image, f'Loss:{self.score["loss"]}', (10, 240), font, 1,
+                        (0, 0, 1), 2)
+            cv2.putText(new_image, f'Timeout:{self.score["timeout"]}', (10, 300), font, 1,
+                        (0, 0, 1), 2)
         cv2.imshow('Real Time Play', new_image)
+        new_image = new_image * 254
+        if self.episode % 10 == 0:
+            cv2.imwrite(f'{self._images_dir}\\{self.master_step_counter}.jpg', new_image)
         cv2.waitKey(1)
+
 
     def set_goal(self):
         self.set_player()
@@ -102,8 +131,8 @@ class find_the_dot(py_environment.PyEnvironment):
             for width in range(self.board_width):
                 self._state[height, width][1] = 0
 
-        if 0 < self.player_location['y'] < self.board_width and \
-                0 < self.player_location['x'] < self.board_height:
+        if 0 <= self.player_location['y'] < self.board_width and \
+                0 <= self.player_location['x'] < self.board_height:
             self._state[self.player_location['y'], self.player_location['x']][1] = 1
 
     def set_player(self):
@@ -140,10 +169,12 @@ class find_the_dot(py_environment.PyEnvironment):
         self.image_history = []
         self.state_history = [self._state] * self.frames
         self.render_image()
+        self.episode += 1
         return_object = ts.restart(np.array(self.state_history, dtype=np.int32))
         return return_object
 
     def _step(self, action):
+        self.master_step_counter += 1
         if self._episode_ended:
             # The last action ended the episode. Ignore the current action and start
             # a new episode.
@@ -196,16 +227,19 @@ class find_the_dot(py_environment.PyEnvironment):
         if self.this_turn == self.max_turns - 1:
             info = 'Max Tries'
             self._episode_ended = True
+            self.score['timeout'] += 1
             reward += loose_reward
         else:
             # Loose Fall Off Map?
             if self.player_location['y'] < 0 or self.player_location['x'] < 0 or \
                     self.player_location['x'] >= self.board_width or self.player_location['y'] >= self.board_height:
                 info = 'Loose Fall Off Map'
+                self.score['loss'] += 1
                 self._episode_ended = True
                 reward += loose_reward
             elif self._state[self.player_location['y'], self.player_location['x']][0] == 1:
                 info = 'Won Got the Goal'
+                self.score['win'] += 1
                 self._episode_ended = True
                 reward += win_reward
             elif self._state[self.player_location['y'], self.player_location['x']][2] != 0:

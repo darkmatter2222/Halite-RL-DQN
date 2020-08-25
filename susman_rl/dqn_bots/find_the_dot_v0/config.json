@@ -13,6 +13,16 @@
       "checkpoint_policy": {
         "dir": "checkpoint",
         "name": "find_the_dot_v0"
+      },
+      "images": {
+        "stills": {
+          "dir": "stills",
+          "name": "find_the_dot_v0"
+        },
+        "gifs": {
+          "dir": "gifs",
+          "name": "find_the_dot_v0"
+        }
       }
     }
   }
