@@ -24,7 +24,7 @@ https://www.tensorflow.org/agents/overview
 2. Set board size here:  
    1. https://github.com/darkmatter2222/Halite-RL-DQN/blob/master/susman_rl/environments/find_the_dot_v0/env.py  
 3. Train bot here:  
-   1. https://github.com/darkmatter2222/Halite-RL-DQN/blob/master/susman_rl/dqn_bots/find_the_dot_v0/dqn.py  
+   1. https://github.com/darkmatter2222/Halite-RL-DQN/blob/master/susman_rl/dqn_bots/find_the_dot_v0/train_model.py  
 4. Evaluate bot here:  
    1. https://github.com/darkmatter2222/Halite-RL-DQN/blob/master/susman_rl/dqn_bots/find_the_dot_v0/execute_trained_model.py
 
