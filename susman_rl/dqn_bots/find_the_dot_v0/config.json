@@ -1,5 +1,19 @@
 {
-  "logs": {
-
+  "files": {
+    "tensorboard_logs": {
+      "base_dir":  "N:\\Halite-RL-DQN",
+      "dir": "tensorboard"
+    },
+    "policy": {
+      "base_dir":  "N:\\Halite-RL-DQN",
+      "save_policy": {
+        "dir": "save",
+        "name": "find_the_dot_v0"
+      },
+      "checkpoint_policy": {
+        "dir": "checkpoint",
+        "name": "find_the_dot_v0"
+      }
+    }
   }
 }

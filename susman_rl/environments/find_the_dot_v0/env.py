@@ -13,10 +13,10 @@ tf.compat.v1.enable_v2_behavior()
 
 
 class find_the_dot(py_environment.PyEnvironment):
-    def __init__(self):
+    def __init__(self, window_name):
         self.board_width = 5
         self.board_height = 5
-        self.uuid = str(uuid.uuid1())
+        self.uuid = window_name
         self.sigma_y = self.board_width / 2
         self.sigma_x = self.board_height / 2
         self.channels = 3
