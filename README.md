@@ -19,7 +19,7 @@ https://www.tensorflow.org/agents/overview
 * On a 15x15 Grid and a typical 2018-2020 CPU/GPU, training time can take ~10M-20M steps and 1-2 days w/ >95% Win rate.  
 
 # Try 'Baby Steps' yourself?
-1. Config Directories Here:  
+1. Config directories here:  
    1. https://github.com/darkmatter2222/Halite-RL-DQN/blob/master/susman_rl/dqn_bots/find_the_dot_v0/config.json  
 2. Set board size here:  
    1. https://github.com/darkmatter2222/Halite-RL-DQN/blob/master/susman_rl/environments/find_the_dot_v0/env.py  
