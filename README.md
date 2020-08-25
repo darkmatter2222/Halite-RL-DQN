@@ -11,6 +11,7 @@ This is a POC of sample code from the tf_agents documentation and my idea for a 
 https://www.tensorflow.org/agents/overview  
   
 ![Baby Steps]( https://imgur.com/7TEi2NT.gif) (**Speed reduced for GIF representation**)  
+https://www.youtube.com/watch?v=-33ehDNT3kY  
   
 **Goal:** The white dot to find the green dot  
 **Avoid:** Falling off the map or taking too many steps  
