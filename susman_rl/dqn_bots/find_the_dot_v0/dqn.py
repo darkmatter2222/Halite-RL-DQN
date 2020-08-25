@@ -35,14 +35,12 @@ _eval_interval = 400  # @param {type:"integer"}
 
 # build policy directories
 _save_policy_dir = os.path.join(_config['files']['policy']['base_dir'],
-                                _config['files']['policy']['save_policy'],
-                                _config['files']['policy']['dir'],
-                                _config['files']['policy']['name'])
+                                _config['files']['policy']['save_policy']['dir'],
+                                _config['files']['policy']['save_policy']['name'])
 
 _checkpoint_policy_dir = os.path.join(_config['files']['policy']['base_dir'],
-                                      _config['files']['policy']['checkpoint_policy'],
-                                      _config['files']['policy']['dir'],
-                                      _config['files']['policy']['name'])
+                                      _config['files']['policy']['checkpoint_policy']['dir'],
+                                      _config['files']['policy']['checkpoint_policy']['name'])
 
 # instantiate two environments. I personally don't feel this is necessary,
 # however google did it in their tutorial...
