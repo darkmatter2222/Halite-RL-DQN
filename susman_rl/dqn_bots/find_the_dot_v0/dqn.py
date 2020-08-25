@@ -28,10 +28,8 @@ _collect_steps_per_iteration = 10  # @param {type:"integer"}
 _replay_buffer_max_length = 100000  # @param {type:"integer"}
 _batch_size = 64 * 10  # @param {type:"integer"}
 _learning_rate = 0.0001  # @param {type:"number"}
-_log_interval = 200  # @param {type:"integer"}
 _train_steps = 4000  # @param {type:"integer"}
 _num_eval_episodes = 10  # @param {type:"integer"}
-_eval_interval = 400  # @param {type:"integer"}
 
 # build policy directories
 _save_policy_dir = os.path.join(_config['files']['policy']['base_dir'],
@@ -74,11 +72,11 @@ _agent = dqn_agent.DqnAgent(
 
 _agent.initialize()
 
-eval_policy = _agent.policy
-collect_policy = _agent.collect_policy
+_eval_policy = _agent.policy
+_collect_policy = _agent.collect_policy
 
-random_policy = random_tf_policy.RandomTFPolicy(_train_env.time_step_spec(),
-                                                _train_env.action_spec())
+_random_policy = random_tf_policy.RandomTFPolicy(_train_env.time_step_spec(),
+                                                 _train_env.action_spec())
 
 
 def compute_avg_return(environment, policy, num_episodes=10):
@@ -95,9 +93,7 @@ def compute_avg_return(environment, policy, num_episodes=10):
     return avg_return.numpy()[0]
 
 
-# compute_avg_return(eval_env, random_policy, num_eval_episodes)
-
-replay_buffer = tf_uniform_replay_buffer.TFUniformReplayBuffer(
+_replay_buffer = tf_uniform_replay_buffer.TFUniformReplayBuffer(
     data_spec=_agent.collect_data_spec,
     batch_size=_train_env.batch_size,
     max_length=_replay_buffer_max_length)
@@ -119,7 +115,7 @@ def collect_data(env, policy, buffer, steps):
 
 # collect_data(train_env, random_policy, replay_buffer, steps=100)
 
-dataset = replay_buffer.as_dataset(
+dataset = _replay_buffer.as_dataset(
     num_parallel_calls=3,
     sample_batch_size=_batch_size,
     num_steps=2).prefetch(3)
@@ -137,7 +133,7 @@ train_checkpointer = common.Checkpointer(
     max_to_keep=1,
     agent=_agent,
     policy=_agent.policy,
-    replay_buffer=replay_buffer,
+    replay_buffer=_replay_buffer,
     global_step=_train_step_counter
 )
 
@@ -152,7 +148,7 @@ while True:
     print('Training...')
     for _ in tqdm(range(_train_steps)):
         for _ in range(_collect_steps_per_iteration):
-            collect_step(_train_env, _agent.collect_policy, replay_buffer)
+            collect_step(_train_env, _agent.collect_policy, _replay_buffer)
 
         experience, unused_info = next(iterator)
         train_loss = _agent.train(experience).loss
