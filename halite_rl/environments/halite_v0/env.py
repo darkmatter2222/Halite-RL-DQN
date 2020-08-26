@@ -29,7 +29,7 @@ tf.compat.v1.enable_v2_behavior()
 class halite(py_environment.PyEnvironment):
     def __init__(self, window_name):
         # game parameters
-        self._board_size = 10
+        self._board_size = 5
         self._max_turns = 400
         if self._max_turns > 20:
             self._frames = 20
@@ -65,7 +65,8 @@ class halite(py_environment.PyEnvironment):
 
         self.state = np.zeros([self._board_size, self._board_size, self._channels])
         # 0 = Halite 0-1
-        # 1 = Ships (This One Hot, rest are .75)
+        # 1 = Ships (This One Hot, rest are .5)
+        # 1 = Shipyardss (This One Hot, rest are .5)
 
         self.state_history = [self.state] * self._frames
 
@@ -119,18 +120,7 @@ class halite(py_environment.PyEnvironment):
         if self.turns_counter == self._max_turns:
             self.episode_ended = True
 
-        if self.episode_ended == False:
-            int_action = int(action)
-            if actionable_type == 'ship':
-                if action == 6:
-                    reward += -1000
-                    self.shipyards_idle.append(actionable_object_id)
-                    ignore_action = True
-            else:
-                if action != 6 and action != 2:
-                    reward += -1000
-                    self.shipyards_idle.append(actionable_object_id)
-                    ignore_action = True
+        int_action = int(action)
 
         if self.episode_ended == False and ignore_action == False:
             if actionable_type == 'ship':
@@ -148,16 +138,11 @@ class halite(py_environment.PyEnvironment):
 
         self.halite_image_render.render_board(self.board)
 
-        # final rules
-        if len(self.board._players[0].ships) < self.previous_ship_count and action != 5:
-            reward -= 1000
+        ship_cargo = 0
+        for ship in self.board.players[0].ships:
+            ship_cargo += ship.halite
 
-        if len(self.board._players[0].ships) + len(self.board._players[0].shipyards) < 1:
-            self.episode_ended = True
-
-        self.previous_ship_count = len(self.board._players[0].ships)
-
-        reward += self.board.players[0].halite
+        reward += (self.board.players[0].halite * 2) + ship_cargo
 
         self.total_reward += reward
 
@@ -226,16 +211,19 @@ class halite(py_environment.PyEnvironment):
 
                 pixel = [0, 0, 0]
                 if cell.ship is not None:
-                    if cell.ship.id == ship_id:
-                        pixel[1] = 1
+                    if actionable_type == 'ship' and cell.ship.id == actionable_object_id:
+                        pixel[1] = 1 # onehot
                     else:
                         pixel[1] = 0.5
-                if cell.shipyard is not None:
-                    pixel[2] = 1
+                elif cell.shipyard is not None:
+                    if actionable_type == 'shipyard' and cell.shipyard.id == actionable_object_id:
+                        pixel[2] = 1 # onehot
+                    else:
+                        pixel[2] = 0.5
                 pixel[0] = cell_halite
                 # 0 = Halite
                 # 1 = Ship Presence (One Hot 'ship_id', rest 0.5)
-                # 2 = Shipyard Presence
+                # 2 = Shipyard Presence (One Hot 'ship_id', rest 0.5)
 
                 row.append(np.array(pixel))
             pixels.append(np.array(row))
