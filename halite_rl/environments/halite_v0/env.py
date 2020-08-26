@@ -121,6 +121,17 @@ class halite(py_environment.PyEnvironment):
             self.episode_ended = True
 
         int_action = int(action)
+        if self.episode_ended == False:
+            if actionable_type == 'ship':
+                if action == 6:
+                    reward += -100000
+                    ignore_action = True
+                    self.ships_idle.append(actionable_object_id)
+            else:
+                if action != 6 and action != 2:
+                    reward += -100000
+                    ignore_action = True
+                    self.shipyards_idle.append(actionable_object_id)
 
         if self.episode_ended == False and ignore_action == False:
             if actionable_type == 'ship':
