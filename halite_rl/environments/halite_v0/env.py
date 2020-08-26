@@ -66,7 +66,7 @@ class halite(py_environment.PyEnvironment):
         self.state = np.zeros([self._board_size, self._board_size, self._channels])
         # 0 = Halite 0-1
         # 1 = Ships (This One Hot, rest are .5)
-        # 1 = Shipyardss (This One Hot, rest are .5)
+        # 2 = Shipyardss (This One Hot, rest are .5)
 
         self.state_history = [self.state] * self._frames
 
@@ -136,8 +136,6 @@ class halite(py_environment.PyEnvironment):
 
         self.state, actionable_object_id, actionable_type = self.get_state()
 
-        self.halite_image_render.render_board(self.board)
-
         ship_cargo = 0
         for ship in self.board.players[0].ships:
             ship_cargo += ship.halite
@@ -145,6 +143,8 @@ class halite(py_environment.PyEnvironment):
         reward += (self.board.players[0].halite * 2) + ship_cargo
 
         self.total_reward += reward
+
+        self.halite_image_render.render_board(self.board, total_reward=self.total_reward, this_step_reward=reward)
 
         # final wrap up
         self.turns_counter += 1
@@ -224,6 +224,7 @@ class halite(py_environment.PyEnvironment):
                 # 0 = Halite
                 # 1 = Ship Presence (One Hot 'ship_id', rest 0.5)
                 # 2 = Shipyard Presence (One Hot 'ship_id', rest 0.5)
+
 
                 row.append(np.array(pixel))
             pixels.append(np.array(row))

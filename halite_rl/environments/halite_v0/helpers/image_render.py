@@ -3,6 +3,7 @@ import uuid
 import numpy as np
 import math
 from skimage import draw
+import math
 from kaggle_environments import make
 from kaggle_environments.envs.halite.helpers import *
 
@@ -12,6 +13,7 @@ class image_render():
         self._board_size = this_board_size
         self.image_name = 'Default'
         self._final_image_dimension = 400
+        self._final_image_dimension_extension = 200
         self.sprite_models = {}
         self.BGR_colors = {
             'blue': (255, 0, 0),
@@ -106,10 +108,11 @@ class image_render():
                         render_halite_sprite[h, w] = self.BGR_colors['black']
             self.premade_rendered_sprites[f'circle_sprite_{s}'] = render_halite_sprite
 
-    def render_board(self, board):
+    def render_board(self, board, total_reward, this_step_reward):
         # calculate sprite size
         sprite_size = math.floor(self._final_image_dimension / self._board_size)
         master_image = np.zeros([self._final_image_dimension, self._final_image_dimension, 3])
+        master_image_extension = np.zeros([self._final_image_dimension_extension, self._final_image_dimension,  3])
 
         for board_h in range(self._board_size):
             for board_w in range(self._board_size):
@@ -137,7 +140,12 @@ class image_render():
                 else:
                     # nothing
                     lol = 1
-        # TODO Code Shipyards
+
+        master_image = np.append(master_image, master_image_extension, axis=0)
+        cv2.putText(master_image, f'Total Reward: {total_reward}', (10, self._final_image_dimension + 50),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 1), 2)
+        cv2.putText(master_image, f'This Step Reward: {this_step_reward}', (10, self._final_image_dimension + 100),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 1), 2)
         cv2.imshow('Real Time Play', master_image)
         cv2.waitKey(1)
         # ship
