@@ -11,6 +11,7 @@ from tqdm import tqdm
 import os
 import json
 from tf_agents.policies import policy_saver
+import socket
 
 # loading configuration...
 print('loading configuration...')
@@ -32,11 +33,18 @@ _train_steps = 4000  # @param {type:"integer"}
 _num_eval_episodes = 10  # @param {type:"integer"}
 
 # build policy directories
-_save_policy_dir = os.path.join(_config['files']['policy']['base_dir'],
+host_name = socket.gethostname()
+base_directory_key = 'base_dir'
+target = f'{host_name}-base_dir'
+if target in _config['files']['policy']:
+    base_directory_key = target
+
+
+_save_policy_dir = os.path.join(_config['files']['policy'][base_directory_key],
                                 _config['files']['policy']['save_policy']['dir'],
                                 _config['files']['policy']['save_policy']['name'])
 
-_checkpoint_policy_dir = os.path.join(_config['files']['policy']['base_dir'],
+_checkpoint_policy_dir = os.path.join(_config['files']['policy'][base_directory_key],
                                       _config['files']['policy']['checkpoint_policy']['dir'],
                                       _config['files']['policy']['checkpoint_policy']['name'])
 
