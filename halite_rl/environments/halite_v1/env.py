@@ -83,6 +83,7 @@ class halite(py_environment.PyEnvironment):
         return return_object
 
     def _reset(self):
+        self.last_reward = 0
         self.turns_counter = 0
         self.previous_ship_count = 0
         self.episode_ended = False

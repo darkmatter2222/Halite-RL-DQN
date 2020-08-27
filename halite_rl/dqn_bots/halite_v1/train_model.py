@@ -147,7 +147,7 @@ train_checkpointer = common.Checkpointer(
 
 tf_policy_saver = policy_saver.PolicySaver(_agent.policy)
 
-restore_network = False
+restore_network = True
 
 if restore_network:
     train_checkpointer.initialize_or_restore()
