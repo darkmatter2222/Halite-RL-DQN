@@ -71,6 +71,7 @@ class halite(py_environment.PyEnvironment):
 
         # get board
         self.board = self.get_board()
+        self.prime_board()
         self.halite_image_render = image_render(self._board_size)
         self.previous_ship_count = 0
 
@@ -94,7 +95,10 @@ class halite(py_environment.PyEnvironment):
         self.environment.reset(self._agent_count)
         # get board
         self.board = self.get_board()
+        self.state = np.zeros([self._board_size, self._board_size, self._channels])
         self.state_history = [self.state] * self._frames
+
+        self.prime_board()
         return_object = ts.restart(np.array(self.state_history, dtype=np.int32))
         return return_object
 
@@ -175,6 +179,21 @@ class halite(py_environment.PyEnvironment):
             return_object = ts.transition(np.array(self.state_history, dtype=np.int32), reward=reward, discount=1.0)
             return return_object
 
+    def prime_board(self):
+        self.board.players[0].ships[0].next_action = ShipAction.CONVERT
+        self.board = self.board.next()
+        self.state, actionable_object_id, actionable_type = self.get_state()
+        self.state_history.append(self.state)
+        del self.state_history[:1]
+        self.turns_counter += 1
+        self.board.players[0].shipyards[0].next_action = ShipyardAction.SPAWN
+        self.board = self.board.next()
+        self.state, actionable_object_id, actionable_type = self.get_state()
+        self.state_history.append(self.state)
+        del self.state_history[:1]
+        self.turns_counter += 1
+
+
     def get_board(self):
         obs = self.environment.state[0].observation
         config = self.environment.configuration
@@ -196,7 +215,7 @@ class halite(py_environment.PyEnvironment):
                     actionable_type = 'ship'
                     break
 
-            if actionable_type == 'UNKNOWN':
+            if actionable_type == 'UNKNOWN' and 1==2:
                 for shipyard_id in self.board.shipyards:
                     if self.board.shipyards[shipyard_id]._player_id == 0 and self.board.shipyards[shipyard_id].next_action == None \
                         and shipyard_id not in self.shipyards_idle:
