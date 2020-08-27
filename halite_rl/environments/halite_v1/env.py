@@ -49,6 +49,7 @@ class halite(py_environment.PyEnvironment):
         self.total_reward = 0
         self.ships_idle = []
         self.shipyards_idle = []
+        self.last_reward = 0
 
         # initialize game
         self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000,
@@ -151,6 +152,9 @@ class halite(py_environment.PyEnvironment):
 
         reward += (self.board.players[0].halite * 2) + ship_cargo
 
+        temp_reward = reward
+        reward = reward - self.last_reward
+        self.last_reward = temp_reward
         self.total_reward += reward
 
         self.halite_image_render.render_board(self.board, total_reward=self.total_reward, this_step_reward=reward)
