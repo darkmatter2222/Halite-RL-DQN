@@ -17,7 +17,7 @@ import scipy as sp
 import cv2
 import uuid
 import matplotlib
-from halite_rl.environments.halite_v2.helpers.image_render import image_render
+from halite_rl.environments.halite_v2.helpers.image_render_v2 import image_render_v2
 
 # NOTE: This class is only to train a single bot to navigate, collect halite and return it to base.
 # In later envs, we will introduce other bots
@@ -71,7 +71,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         # get board
         self.board = self.get_board()
         self.prime_board()
-        self.halite_image_render = image_render(self._board_size)
+        self.halite_image_render = image_render_v2(self._board_size)
         self.previous_ship_count = 0
 
     def action_spec(self):
@@ -117,7 +117,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
         int_action = int(action)
 
-        self.board.ships['0-1'].next_action = self._action_def[int_action]
+        if not self._action_def[int_action] == 'NOTHING' and '2-1' in self.board.ships:
+            self.board.ships['2-1'].next_action = self._action_def[int_action]
 
         self.board = self.board.next()
 
@@ -254,7 +255,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         for x in range(0, self._board_size):
             for y in range(0, self._board_size):
                 cell = self.board[(x, self._board_size - y - 1)]
-                cell_halite = 1.0 * cell.halite / float(self.board.configuration.max_cell_halite)
+                cell_halite = 255 * cell.halite / float(self.board.configuration.max_cell_halite)
                 reward_heatmap[y, x] = cell_halite
         sigma = [self._board_size / 2, self._board_size / 2]
         reward_heatmap = sp.ndimage.filters.gaussian_filter(reward_heatmap, sigma, mode='constant')
@@ -277,7 +278,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                     state_pixel[1] = 1
                 elif cell.shipyard is not None:
                     state_pixel[2] = 1
-                state_pixel[0] = reward_heatmap[y, x]
+                state_pixel[3] = reward_heatmap[y, x]
                 row.append(np.array(state_pixel))
             state_pixels.append(np.array(row))
         return np.array(state_pixels)
