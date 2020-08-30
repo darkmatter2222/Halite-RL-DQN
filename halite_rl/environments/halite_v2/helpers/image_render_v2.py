@@ -73,7 +73,8 @@ class image_render_v2():
                         if self._sprite_models['ship_sprite'][h, w] == 1:
                             render_ship_sprite[:, h, w] = BGR_color
                         else:
-                            render_ship_sprite[:, h, w] = [0, ((halite_level * 255) / 10), 0]
+                            white = ((halite_level * 255) / 10)
+                            render_ship_sprite[:, h, w] = [white, white, white] # heatmap background
 
                 self._premade_rendered_sprites[f'ship_sprite_player_{player_id}_h_{halite_level}'] = render_ship_sprite
 
@@ -85,41 +86,45 @@ class image_render_v2():
                         if self._sprite_models['shipyard_sprite'][h, w] == 1:
                             render_shipyard_sprite[:, h, w] = BGR_color
                         else:
-                            render_shipyard_sprite[:, h, w] = [0, ((halite_level * 255) / 10), 0]
+                            white = ((halite_level * 255) / 10)
+                            render_shipyard_sprite[:, h, w] = [white, white, white] # heatmap background
 
                 self._premade_rendered_sprites[f'shipyard_sprite_player_{player_id}_h_{halite_level}'] = render_shipyard_sprite
 
             # paint shipyard and ship
             for halite_level in range(9):
-                render_ship_and_shipyard_sprite = np.zeros([sprite_size, sprite_size, 3])
+                render_ship_and_shipyard_sprite = np.zeros([3, sprite_size, sprite_size])
                 for h in range(sprite_size):
                     for w in range(sprite_size):
                         if self._sprite_models['ship_and_shipyard_sprite'][h, w] == 1:
-                            render_ship_and_shipyard_sprite[h, w] = BGR_color
+                            render_ship_and_shipyard_sprite[:, h, w] = BGR_color
                         else:
-                            render_ship_and_shipyard_sprite[h, w] = [0, ((halite_level * 255) / 10), 0]
+                            white = ((halite_level * 255) / 10)
+                            render_ship_and_shipyard_sprite[:, h, w] = [white, white, white] # heatmap background
 
                 self._premade_rendered_sprites[f'ship_and_shipyard_sprite_player_{player_id}_h_{halite_level}'] = render_ship_and_shipyard_sprite
 
 
+        # paint halite
+        for halite_level in range(9):
+            circle_center = math.floor(sprite_size / 2)
+            for s in range(10):
+                circle_sprite_model = np.zeros([sprite_size, sprite_size])
+                radius = ((sprite_size * (s * 3)) / 100)
+                ri, ci = draw.circle(circle_center, circle_center, radius=radius, shape=circle_sprite_model.shape)
+                circle_sprite_model[ri, ci] = 1
+                self._sprite_models[f'circle_sprite_{s}'] = circle_sprite_model
 
-        circle_center = math.floor(sprite_size / 2)
-        for s in range(10):
-            circle_sprite_model = np.zeros([sprite_size, sprite_size])
-            radius = ((sprite_size * (s * 3)) / 100)
-            ri, ci = draw.circle(circle_center, circle_center, radius=radius, shape=circle_sprite_model.shape)
-            circle_sprite_model[ri, ci] = 1
-            self._sprite_models[f'circle_sprite_{s}'] = circle_sprite_model
-
-            render_halite_sprite = np.zeros([sprite_size, sprite_size, 3])
-            BGR_color = self._BGR_colors['cyan']
-            for h in range(sprite_size):
-                for w in range(sprite_size):
-                    if self._sprite_models[f'circle_sprite_{s}'][h, w] == 1:
-                        render_halite_sprite[h, w] = BGR_color
-                    else:
-                        render_halite_sprite[h, w] = self._BGR_colors['black']
-            self._premade_rendered_sprites[f'circle_sprite_{s}'] = render_halite_sprite
+                render_halite_sprite = np.zeros([3, sprite_size, sprite_size])
+                BGR_color = self._BGR_colors['cyan']
+                for h in range(sprite_size):
+                    for w in range(sprite_size):
+                        if self._sprite_models[f'circle_sprite_{s}'][h, w] == 1:
+                            render_halite_sprite[:, h, w] = BGR_color
+                        else:
+                            white = ((halite_level * 255) / 10)
+                            render_halite_sprite[:, h, w] = [white, white, white] # heatmap background
+                self._premade_rendered_sprites[f'circle_sprite_{s}_h_{halite_level}'] = render_halite_sprite
 
     def render_board(self, board, state, total_reward, this_step_reward):
         # calculate sprite size
