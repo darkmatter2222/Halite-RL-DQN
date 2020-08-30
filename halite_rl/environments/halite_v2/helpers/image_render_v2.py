@@ -6,6 +6,7 @@ from skimage import draw
 import math
 from kaggle_environments import make
 from kaggle_environments.envs.halite.helpers import *
+import scipy as sp
 
 class image_render_v2():
     def __init__(self, this_board_size):
@@ -61,47 +62,47 @@ class image_render_v2():
             BGR_color = self._BGR_colors[self._player_colors[player_id]]
 
             # paint ships
-            for halite_level in range(9):
+            for halite_level in range(10):
                 render_ship_sprite = np.zeros([sprite_size, sprite_size, 3])
                 for h in range(sprite_size):
                     for w in range(sprite_size):
                         if self._sprite_models['ship_sprite'][h, w] == 1:
                             render_ship_sprite[h, w] = BGR_color
                         else:
-                            white = ((halite_level * 255) / 10)
+                            white = ((halite_level * 255) / 11)
                             render_ship_sprite[h, w] = [white, white, white] # heatmap background
 
                 self._premade_rendered_sprites[f'ship_sprite_player_{player_id}_h_{halite_level}'] = render_ship_sprite
 
             # paint shipyards
-            for halite_level in range(9):
+            for halite_level in range(10):
                 render_shipyard_sprite = np.zeros([sprite_size, sprite_size, 3])
                 for h in range(sprite_size):
                     for w in range(sprite_size):
                         if self._sprite_models['shipyard_sprite'][h, w] == 1:
                             render_shipyard_sprite[h, w] = BGR_color
                         else:
-                            white = ((halite_level * 255) / 10)
+                            white = ((halite_level * 255) / 11)
                             render_shipyard_sprite[h, w] = [white, white, white] # heatmap background
 
                 self._premade_rendered_sprites[f'shipyard_sprite_player_{player_id}_h_{halite_level}'] = render_shipyard_sprite
 
             # paint shipyard and ship
-            for halite_level in range(9):
+            for halite_level in range(10):
                 render_ship_and_shipyard_sprite = np.zeros([sprite_size, sprite_size, 3])
                 for h in range(sprite_size):
                     for w in range(sprite_size):
                         if self._sprite_models['ship_and_shipyard_sprite'][h, w] == 1:
                             render_ship_and_shipyard_sprite[h, w] = BGR_color
                         else:
-                            white = ((halite_level * 255) / 10)
+                            white = ((halite_level * 255) / 11)
                             render_ship_and_shipyard_sprite[h, w] = [white, white, white] # heatmap background
 
                 self._premade_rendered_sprites[f'ship_and_shipyard_sprite_player_{player_id}_h_{halite_level}'] = render_ship_and_shipyard_sprite
 
 
         # paint halite
-        for halite_level in range(9):
+        for halite_level in range(10):
             circle_center = math.floor(sprite_size / 2)
             for s in range(10):
                 circle_sprite_model = np.zeros([sprite_size, sprite_size])
@@ -117,22 +118,35 @@ class image_render_v2():
                         if self._sprite_models[f'circle_sprite_{s}'][h, w] == 1:
                             render_halite_sprite[h, w] = BGR_color
                         else:
-                            white = ((halite_level * 255) / 10)
+                            white = ((halite_level * 255) / 11)
                             render_halite_sprite[h, w] = [white, white, white] # heatmap background
                 self._premade_rendered_sprites[f'circle_sprite_{s}_h_{halite_level}'] = render_halite_sprite
 
     def render_board(self, board, state, total_reward, this_step_reward):
         # calculate sprite size
         sprite_size = math.floor(self._final_image_dimension / self._board_size)
-        master_image = np.zeros([self._final_image_dimension, self._final_image_dimension, 3])
+        master_image = np.zeros([self._final_image_dimension, self._final_image_dimension, 3], dtype='uint8')
         master_image_extension = np.zeros([self._final_image_dimension_extension, self._final_image_dimension, 3])
+
+        reward_heatmap = np.zeros([self._board_size, self._board_size])
+
+        for height in range(self._board_size):
+            for width in range(self._board_size):
+                board_cell = board[width, height]
+                bord_cell_halite = int(9.0 * board_cell.halite / float(board.configuration.max_cell_halite))
+                reward_heatmap[height, width] = bord_cell_halite
+
+        # Apply gaussian filter
+        sigma = [0.7, 0.7]
+        reward_heatmap = sp.ndimage.filters.gaussian_filter(reward_heatmap, sigma, mode='constant')
+
 
         for board_h in range(self._board_size):
             for board_w in range(self._board_size):
                 board_y = (self._board_size - board_h - 1)
                 board_x = board_w
                 board_cell = board[board_x, board_y]
-                bord_cell_halite = int(9.0 * board_cell.halite / float(board.configuration.max_cell_halite))
+                bord_cell_halite = math.floor(reward_heatmap[board_h, board_w])
 
 
                 master_image[board_h * sprite_size:board_h * sprite_size + sprite_size,

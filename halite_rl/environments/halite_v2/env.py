@@ -124,6 +124,10 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
         self.state = self.get_state_v2()
 
+        if len(self.board.players[0].ships) == 0:
+            self.episode_ended = True
+
+
         ship_cargo = 0
         for ship in self.board.players[0].ships:
             ship_cargo += ship.halite
