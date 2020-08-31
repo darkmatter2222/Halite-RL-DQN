@@ -51,7 +51,7 @@ _checkpoint_policy_dir = os.path.join(_config['files']['policy'][base_directory_
 
 # instantiate two environments. I personally don't feel this is necessary,
 # however google did it in their tutorial...
-_train_py_env = halite_ship_navigation(window_name='Training', render_me=True)
+_train_py_env = halite_ship_navigation(window_name='Training', render_me=False)
 _eval_py_env = halite_ship_navigation(window_name='Testing', render_me=True)
 
 # wrap the pure python game in a tensorflow wrapper
