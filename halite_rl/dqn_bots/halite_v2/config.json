@@ -12,20 +12,20 @@
       "RedComputer-base_dir":  "D:\\Halite-RL-DQN",
       "save_policy": {
         "dir": "save",
-        "name": "halite_v1"
+        "name": "halite_v2"
       },
       "checkpoint_policy": {
         "dir": "checkpoint",
-        "name": "halite_v1"
+        "name": "halite_v2"
       },
       "images": {
         "stills": {
           "dir": "stills",
-          "name": "halite_v1"
+          "name": "halite_v2"
         },
         "gifs": {
           "dir": "gifs",
-          "name": "halite_v1"
+          "name": "halite_v2"
         }
       }
     }
