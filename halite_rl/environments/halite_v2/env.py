@@ -27,7 +27,7 @@ from .helpers.random_agent import random_agent
 tf.compat.v1.enable_v2_behavior()
 
 class halite_ship_navigation(py_environment.PyEnvironment):
-    def __init__(self, window_name):
+    def __init__(self, window_name, render_me=True):
         self._this_stopwatch = stopwatch()
         print('Initializing Env')
         # game parameters
@@ -44,7 +44,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                             2: "NOTHING",
                             3: ShipAction.SOUTH,
                             4: ShipAction.WEST}
-        self.render_step = True
+        self.render_step = render_me
 
         # runtime parameters
         self.turns_counter = 0
