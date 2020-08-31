@@ -118,7 +118,7 @@ class image_render_v2():
         # calculate sprite size
         sprite_size = math.floor(self._final_image_dimension / self._board_size)
         master_image = np.zeros([self._final_image_dimension, self._final_image_dimension, 3], dtype='uint8')
-        state_image = np.zeros([self._final_image_dimension, self._final_image_dimension])
+        state_image = np.zeros([self._final_image_dimension, self._final_image_dimension, 3], dtype='uint8')
         master_image_extension = np.zeros([self._final_image_dimension_extension, self._final_image_dimension, 3])
 
         reward_heatmap = np.zeros([self._board_size, self._board_size])
@@ -143,20 +143,20 @@ class image_render_v2():
 
                 half_sprite_size = math.floor(sprite_size / 2)
 
-                sudo_sprite = np.ndarray([half_sprite_size, half_sprite_size])
-                sudo_sprite.fill(state[0, board_h, board_x])
+                sudo_sprite = np.ndarray([half_sprite_size, half_sprite_size, 3])
+                sudo_sprite.fill(state[0, board_h, board_x] * 100)
                 state_image[board_h * half_sprite_size:board_h * half_sprite_size + half_sprite_size,
                             board_x * half_sprite_size:board_x * half_sprite_size + half_sprite_size] = \
                             sudo_sprite
-                sudo_sprite.fill(state[1, board_h, board_x])
+                sudo_sprite.fill(state[1, board_h, board_x] * 255)
                 state_image[board_h * half_sprite_size + 200:(board_h * half_sprite_size + 200)+ half_sprite_size,
                             board_x * half_sprite_size:board_x * half_sprite_size + half_sprite_size] = \
                             sudo_sprite
-                sudo_sprite.fill(state[2, board_h, board_x])
+                sudo_sprite.fill(state[2, board_h, board_x] * 255)
                 state_image[board_h * half_sprite_size:board_h * half_sprite_size + half_sprite_size,
                             board_x * half_sprite_size + 200:(board_x * half_sprite_size + 200)+ half_sprite_size] = \
                             sudo_sprite
-                sudo_sprite.fill(state[3, board_h, board_x])
+                sudo_sprite.fill(state[3, board_h, board_x] * 10)
                 state_image[board_h * half_sprite_size + 200:(board_h * half_sprite_size + 200)+ half_sprite_size,
                             board_x * half_sprite_size + 200:(board_x * half_sprite_size + 200)+ half_sprite_size] = \
                             sudo_sprite

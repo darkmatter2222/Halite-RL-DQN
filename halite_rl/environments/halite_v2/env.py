@@ -207,7 +207,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                 reward_heatmap[y, x] = cell_halite
                 if cell.ship_id == '2-1':
                     reward_heatmap[y, x] += cell.ship.halite # make it tasty to return home
-        sigma = [self._board_size / 2, self._board_size / 2]
+        sigma = [0.7, 0.7]
         reward_heatmap = sp.ndimage.filters.gaussian_filter(reward_heatmap, sigma, mode='constant')
         # Next, render the state
         state_pixels = np.zeros([self._channels, self._board_size, self._board_size])
