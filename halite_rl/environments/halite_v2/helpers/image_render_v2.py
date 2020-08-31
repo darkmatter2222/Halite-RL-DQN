@@ -118,6 +118,7 @@ class image_render_v2():
         # calculate sprite size
         sprite_size = math.floor(self._final_image_dimension / self._board_size)
         master_image = np.zeros([self._final_image_dimension, self._final_image_dimension, 3], dtype='uint8')
+        state_image = np.zeros([self._final_image_dimension, self._final_image_dimension])
         master_image_extension = np.zeros([self._final_image_dimension_extension, self._final_image_dimension, 3])
 
         reward_heatmap = np.zeros([self._board_size, self._board_size])
@@ -139,6 +140,14 @@ class image_render_v2():
                 board_x = board_w
                 board_cell = board[board_x, board_y]
                 bord_cell_halite = math.floor(reward_heatmap[board_h, board_w])
+
+                sudo_sprite = np.ndarray([sprite_size, sprite_size])
+                value = state[1, board_h, board_x]
+                sudo_sprite.fill(value)
+                state_image[board_h * sprite_size:board_h * sprite_size + sprite_size,
+                            board_x * sprite_size:board_x * sprite_size + sprite_size] = \
+                            sudo_sprite
+
 
 
                 master_image[board_h * sprite_size:board_h * sprite_size + sprite_size,
@@ -167,6 +176,11 @@ class image_render_v2():
         cv2.putText(master_image, f'This Step Reward: {this_step_reward}', (10, self._final_image_dimension + 100),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 1), 2)
         cv2.imshow('Real Time Play', master_image)
+
+        #cv2.imshow('State Halite', state[0, :, :])
+        cv2.imshow('State', state_image)
+        #cv2.imshow('State Shipyard', state[2, :, :])
+        #cv2.imshow('State Heatmap', state[3, :, :])
         cv2.waitKey(1)
         # ship
         lol = 1

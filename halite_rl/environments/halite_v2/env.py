@@ -133,6 +133,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self.state = self.get_state_v2()
 
         if len(self.board.players[0].ships) == 0:
+            reward += -10000
             self.episode_ended = True
         if len(self.board.players[0].shipyards) == 0:
             self.episode_ended = True
