@@ -31,7 +31,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self._this_stopwatch = stopwatch()
         print('Initializing Env')
         # game parameters
-        self._board_size = 25
+        self._board_size = 10
         self._max_turns = 400
         if self._max_turns > 20:
             self._frames = 20
@@ -140,7 +140,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
         if not self.episode_ended:
             distance = self.board.players[0].ships[0].position - self.board.players[0].shipyards[0].position
-            if abs(distance)[0] > 5 or abs(distance)[1] > 5:
+            if abs(distance)[0] > 2 or abs(distance)[1] > 2:
                 reward += -10000
                 self.episode_ended = True
 
@@ -148,8 +148,10 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         for ship in self.board.players[0].ships:
             ship_cargo += ship.halite
 
-        pos = self.board.ships['2-1'].position
-        reward += (self.state[3, pos[1], self._board_size - pos[0] - 1] * 50)
+        if not self.episode_ended:
+            pos = self.board.ships['2-1'].position
+            reward += (self.state[3, pos[1], self._board_size - pos[0] - 1] * 50)
+
         reward += (self.board.players[0].halite * 2) + ship_cargo
 
         temp_reward = reward
