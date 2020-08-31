@@ -140,8 +140,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         if not self.episode_ended:
             distance = self.board.players[0].ships[0].position - self.board.players[0].shipyards[0].position
             if abs(distance)[0] > 5 or abs(distance)[1] > 5:
+                reward += -10000
                 self.episode_ended = True
-
 
         ship_cargo = 0
         for ship in self.board.players[0].ships:
