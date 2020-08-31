@@ -144,7 +144,7 @@ class image_render_v2():
                 half_sprite_size = math.floor(sprite_size / 2)
 
                 sudo_sprite = np.ndarray([half_sprite_size, half_sprite_size, 3])
-                sudo_sprite.fill(state[0, board_h, board_x] * 100)
+                sudo_sprite.fill(state[0, board_h, board_x] * 200)
                 state_image[board_h * half_sprite_size:board_h * half_sprite_size + half_sprite_size,
                             board_x * half_sprite_size:board_x * half_sprite_size + half_sprite_size] = \
                             sudo_sprite

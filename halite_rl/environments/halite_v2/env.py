@@ -148,6 +148,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         for ship in self.board.players[0].ships:
             ship_cargo += ship.halite
 
+        pos = self.board.ships['2-1'].position
+        reward += (self.state[3, pos[1], self._board_size - pos[0] - 1] * 50)
         reward += (self.board.players[0].halite * 2) + ship_cargo
 
         temp_reward = reward
