@@ -156,7 +156,7 @@ class image_render_v2():
                 state_image[board_h * half_sprite_size:board_h * half_sprite_size + half_sprite_size,
                             board_x * half_sprite_size + 200:(board_x * half_sprite_size + 200)+ half_sprite_size] = \
                             sudo_sprite
-                sudo_sprite.fill(heat_map[board_h, board_x] * 10)
+                sudo_sprite.fill(heat_map[board_h, board_x])
                 state_image[board_h * half_sprite_size + 200:(board_h * half_sprite_size + 200)+ half_sprite_size,
                             board_x * half_sprite_size + 200:(board_x * half_sprite_size + 200)+ half_sprite_size] = \
                             sudo_sprite
