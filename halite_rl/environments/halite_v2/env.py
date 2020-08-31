@@ -17,7 +17,9 @@ import scipy as sp
 import cv2
 import uuid
 import matplotlib
-from halite_rl.environments.halite_v2.helpers.image_render_v2 import image_render_v2
+from .helpers.image_render_v2 import image_render_v2
+from .helpers.stopwatch import stopwatch
+from .helpers.random_agent import random_agent
 
 # NOTE: This class is only to train a single bot to navigate, collect halite and return it to base.
 # In later envs, we will introduce other bots
@@ -26,8 +28,10 @@ tf.compat.v1.enable_v2_behavior()
 
 class halite_ship_navigation(py_environment.PyEnvironment):
     def __init__(self, window_name):
+        self._this_stopwatch = stopwatch()
+        print('Initializing Env')
         # game parameters
-        self._board_size = 5
+        self._board_size = 25
         self._max_turns = 400
         if self._max_turns > 20:
             self._frames = 20
@@ -40,6 +44,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                             2: "NOTHING",
                             3: ShipAction.SOUTH,
                             4: ShipAction.WEST}
+        self.render_step = True
 
         # runtime parameters
         self.turns_counter = 0
@@ -57,10 +62,10 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self._action_spec = array_spec.BoundedArraySpec(
             shape=(), dtype=np.int32, minimum=0, maximum=len(self._action_def)-1, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
-            shape=(self._frames, self._board_size, self._board_size, self._channels), dtype=np.int32, minimum=0,
+            shape=(self._frames, self._channels, self._board_size, self._board_size), dtype=np.int32, minimum=0,
             maximum=1, name='observation')
 
-        self.state = np.zeros([self._board_size, self._board_size, self._channels])
+        self.state = np.zeros([self._channels, self._board_size, self._board_size])
         # 0 = Halite 0-1
         # 1 = Ships (This One Hot, rest are .5)
         # 2 = Shipyards (This One Hot, rest are .5)
@@ -73,6 +78,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self.prime_board()
         self.halite_image_render = image_render_v2(self._board_size)
         self.previous_ship_count = 0
+        print(f'Initialized at {self._this_stopwatch.elapsed()}')
 
     def action_spec(self):
         return_object = self._action_spec
@@ -94,7 +100,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self.environment.reset(self._agent_count)
         # get board
         self.board = self.get_board()
-        self.state = np.zeros([self._board_size, self._board_size, self._channels])
+        self.state = np.zeros([self._channels, self._board_size, self._board_size])
         self.state_history = [self.state] * self._frames
 
         self.prime_board()
@@ -120,12 +126,21 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         if not self._action_def[int_action] == 'NOTHING' and '2-1' in self.board.ships:
             self.board.ships['2-1'].next_action = self._action_def[int_action]
 
+        random_agent(self.board, self.board.players[1])
+
         self.board = self.board.next()
 
         self.state = self.get_state_v2()
 
         if len(self.board.players[0].ships) == 0:
             self.episode_ended = True
+        if len(self.board.players[0].shipyards) == 0:
+            self.episode_ended = True
+
+        if not self.episode_ended:
+            distance = self.board.players[0].ships[0].position - self.board.players[0].shipyards[0].position
+            if abs(distance)[0] > 5 or abs(distance)[1] > 5:
+                self.episode_ended = True
 
 
         ship_cargo = 0
@@ -139,14 +154,14 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self.last_reward = temp_reward
         self.total_reward += reward
 
-        self.halite_image_render.render_board(self.board, self.state, total_reward=self.total_reward, this_step_reward=reward)
+        if self.render_step:
+            self.halite_image_render.render_board(self.board, self.state,
+                                                  total_reward=self.total_reward, this_step_reward=reward)
 
         # final wrap up
         self.turns_counter += 1
         self.state_history.append(self.state)
         del self.state_history[:1]
-
-        #self.renderer()
 
         # final
         if self.episode_ended:
@@ -155,6 +170,9 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         else:
             return_object = ts.transition(np.array(self.state_history, dtype=np.int32), reward=reward, discount=1.0)
             return return_object
+
+    def set_rendering(self, enabled=True):
+        self.render_step = enabled
 
     def prime_board(self):
         self.board.players[0].ships[0].next_action = ShipAction.CONVERT
@@ -177,83 +195,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         actions = [agent.action for agent in self.environment.state]
         return Board(obs, config, actions)
 
-    def get_state(self):
-        actionable_object_id = None
-        actionable_type = 'UNKNOWN'
-        loop_counter = 0
-        human_complete = False
-
-        while True:
-            # ship check first
-            for ship_id in self.board.ships:
-                if self.board.ships[ship_id]._player_id == 0 and self.board.ships[ship_id].next_action == None \
-                        and ship_id not in self.ships_idle:
-                    actionable_object_id = ship_id
-                    actionable_type = 'ship'
-                    break
-
-            if actionable_type == 'UNKNOWN' and 1==2:
-                for shipyard_id in self.board.shipyards:
-                    if self.board.shipyards[shipyard_id]._player_id == 0 and self.board.shipyards[shipyard_id].next_action == None \
-                        and shipyard_id not in self.shipyards_idle:
-                        actionable_object_id = shipyard_id
-                        actionable_type = 'shipyard'
-                        break
-
-            if actionable_type == 'UNKNOWN':
-                self.board = self.board.next()
-                self.ships_idle = []
-                self.shipyards_idle = []
-                if loop_counter == 1:
-                    break
-                loop_counter += 1
-            else:
-                break
-
-        size = self.board.configuration.size
-        pixels = []
-        reward_heatmap = np.zeros([self._board_size, self._board_size])
-        for x in range(0, size):
-            row = []
-            for y in range(0, size):
-                cell = self.board[(x, size - y - 1)]
-                # cell_halite = int(9.0 * cell.halite / float(board.configuration.max_cell_halite))
-                cell_halite = 1.0 * cell.halite / float(self.board.configuration.max_cell_halite)
-
-                pixel = [0, 0, 0, 0]
-                if cell.ship is not None:
-                    if actionable_type == 'ship' and cell.ship.id == actionable_object_id:
-                        pixel[1] = 1 # onehot
-                    else:
-                        pixel[1] = 0.5
-                elif cell.shipyard is not None:
-                    if actionable_type == 'shipyard' and cell.shipyard.id == actionable_object_id:
-                        pixel[2] = 1 # onehot
-                    else:
-                        pixel[2] = 0.5
-                pixel[0] = cell_halite
-                # 0 = Halite
-                # 1 = Ship Presence (One Hot 'ship_id', rest 0.5)
-                # 2 = Shipyard Presence (One Hot 'ship_id', rest 0.5)
-                # 3 = Halite Heat Map
-                reward_heatmap[y, x] = cell_halite * self._board_size
-                sigma_y = self._board_size / 2
-                sigma_x = self._board_size / 2
-
-                # Apply gaussian filter
-                sigma = [sigma_y, sigma_x]
-                reward_heatmap = sp.ndimage.filters.gaussian_filter(reward_heatmap, sigma, mode='constant')
-                pixel[3] = reward_heatmap[y, x]
-
-
-
-                row.append(np.array(pixel))
-            pixels.append(np.array(row))
-        return np.array(pixels), actionable_object_id, actionable_type
-
     def get_state_v2(self):
         # this method, we are constructing both the board to be rendered and what is provided to the neural network.
-        state = np.zeros([self._board_size, self._board_size, self._channels])
         reward_heatmap = np.zeros([self._board_size, self._board_size])
         # First Render the Heatmap
         for x in range(0, self._board_size):
@@ -261,12 +204,13 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                 cell = self.board[(x, self._board_size - y - 1)]
                 cell_halite = 255 * cell.halite / float(self.board.configuration.max_cell_halite)
                 reward_heatmap[y, x] = cell_halite
+                if cell.ship_id == '2-1':
+                    reward_heatmap[y, x] += cell.ship.halite # make it tasty to return home
         sigma = [self._board_size / 2, self._board_size / 2]
         reward_heatmap = sp.ndimage.filters.gaussian_filter(reward_heatmap, sigma, mode='constant')
         # Next, render the state
-        state_pixels = []
+        state_pixels = np.zeros([self._channels, self._board_size, self._board_size])
         for x in range(0, self._board_size):
-            row = []
             for y in range(0, self._board_size):
                 cell = self.board[(x, self._board_size - y - 1)]
                 # cell_halite = int(9.0 * cell.halite / float(board.configuration.max_cell_halite))
@@ -276,16 +220,13 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                 # 1 = Ship Presence (One Hot 'ship_id', rest 0.5)
                 # 2 = Shipyard Presence (One Hot 'ship_id', rest 0.5)
                 # 3 = Halite Heat Map
-                state_pixel = [0, 0, 0, 0]
-                state_pixel[0] = cell_halite
+                state_pixels[0, y, x] = cell_halite
                 if cell.ship is not None:
-                    state_pixel[1] = 1
+                    state_pixels[1, y, x] = 1
                 elif cell.shipyard is not None:
-                    state_pixel[2] = 1
-                state_pixel[3] = reward_heatmap[y, x]
-                row.append(np.array(state_pixel))
-            state_pixels.append(np.array(row))
-        return np.array(state_pixels)
+                    state_pixels[2, y, x] = 1
+                state_pixels[3, y, x] = reward_heatmap[y, x]
+        return state_pixels
 
     def renderer(self, highlight=None):
         size = self.board.configuration.size

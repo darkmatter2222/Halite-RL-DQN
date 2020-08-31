@@ -161,11 +161,11 @@ class image_render_v2():
                     # nothing
                     lol = 1
 
-        #master_image = np.append(master_image, master_image_extension, axis=0)
-        #cv2.putText(master_image, f'Total Reward: {total_reward}', (10, self._final_image_dimension + 50),
-                    #cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 1), 2)
-        #cv2.putText(master_image, f'This Step Reward: {this_step_reward}', (10, self._final_image_dimension + 100),
-                    #cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 1), 2)
+        master_image = np.append(master_image, master_image_extension, axis=0)
+        cv2.putText(master_image, f'Total Reward: {total_reward}', (10, self._final_image_dimension + 50),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 1), 2)
+        cv2.putText(master_image, f'This Step Reward: {this_step_reward}', (10, self._final_image_dimension + 100),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 1), 2)
         cv2.imshow('Real Time Play', master_image)
         cv2.waitKey(1)
         # ship

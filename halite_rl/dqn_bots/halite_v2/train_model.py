@@ -31,6 +31,7 @@ _batch_size = 64 * 10  # @param {type:"integer"}
 _learning_rate = 0.0001  # @param {type:"number"}
 _train_steps = 4000  # @param {type:"integer"}
 _num_eval_episodes = 10  # @param {type:"integer"}
+_render_on_episode = 10  # @param {type:"integer"}
 
 # build policy directories
 host_name = socket.gethostname()
@@ -151,6 +152,8 @@ restore_network = True
 
 if restore_network:
     train_checkpointer.initialize_or_restore()
+
+#_train_env.pyenv._envs[0].set_rendering(enabled=False)
 
 while True:
     print('Training...')
