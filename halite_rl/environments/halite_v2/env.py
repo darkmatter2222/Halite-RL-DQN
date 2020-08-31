@@ -33,12 +33,12 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         # game parameters
         self._board_size = 10
         self._max_turns = 400
-        if self._max_turns > 20:
-            self._frames = 20
+        if self._max_turns > 5:
+            self._frames = 5
         else:
             self._frames = self._max_turns
         self._agent_count = 2
-        self._channels = 4
+        self._channels = 3
         self._action_def = {0: ShipAction.EAST,
                             1: ShipAction.NORTH,
                             2: "NOTHING",
@@ -115,7 +115,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
             return return_object
 
         reward = 0
-        self.state = self.get_state_v2()
+        self.state, heat_map = self.get_state_v2()
 
         # global rules
         if self.turns_counter == self._max_turns:
@@ -130,7 +130,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
         self.board = self.board.next()
 
-        self.state = self.get_state_v2()
+        self.state, heat_map = self.get_state_v2()
 
         if len(self.board.players[0].ships) == 0:
             reward += -10000
@@ -150,7 +150,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
         if not self.episode_ended:
             pos = self.board.ships['2-1'].position
-            reward += (self.state[3, pos[1], self._board_size - pos[0] - 1] * 50)
+            reward += (heat_map[pos[1], self._board_size - pos[0] - 1] * 50)
 
         reward += (self.board.players[0].halite * 2) + ship_cargo
 
@@ -160,7 +160,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self.total_reward += reward
 
         if self.render_step:
-            self.halite_image_render.render_board(self.board, self.state,
+            self.halite_image_render.render_board(self.board, self.state, heat_map=heat_map,
                                                   total_reward=self.total_reward, this_step_reward=reward)
 
         # final wrap up
@@ -182,13 +182,13 @@ class halite_ship_navigation(py_environment.PyEnvironment):
     def prime_board(self):
         self.board.players[0].ships[0].next_action = ShipAction.CONVERT
         self.board = self.board.next()
-        self.state = self.get_state_v2()
+        self.state, heat_map = self.get_state_v2()
         self.state_history.append(self.state)
         del self.state_history[:1]
         self.turns_counter += 1
         self.board.players[0].shipyards[0].next_action = ShipyardAction.SPAWN
         self.board = self.board.next()
-        self.state = self.get_state_v2()
+        self.state, heat_map = self.get_state_v2()
         self.state_history.append(self.state)
         del self.state_history[:1]
         self.turns_counter += 1
@@ -230,8 +230,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                     state_pixels[1, y, x] = 1
                 elif cell.shipyard is not None:
                     state_pixels[2, y, x] = 1
-                state_pixels[3, y, x] = reward_heatmap[y, x]
-        return state_pixels
+                #state_pixels[3, y, x] = reward_heatmap[y, x]
+        return state_pixels, reward_heatmap
 
     def renderer(self, highlight=None):
         size = self.board.configuration.size

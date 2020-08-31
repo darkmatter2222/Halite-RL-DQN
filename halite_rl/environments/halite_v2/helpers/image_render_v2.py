@@ -114,7 +114,7 @@ class image_render_v2():
                         render_halite_sprite[h, w] = [0, 0, 0] # heatmap background
             self._premade_rendered_sprites[f'circle_sprite_{s}'] = render_halite_sprite
 
-    def render_board(self, board, state, total_reward, this_step_reward):
+    def render_board(self, board, state, heat_map, total_reward, this_step_reward):
         # calculate sprite size
         sprite_size = math.floor(self._final_image_dimension / self._board_size)
         master_image = np.zeros([self._final_image_dimension, self._final_image_dimension, 3], dtype='uint8')
@@ -156,7 +156,7 @@ class image_render_v2():
                 state_image[board_h * half_sprite_size:board_h * half_sprite_size + half_sprite_size,
                             board_x * half_sprite_size + 200:(board_x * half_sprite_size + 200)+ half_sprite_size] = \
                             sudo_sprite
-                sudo_sprite.fill(state[3, board_h, board_x] * 10)
+                sudo_sprite.fill(heat_map[board_h, board_x] * 10)
                 state_image[board_h * half_sprite_size + 200:(board_h * half_sprite_size + 200)+ half_sprite_size,
                             board_x * half_sprite_size + 200:(board_x * half_sprite_size + 200)+ half_sprite_size] = \
                             sudo_sprite
