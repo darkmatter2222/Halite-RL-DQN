@@ -27,7 +27,7 @@ from halite_rl.environments.halite_v0.helpers.image_render import image_render
 tf.compat.v1.enable_v2_behavior()
 
 class halite(py_environment.PyEnvironment):
-    def __init__(self, window_name):
+    def __init__(self, window_name, render_me = True):
         # game parameters
         self._board_size = 5
         self._max_turns = 400
@@ -50,6 +50,8 @@ class halite(py_environment.PyEnvironment):
         self.ships_idle = []
         self.shipyards_idle = []
         self.last_reward = 0
+
+        self.render_step = render_me
 
         # initialize game
         self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000,
@@ -162,7 +164,8 @@ class halite(py_environment.PyEnvironment):
         self.last_reward = temp_reward
         self.total_reward += reward
 
-        self.halite_image_render.render_board(self.board, total_reward=self.total_reward, this_step_reward=reward)
+        if self.render_step:
+            self.halite_image_render.render_board(self.board, total_reward=self.total_reward, this_step_reward=reward)
 
         # final wrap up
         self.turns_counter += 1
