@@ -115,7 +115,6 @@ class halite_ship_navigation(py_environment.PyEnvironment):
             return return_object
 
         reward = 0
-        self.state, heat_map = self.get_state_v2()
 
         # global rules
         if self.turns_counter == self._max_turns:
@@ -203,34 +202,25 @@ class halite_ship_navigation(py_environment.PyEnvironment):
     def get_state_v2(self):
         # this method, we are constructing both the board to be rendered and what is provided to the neural network.
         reward_heatmap = np.zeros([self._board_size, self._board_size])
-        # First Render the Heatmap
-        for x in range(0, self._board_size):
-            for y in range(0, self._board_size):
-                cell = self.board[(x, self._board_size - y - 1)]
-                cell_halite = 255 * cell.halite / float(self.board.configuration.max_cell_halite)
-                reward_heatmap[y, x] = cell_halite
-                if cell.ship_id == '2-1':
-                    reward_heatmap[y, x] += cell.ship.halite # make it tasty to return home
-        sigma = [0.7, 0.7]
-        reward_heatmap = sp.ndimage.filters.gaussian_filter(reward_heatmap, sigma, mode='constant')
-        # Next, render the state
         state_pixels = np.zeros([self._channels, self._board_size, self._board_size])
         for x in range(0, self._board_size):
             for y in range(0, self._board_size):
                 cell = self.board[(x, self._board_size - y - 1)]
-                # cell_halite = int(9.0 * cell.halite / float(board.configuration.max_cell_halite))
                 cell_halite = 1.0 * cell.halite / float(self.board.configuration.max_cell_halite)
-
+                cell_halite_heat = 255 * cell.halite / float(self.board.configuration.max_cell_halite)
+                reward_heatmap[y, x] = cell_halite_heat
                 # 0 = Halite
                 # 1 = Ship Presence (One Hot 'ship_id', rest 0.5)
                 # 2 = Shipyard Presence (One Hot 'ship_id', rest 0.5)
-                # 3 = Halite Heat Map
                 state_pixels[0, y, x] = cell_halite
                 if cell.ship is not None:
                     state_pixels[1, y, x] = 1
                 elif cell.shipyard is not None:
                     state_pixels[2, y, x] = 1
-                #state_pixels[3, y, x] = reward_heatmap[y, x]
+
+        sigma = [0.7, 0.7]
+        reward_heatmap = sp.ndimage.filters.gaussian_filter(reward_heatmap, sigma, mode='constant')
+
         return state_pixels, reward_heatmap
 
     def renderer(self, highlight=None):
