@@ -141,11 +141,24 @@ class image_render_v2():
                 board_cell = board[board_x, board_y]
                 bord_cell_halite = math.floor(reward_heatmap[board_h, board_w])
 
-                sudo_sprite = np.ndarray([sprite_size, sprite_size])
-                value = state[1, board_h, board_x]
-                sudo_sprite.fill(value)
-                state_image[board_h * sprite_size:board_h * sprite_size + sprite_size,
-                            board_x * sprite_size:board_x * sprite_size + sprite_size] = \
+                half_sprite_size = math.floor(sprite_size / 2)
+
+                sudo_sprite = np.ndarray([half_sprite_size, half_sprite_size])
+                sudo_sprite.fill(state[0, board_h, board_x])
+                state_image[board_h * half_sprite_size:board_h * half_sprite_size + half_sprite_size,
+                            board_x * half_sprite_size:board_x * half_sprite_size + half_sprite_size] = \
+                            sudo_sprite
+                sudo_sprite.fill(state[1, board_h, board_x])
+                state_image[board_h * half_sprite_size + 200:(board_h * half_sprite_size + 200)+ half_sprite_size,
+                            board_x * half_sprite_size:board_x * half_sprite_size + half_sprite_size] = \
+                            sudo_sprite
+                sudo_sprite.fill(state[2, board_h, board_x])
+                state_image[board_h * half_sprite_size:board_h * half_sprite_size + half_sprite_size,
+                            board_x * half_sprite_size + 200:(board_x * half_sprite_size + 200)+ half_sprite_size] = \
+                            sudo_sprite
+                sudo_sprite.fill(state[3, board_h, board_x])
+                state_image[board_h * half_sprite_size + 200:(board_h * half_sprite_size + 200)+ half_sprite_size,
+                            board_x * half_sprite_size + 200:(board_x * half_sprite_size + 200)+ half_sprite_size] = \
                             sudo_sprite
 
 
