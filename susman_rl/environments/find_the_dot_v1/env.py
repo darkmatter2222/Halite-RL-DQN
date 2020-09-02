@@ -29,7 +29,7 @@ class find_the_dot(py_environment.PyEnvironment):
         self.channels = 3
         self.frames = self.board_width * self.board_height
         self._action_spec = array_spec.BoundedArraySpec(
-            shape=(8,), dtype=np.float32, name='action', minimum=0.0, maximum=3.0)
+            shape=(1,), dtype=np.float32, name='action', minimum=0.0, maximum=3.0)
         self._observation_spec = array_spec.BoundedArraySpec(
             shape=(self.frames, self.board_height, self.board_width, self.channels), dtype=np.int32, minimum=0,
             maximum=1, name='observation')

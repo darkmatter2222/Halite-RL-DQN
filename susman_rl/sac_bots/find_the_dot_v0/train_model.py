@@ -33,11 +33,11 @@ tf.compat.v1.enable_v2_behavior()
 """## Hyperparameters"""
 
 env_name = "CartPole-v0" # @param {type:"string"}
-num_iterations = 250 # @param {type:"integer"}
-collect_episodes_per_iteration = 2 # @param {type:"integer"}
-replay_buffer_capacity = 2000 # @param {type:"integer"}
+num_iterations = 2500000 # @param {type:"integer"}
+collect_episodes_per_iteration = 20 # @param {type:"integer"}
+replay_buffer_capacity = 20000 # @param {type:"integer"}
 
-fc_layer_params = (100,)
+fc_layer_params = (256,)
 
 learning_rate = 1e-3 # @param {type:"number"}
 log_interval = 25 # @param {type:"integer"}
