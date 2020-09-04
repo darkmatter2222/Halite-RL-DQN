@@ -60,7 +60,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self.environment.reset(self._agent_count)
 
         self._action_spec = array_spec.BoundedArraySpec(
-            shape=(1,1), dtype=np.int32, minimum=0, maximum=len(self._action_def)-1, name='action')
+            shape=(), dtype=np.int32, minimum=0, maximum=len(self._action_def)-1, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
             shape=(self._frames, self._channels, self._board_size, self._board_size), dtype=np.int32, minimum=0,
             maximum=1, name='observation')
@@ -214,9 +214,15 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                 # 2 = Shipyard Presence (One Hot 'ship_id', rest 0.5)
                 state_pixels[0, y, x] = cell_halite
                 if cell.ship is not None:
-                    state_pixels[1, y, x] = 1
+                    if cell.ship.player_id == 0:
+                        state_pixels[1, y, x] = 1
+                    else:
+                        state_pixels[1, y, x] = 0.5
                 elif cell.shipyard is not None:
-                    state_pixels[2, y, x] = 1
+                    if cell.shipyard.player_id == 0:
+                        state_pixels[2, y, x] = 1
+                    else:
+                        state_pixels[2, y, x] = 0.5
 
         sigma = [0.7, 0.7]
         reward_heatmap = sp.ndimage.filters.gaussian_filter(reward_heatmap, sigma, mode='constant')

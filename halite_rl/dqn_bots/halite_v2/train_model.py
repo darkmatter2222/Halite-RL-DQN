@@ -60,7 +60,7 @@ _eval_env = tf_py_environment.TFPyEnvironment(_eval_py_env)
 
 
 print('Building Network...')
-_fc_layer_params = (1024,)
+_fc_layer_params = (256,)
 
 _q_net = q_network.QNetwork(
     _train_env.observation_spec(),
