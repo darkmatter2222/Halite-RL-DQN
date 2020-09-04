@@ -2,6 +2,7 @@ import datetime
 import json
 import math
 import os
+import math
 import random
 
 import cv2
@@ -28,7 +29,7 @@ class find_the_dot(py_environment.PyEnvironment):
         self.channels = 3
         self.frames = self.board_width * self.board_height
         self._action_spec = array_spec.BoundedArraySpec(
-            shape=(), dtype=np.int32, minimum=0, maximum=3, name='action')
+            shape=(1,), dtype=np.float32, name='action', minimum=0.0, maximum=3.0)
         self._observation_spec = array_spec.BoundedArraySpec(
             shape=(self.frames, self.board_height, self.board_width, self.channels), dtype=np.int32, minimum=0,
             maximum=1, name='observation')
@@ -194,6 +195,8 @@ class find_the_dot(py_environment.PyEnvironment):
         continue_reward = -1
         win_reward = 10
         loose_reward = -10
+        action = math.floor(action[0])
+
         # 0=N 1=E 2=S 3=W
         if action == 0:  # Move North
             if map_edge_exist:

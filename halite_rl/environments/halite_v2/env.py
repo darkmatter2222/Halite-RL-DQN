@@ -60,7 +60,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self.environment.reset(self._agent_count)
 
         self._action_spec = array_spec.BoundedArraySpec(
-            shape=(), dtype=np.int32, minimum=0, maximum=len(self._action_def)-1, name='action')
+            shape=(1,1), dtype=np.int32, minimum=0, maximum=len(self._action_def)-1, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
             shape=(self._frames, self._channels, self._board_size, self._board_size), dtype=np.int32, minimum=0,
             maximum=1, name='observation')
