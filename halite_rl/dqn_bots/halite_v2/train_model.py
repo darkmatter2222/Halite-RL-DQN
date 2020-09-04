@@ -26,9 +26,9 @@ tf.compat.v1.enable_v2_behavior()
 _num_iterations = 20000000  # @param {type:"integer"}
 _initial_collect_steps = 100  # @param {type:"integer"}
 _collect_steps_per_iteration = 100  # @param {type:"integer"}
-_replay_buffer_max_length = 100000  # @param {type:"integer"}
-_batch_size = 64 * 100  # @param {type:"integer"}
-_learning_rate = 0.0001  # @param {type:"number"}
+_replay_buffer_max_length = 1000  # @param {type:"integer"}
+_batch_size = 64 * 10  # @param {type:"integer"}
+_learning_rate = 0.001  # @param {type:"number"}
 _train_steps = 400 # @param {type:"integer"}
 _num_eval_episodes = 10  # @param {type:"integer"}
 _render_on_episode = 10  # @param {type:"integer"}
@@ -51,7 +51,7 @@ _checkpoint_policy_dir = os.path.join(_config['files']['policy'][base_directory_
 
 # instantiate two environments. I personally don't feel this is necessary,
 # however google did it in their tutorial...
-_train_py_env = halite_ship_navigation(window_name='Training', render_me=False)
+_train_py_env = halite_ship_navigation(window_name='Training', render_me=True)
 _eval_py_env = halite_ship_navigation(window_name='Testing', render_me=True)
 
 # wrap the pure python game in a tensorflow wrapper
@@ -60,7 +60,7 @@ _eval_env = tf_py_environment.TFPyEnvironment(_eval_py_env)
 
 
 print('Building Network...')
-_fc_layer_params = (512,)
+_fc_layer_params = (1024,)
 
 _q_net = q_network.QNetwork(
     _train_env.observation_spec(),
