@@ -33,8 +33,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         # game parameters
         self._board_size = 25
         self._max_turns = 400
-        if self._max_turns > 15:
-            self._frames = 15
+        if self._max_turns > 25:
+            self._frames = 25
         else:
             self._frames = self._max_turns
         self._agent_count = 2
