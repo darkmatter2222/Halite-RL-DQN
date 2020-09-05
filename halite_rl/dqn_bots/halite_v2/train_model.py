@@ -125,9 +125,9 @@ def collect_data(env, policy, buffer, steps):
 # collect_data(train_env, random_policy, replay_buffer, steps=100)
 
 dataset = _replay_buffer.as_dataset(
-    num_parallel_calls=3,
+    num_parallel_calls=30,
     sample_batch_size=_batch_size,
-    num_steps=2).prefetch(3)
+    num_steps=2).prefetch(30)
 
 _agent.train = common.function(_agent.train)
 

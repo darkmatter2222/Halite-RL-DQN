@@ -45,6 +45,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                             3: ShipAction.SOUTH,
                             4: ShipAction.WEST}
         self.render_step = render_me
+        self.window_name = f'{window_name} {uuid.uuid1()}'
 
         # runtime parameters
         self.turns_counter = 0
@@ -160,7 +161,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
         if self.render_step:
             self.halite_image_render.render_board(self.board, self.state, heat_map=heat_map,
-                                                  total_reward=self.total_reward, this_step_reward=reward)
+                                                  total_reward=self.total_reward, this_step_reward=reward,
+                                                  window_name=self.window_name)
 
         # final wrap up
         self.turns_counter += 1

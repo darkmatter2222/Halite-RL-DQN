@@ -114,7 +114,7 @@ class image_render_v2():
                         render_halite_sprite[h, w] = [0, 0, 0] # heatmap background
             self._premade_rendered_sprites[f'circle_sprite_{s}'] = render_halite_sprite
 
-    def render_board(self, board, state, heat_map, total_reward, this_step_reward):
+    def render_board(self, board, state, heat_map, total_reward, this_step_reward, window_name):
         # calculate sprite size
         sprite_size = math.floor(self._final_image_dimension / self._board_size)
         master_image = np.zeros([self._final_image_dimension, self._final_image_dimension, 3], dtype='uint8')
@@ -188,10 +188,10 @@ class image_render_v2():
                     cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 1), 2)
         cv2.putText(master_image, f'This Step Reward: {this_step_reward}', (10, self._final_image_dimension + 100),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 1), 2)
-        cv2.imshow('Real Time Play', master_image)
+        cv2.imshow(f'Real Time Play {window_name}', master_image)
 
         #cv2.imshow('State Halite', state[0, :, :])
-        cv2.imshow('State', state_image)
+        cv2.imshow(f'State {window_name}', state_image)
         #cv2.imshow('State Shipyard', state[2, :, :])
         #cv2.imshow('State Heatmap', state[3, :, :])
         cv2.waitKey(1)
