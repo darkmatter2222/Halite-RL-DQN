@@ -45,7 +45,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                             3: ShipAction.SOUTH,
                             4: ShipAction.WEST}
         self.render_step = render_me
-        self.window_name = f'{window_name} {uuid.uuid1()}'
+        self.window_name = f''
 
         # runtime parameters
         self.turns_counter = 0
@@ -126,37 +126,46 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         if not self._action_def[int_action] == 'NOTHING' and '2-1' in self.board.ships:
             self.board.ships['2-1'].next_action = self._action_def[int_action]
 
+        halite_before_turn = 0
+        cargo_before_turn = 0
+        if '2-1' in self.board.ships:
+            cargo_before_turn = self.board.ships['2-1'].halite
+        halite_before_turn = self.board.players[0].halite
+
         random_agent(self.board, self.board.players[1])
 
         self.board = self.board.next()
 
         self.state, heat_map = self.get_state_v2()
 
+        halite_after_turn = 0
+        cargo_after_turn = 0
+        if '2-1' in self.board.ships:
+            cargo_after_turn = self.board.ships['2-1'].halite
+        halite_after_turn = self.board.players[0].halite
+
+        cargo_delta = cargo_before_turn - cargo_after_turn
+        halite_delta = halite_before_turn - halite_after_turn
+
         if len(self.board.players[0].ships) == 0:
-            reward += -10000
+            reward -= 100
             self.episode_ended = True
         if len(self.board.players[0].shipyards) == 0:
+            reward -= 100
             self.episode_ended = True
 
         if not self.episode_ended:
             distance = self.board.players[0].ships[0].position - self.board.players[0].shipyards[0].position
             if abs(distance)[0] > 5 or abs(distance)[1] > 5:
-                reward += -10000
+                reward -= 100
                 self.episode_ended = True
-
-        ship_cargo = 0
-        for ship in self.board.players[0].ships:
-            ship_cargo += ship.halite
 
         if not self.episode_ended:
             pos = self.board.ships['2-1'].position
             reward += (heat_map[pos[1], self._board_size - pos[0] - 1] * 50)
 
-        reward += (self.board.players[0].halite * 2) + ship_cargo
+        reward += (halite_delta * 2) + cargo_delta
 
-        temp_reward = reward
-        reward = reward - self.last_reward
-        self.last_reward = temp_reward
         self.total_reward += reward
 
         if self.render_step:
@@ -230,64 +239,3 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         reward_heatmap = sp.ndimage.filters.gaussian_filter(reward_heatmap, sigma, mode='constant')
 
         return state_pixels, reward_heatmap
-
-    def renderer(self, highlight=None):
-        size = self.board.configuration.size
-        sudo_board = []
-        shift_delta = Point(0, 0)
-        if highlight != None:
-            shift_delta = Point(4, 4) - highlight
-
-        for y in range(size):
-            sudo_board.append(['   '] * 10)
-
-        for y in range(size):
-            for x in range(size):
-                board_cell = self.board[(x, size - y - 1)]
-                bord_cell_halite = int(9.0 * board_cell.halite / float(self.board.configuration.max_cell_halite))
-                precolor = ''
-                postcolor = ''
-
-                if bord_cell_halite > 0:
-                    precolor = '\x1b[32m'
-                    postcolor = '\x1b[0m'
-
-                if board_cell.ship is not None:
-                    precolor = '\x1b[31m'
-                    postcolor = '\x1b[0m'
-                if board_cell.shipyard is not None:
-                    precolor = '\x1b[31m'
-                    postcolor = '\x1b[0m'
-
-                if highlight != None:
-                    if (x, size - y - 1) == highlight:
-                        precolor = '\x1b[36m'
-                        postcolor = '\x1b[0m'
-
-                sudo_cell = ''
-                sudo_cell += precolor
-
-                if board_cell.ship is not None:
-                    sudo_cell += chr(ord('a') + board_cell.ship.player_id)
-                else:
-                    sudo_cell += ' '
-
-                sudo_cell += str(bord_cell_halite)
-
-                if board_cell.shipyard is not None:
-                    sudo_cell += chr(ord('A') + board_cell.shipyard.player_id)
-                else:
-                    sudo_cell += ' '
-
-                sudo_cell += postcolor
-                sudo_board[y][x] = str(sudo_cell)
-
-        shifted_result = ''
-        for y in range(size):
-            for x in range(size):
-                shifted_result += '|'
-                shifted_result += sudo_board[y][x]
-            shifted_result += '|\n'
-
-        # os.system('cls' if os.name == 'nt' else 'clear')
-        print(shifted_result)
