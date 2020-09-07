@@ -129,12 +129,19 @@ def collect_data(env, policy, buffer, steps):
     for _ in range(steps):
         collect_step(env, policy, buffer)
 
+def moving_average(x, w):
+    return np.convolve(x, np.ones(w), 'valid') / w
 
 def render_history():
     figure = Figure()
     canvas = FigureCanvas(figure)
     axes = figure.add_subplot(1, 1, 1)
+
     axes.plot(reward_history)
+    axes.plot(moving_average(reward_history, 2))
+    axes.plot(moving_average(reward_history, 4))
+    axes.plot(moving_average(reward_history, 8))
+    axes.plot(moving_average(reward_history, 16))
     canvas.draw()
     image = np.fromstring(canvas.tostring_rgb(), dtype='uint8')
 
