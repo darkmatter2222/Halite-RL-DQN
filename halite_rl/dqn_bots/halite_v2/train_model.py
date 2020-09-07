@@ -9,9 +9,14 @@ from tf_agents.utils import common
 from halite_rl.environments.halite_v2.env import halite_ship_navigation
 from tqdm import tqdm
 import os
+import cv2
 import json
 from tf_agents.policies import policy_saver
+import numpy as np
 import socket
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 # loading configuration...
 print('loading configuration...')
@@ -32,6 +37,9 @@ _learning_rate = 0.0001  # @param {type:"number"}
 _num_train_episodes = 10 # @param {type:"integer"}
 _num_eval_episodes = 10  # @param {type:"integer"}
 #_render_on_episode = 10  # @param {type:"integer"}
+
+
+reward_history = []
 
 # build policy directories
 host_name = socket.gethostname()
@@ -122,6 +130,22 @@ def collect_data(env, policy, buffer, steps):
         collect_step(env, policy, buffer)
 
 
+def render_history():
+    figure = Figure()
+    canvas = FigureCanvas(figure)
+    axes = figure.add_subplot(1, 1, 1)
+    axes.plot(reward_history)
+    canvas.draw()
+    image = np.fromstring(canvas.tostring_rgb(), dtype='uint8')
+
+    img = image.reshape(canvas.get_width_height()[::-1] + (3,))
+
+    # img is rgb, convert to opencv's default bgr
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+
+    # display image with opencv or any operation you like
+    cv2.imshow("plot", img)
+
 # collect_data(train_env, random_policy, replay_buffer, steps=100)
 
 dataset = _replay_buffer.as_dataset(
@@ -173,6 +197,8 @@ while True:
     returns.append(avg_return)
     train_checkpointer.save(_train_step_counter)
     print('step = {0}: Average Return = {1:.2f}'.format(step, avg_return))
+    reward_history.append(avg_return)
+    render_history()
     tf_policy_saver.save(_save_policy_dir)
 
 policy_dir = os.path.join(tempdir, 'policy')

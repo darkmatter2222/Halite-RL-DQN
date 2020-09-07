@@ -8,6 +8,7 @@ from kaggle_environments import make
 from kaggle_environments.envs.halite.helpers import *
 import scipy as sp
 
+
 class image_render_v2():
     def __init__(self, this_board_size):
         self._board_size = this_board_size
@@ -114,7 +115,7 @@ class image_render_v2():
                         render_halite_sprite[h, w] = [0, 0, 0] # heatmap background
             self._premade_rendered_sprites[f'circle_sprite_{s}'] = render_halite_sprite
 
-    def render_board(self, board, state, heat_map, total_reward, this_step_reward, window_name):
+    def render_board(self, board, state, heat_map, total_reward, this_step_reward, window_name, average_return_history = None):
         # calculate sprite size
         sprite_size = math.floor(self._final_image_dimension / self._board_size)
         master_image = np.zeros([self._final_image_dimension, self._final_image_dimension, 3], dtype='uint8')
