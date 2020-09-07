@@ -23,15 +23,15 @@ with open('config.json') as f:
 tf.compat.v1.enable_v2_behavior()
 
 # setting hyperparameters
-_num_iterations = 20000000  # @param {type:"integer"}
-_initial_collect_steps = 10  # @param {type:"integer"}
-_collect_steps_per_iteration = 10  # @param {type:"integer"}
-_replay_buffer_max_length = 1000  # @param {type:"integer"}
+ #_num_iterations = 20000000  # @param {type:"integer"}
+#_initial_collect_steps = 10  # @param {type:"integer"}
+#_collect_steps_per_iteration = 10  # @param {type:"integer"}
+_replay_buffer_max_length = 40000   # @param {type:"integer"}
 _batch_size = 64  # @param {type:"integer"}
-_learning_rate = 0.5  # @param {type:"number"}
-_train_steps = 4000 # @param {type:"integer"}
+_learning_rate = 0.0001  # @param {type:"number"}
+_num_train_episodes = 10 # @param {type:"integer"}
 _num_eval_episodes = 10  # @param {type:"integer"}
-_render_on_episode = 10  # @param {type:"integer"}
+#_render_on_episode = 10  # @param {type:"integer"}
 
 # build policy directories
 host_name = socket.gethostname()
@@ -156,18 +156,19 @@ if restore_network:
 #_train_env.pyenv._envs[0].set_rendering(enabled=False)
 
 while True:
-    print('Training...')
-    for _ in tqdm(range(_train_steps)):
-        for _ in range(_collect_steps_per_iteration):
+    print('Collecting...')
+    for _ in tqdm(range(_num_train_episodes)):
+        time_step = _train_env.reset()
+        episode_return = 0.0
+        while not time_step.is_last():
             collect_step(_train_env, _agent.collect_policy, _replay_buffer)
-
-        experience, unused_info = next(iterator)
-        train_loss = _agent.train(experience).loss
-
-        step = _agent.train_step_counter.numpy()
-
+            time_step = _train_env.current_time_step()
+    print('Training...')
+    experience, unused_info = next(iterator)
+    train_loss = _agent.train(experience).loss
+    step = _agent.train_step_counter.numpy()
     print('step = {0}: loss = {1}'.format(step, train_loss))
-    print('Eval Started...')
+    print('Evaulating...')
     avg_return = compute_avg_return(_eval_env, _agent.policy, _num_eval_episodes)
     returns.append(avg_return)
     train_checkpointer.save(_train_step_counter)
