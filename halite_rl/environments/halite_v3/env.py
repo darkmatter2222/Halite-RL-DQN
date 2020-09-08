@@ -194,6 +194,11 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         if self.turns_counter == self._max_turns:
             self.episode_ended = True
         # distance qualifier
+        if not self.episode_ended:
+            distance = self.board.ships['2-1'].position - self.board.shipyards['1-1'].position
+            if abs(distance)[0] > 5 or abs(distance)[1] > 5:
+                reward -= 100
+                self.episode_ended = True
 
 
         # ===render image===
