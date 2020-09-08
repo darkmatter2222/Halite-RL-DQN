@@ -148,10 +148,16 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
         # ===determine if game over=== (no punishment)
         # no ship
+        if len(self.board.players[0].ships) == 0:
+            self.episode_ended = True
         # no shipyard
+        if len(self.board.players[0].shipyards) == 0:
+            self.episode_ended = True
         # max turns
         if self.turns_counter == self._max_turns:
             self.episode_ended = True
+        # distance qualifier
+
 
         # ===render image===
         if self.render_step:
