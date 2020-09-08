@@ -137,7 +137,7 @@ def render_history():
     figure = Figure()
     canvas = FigureCanvas(figure)
     axes1 = figure.add_subplot(1, 1, 1)
-    axes2 = figure.add_subplot(2, 1, 1)
+    axes2 = figure.add_subplot(2, 2, 1)
 
     axes1.plot(reward_history, 'red')
     axes1.plot(smooth(reward_history, 4), 'orange')
