@@ -116,18 +116,13 @@ _replay_buffer = tf_uniform_replay_buffer.TFUniformReplayBuffer(
     max_length=_replay_buffer_max_length)
 
 
-def collect_step(environment, policy, buffer):
+def collect_step(environment, policy):
     time_step = environment.current_time_step()
     action_step = policy.action(time_step)
     next_time_step = environment.step(action_step.action)
     traj = trajectory.from_transition(time_step, action_step, next_time_step)
     # Add trajectory to the replay buffer
-    buffer.add_batch(traj)
-
-
-def collect_data(env, policy, buffer, steps):
-    for _ in range(steps):
-        collect_step(env, policy, buffer)
+    _replay_buffer.add_batch(traj)
 
 def moving_average(x, w):
     return np.convolve(x, np.ones(w), 'valid') / w
@@ -198,7 +193,7 @@ while True:
         time_step = _train_env.reset()
         episode_return = 0.0
         while not time_step.is_last():
-            collect_step(_train_env, _agent.collect_policy, _replay_buffer)
+            collect_step(_train_env, _agent.collect_policy)
             time_step = _train_env.current_time_step()
     print('Training...')
     experience, unused_info = next(iterator)

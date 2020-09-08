@@ -133,6 +133,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         halite_before_turn = self.board.players[0].halite
 
         random_agent(self.board, self.board.players[1])
+        random_agent(self.board, self.board.players[2])
+        random_agent(self.board, self.board.players[3])
 
         self.board = self.board.next()
 
