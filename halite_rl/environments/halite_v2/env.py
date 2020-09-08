@@ -37,7 +37,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
             self._frames = 25
         else:
             self._frames = self._max_turns
-        self._agent_count = 2
+        self._agent_count = 4
         self._channels = 3
         self._action_def = {0: ShipAction.EAST,
                             1: ShipAction.NORTH,

@@ -34,7 +34,7 @@ tf.compat.v1.enable_v2_behavior()
 _replay_buffer_max_length = 40000   # @param {type:"integer"}
 _batch_size = 64  # @param {type:"integer"}
 _learning_rate = 0.0001  # @param {type:"number"}
-_num_train_episodes = 10 # @param {type:"integer"}
+_num_train_episodes = 100 # @param {type:"integer"}
 _num_eval_episodes = 10  # @param {type:"integer"}
 #_render_on_episode = 10  # @param {type:"integer"}
 
@@ -143,10 +143,11 @@ def render_history():
     axes = figure.add_subplot(1, 1, 1)
 
     axes.plot(reward_history, 'red')
-    axes.plot(smooth(reward_history, 2), 'orange')
-    axes.plot(smooth(reward_history, 4), 'yellow')
-    axes.plot(smooth(reward_history, 8), 'green')
-    axes.plot(smooth(reward_history, 16), 'blue')
+    axes.plot(smooth(reward_history, 4), 'orange')
+    axes.plot(smooth(reward_history, 8), 'yellow')
+    axes.plot(smooth(reward_history, 16), 'green')
+    axes.plot(smooth(reward_history, 32), 'blue')
+    axes.plot(smooth(reward_history, 64), 'purple')
     canvas.draw()
     image = np.fromstring(canvas.tostring_rgb(), dtype='uint8')
 
