@@ -132,16 +132,21 @@ def collect_data(env, policy, buffer, steps):
 def moving_average(x, w):
     return np.convolve(x, np.ones(w), 'valid') / w
 
+def smooth(y, box_pts):
+    box = np.ones(box_pts)/box_pts
+    y_smooth = np.convolve(y, box, mode='same')
+    return y_smooth
+
 def render_history():
     figure = Figure()
     canvas = FigureCanvas(figure)
     axes = figure.add_subplot(1, 1, 1)
 
-    axes.plot(reward_history)
-    axes.plot(moving_average(reward_history, 2))
-    axes.plot(moving_average(reward_history, 4))
-    axes.plot(moving_average(reward_history, 8))
-    axes.plot(moving_average(reward_history, 16))
+    axes.plot(reward_history, 'red')
+    axes.plot(smooth(reward_history, 2), 'orange')
+    axes.plot(smooth(reward_history, 4), 'yellow')
+    axes.plot(smooth(reward_history, 8), 'green')
+    axes.plot(smooth(reward_history, 16), 'blue')
     canvas.draw()
     image = np.fromstring(canvas.tostring_rgb(), dtype='uint8')
 
