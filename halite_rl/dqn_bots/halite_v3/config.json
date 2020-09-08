@@ -1,0 +1,33 @@
+{
+  "files": {
+    "tensorboard_logs": {
+      "base_dir":  "N:\\Halite-RL-DQN",
+      "SusmanServer-base_dir":  "E:\\Halite-RL-DQN",
+      "RedComputer-base_dir":  "D:\\Halite-RL-DQN",
+      "dir": "tensorboard"
+    },
+    "policy": {
+      "base_dir":  "N:\\Halite-RL-DQN",
+      "SusmanServer-base_dir":  "E:\\Halite-RL-DQN",
+      "RedComputer-base_dir":  "D:\\Halite-RL-DQN",
+      "save_policy": {
+        "dir": "save",
+        "name": "halite_v3"
+      },
+      "checkpoint_policy": {
+        "dir": "checkpoint",
+        "name": "halite_v3"
+      },
+      "images": {
+        "stills": {
+          "dir": "stills",
+          "name": "halite_v3"
+        },
+        "gifs": {
+          "dir": "gifs",
+          "name": "halite_v3"
+        }
+      }
+    }
+  }
+}
