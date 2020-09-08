@@ -115,11 +115,14 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
     def _step(self, action):
         # ===initialize variables===
+        int_action = int(action)
         reward = 0
         halite_after_turn = 0
         cargo_after_turn = 0
         halite_after_turn = 0
         cargo_after_turn = 0
+
+        grant_cargo_delta_reward = False
 
         # ===get cargo and halite before turn===
         if '2-1' in self.board.ships:
@@ -129,8 +132,23 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         # ===calculate reward and perform move===
         # if move = NOTHING and if adjacent cells are > current cell then punishment (what was max delta)
         # if move = NOTHING and if adjacent cells are < current cell then reward (what was collected)
+        if self._action_def[int_action] == 'NOTHING':
+            this_ship = self.board.ships['2-1']
+            this_cell_halite = this_ship.cell.halite
+
+            adj_halite = [this_ship.cell.north.halite,
+                          this_ship.cell.south.halite,
+                          this_ship.cell.east.halite,
+                          this_ship.cell.west.halite]
+
+            if this_cell_halite > np.max(adj_halite):
+                reward -= this_cell_halite - np.max(adj_halite)
+            else
+                grant_cargo_delta_reward = True
         # if move = (N,S,E,W) and target cells is > current cell then reward (target cell halite value)
         # if move = (N,S,E,W) and target cells is < current cell then punishment (target cell halite delta)
+        elif not self._action_def[int_action] == 'NOTHING':
+            lol = 1
 
         # ===move random bots===
         random_agent(self.board, self.board.players[1])
@@ -145,6 +163,11 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         if '2-1' in self.board.ships:
             cargo_after_turn = self.board.ships['2-1'].halite
         halite_after_turn = self.board.players[0].halite
+
+
+        # ===additional grants===
+        if grant_cargo_delta_reward:
+            
 
         # ===determine if game over=== (no punishment)
         # no ship
@@ -171,7 +194,12 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         del self.state_history[:1]
 
         # ===return to engine===
-
+        if self.episode_ended:
+            return_object = ts.termination(np.array(self.state_history, dtype=np.int32), reward)
+            return return_object
+        else:
+            return_object = ts.transition(np.array(self.state_history, dtype=np.int32), reward=reward, discount=1.0)
+            return return_object
 
 
 
