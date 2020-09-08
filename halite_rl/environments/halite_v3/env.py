@@ -114,31 +114,72 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         return return_object
 
     def _step(self, action):
-        if self.episode_ended:
-            # The last action ended the episode. Ignore the current action and start
-            # a new episode.
-            return_object = self.reset()
-            return return_object
-
+        # ===initialize variables===
         reward = 0
-
-        # ===determine if game over=== (no punishment)
-        # no ship
-        # no shipyard
-        # max turns
+        halite_after_turn = 0
+        cargo_after_turn = 0
+        halite_after_turn = 0
+        cargo_after_turn = 0
 
         # ===get cargo and halite before turn===
+        if '2-1' in self.board.ships:
+            cargo_before_turn = self.board.ships['2-1'].halite
+        halite_before_turn = self.board.players[0].halite
 
-        # == calculate reward===
+        # ===calculate reward and perform move===
         # if move = NOTHING and if adjacent cells are > current cell then punishment (what was max delta)
         # if move = NOTHING and if adjacent cells are < current cell then reward (what was collected)
         # if move = (N,S,E,W) and target cells is > current cell then reward (target cell halite value)
         # if move = (N,S,E,W) and target cells is < current cell then punishment (target cell halite delta)
 
+        # ===move random bots===
+        random_agent(self.board, self.board.players[1])
+        random_agent(self.board, self.board.players[2])
+        random_agent(self.board, self.board.players[3])
 
         # ===perform move===
+        self.board = self.board.next()
+        self.state, heat_map = self.get_state_v2()
 
         # ===get cargo and halite after turn===
+        if '2-1' in self.board.ships:
+            cargo_after_turn = self.board.ships['2-1'].halite
+        halite_after_turn = self.board.players[0].halite
+
+        # ===determine if game over=== (no punishment)
+        # no ship
+        # no shipyard
+        # max turns
+        if self.turns_counter == self._max_turns:
+            self.episode_ended = True
+
+        # ===render image===
+        if self.render_step:
+            self.halite_image_render.render_board(self.board, self.state, heat_map=heat_map,
+                                                  total_reward=self.total_reward, this_step_reward=reward,
+                                                  window_name=self.window_name)
+
+        # ===append to state history===
+        self.turns_counter += 1
+        self.state_history.append(self.state)
+        del self.state_history[:1]
+
+        # ===return to engine===
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
