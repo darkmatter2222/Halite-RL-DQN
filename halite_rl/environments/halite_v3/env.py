@@ -122,6 +122,41 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
         reward = 0
 
+        # ===determine if game over=== (no punishment)
+        # no ship
+        # no shipyard
+        # max turns
+
+        # ===get cargo and halite before turn===
+
+        # == calculate reward===
+        # if move = NOTHING and if adjacent cells are > current cell then punishment (what was max delta)
+        # if move = NOTHING and if adjacent cells are < current cell then reward (what was collected)
+        # if move = (N,S,E,W) and target cells is > current cell then reward (target cell halite value)
+        # if move = (N,S,E,W) and target cells is < current cell then punishment (target cell halite delta)
+
+
+        # ===perform move===
+
+        # ===get cargo and halite after turn===
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         # global rules
         if self.turns_counter == self._max_turns:
             self.episode_ended = True
