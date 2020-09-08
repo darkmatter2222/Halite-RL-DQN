@@ -6,7 +6,7 @@ from tf_agents.policies import random_tf_policy
 from tf_agents.replay_buffers import tf_uniform_replay_buffer
 from tf_agents.trajectories import trajectory
 from tf_agents.utils import common
-from halite_rl.environments.halite_v2.env import halite_ship_navigation
+from halite_rl.environments.halite_v3.env import halite_ship_navigation
 from tqdm import tqdm
 import os
 import cv2
@@ -15,7 +15,6 @@ from tf_agents.policies import policy_saver
 import numpy as np
 import socket
 import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 # loading configuration...

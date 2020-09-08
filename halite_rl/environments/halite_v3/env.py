@@ -17,9 +17,9 @@ import scipy as sp
 import cv2
 import uuid
 import matplotlib
-from .helpers.image_render_v2 import image_render_v2
-from .helpers.stopwatch import stopwatch
-from .helpers.random_agent import random_agent
+from halite_rl.environments.halite_v3.helpers.image_render_v2 import image_render_v2
+from halite_rl.environments.halite_v3.helpers.stopwatch import stopwatch
+from halite_rl.environments.halite_v3.helpers.random_agent import random_agent
 
 # NOTE: This class is only to train a single bot to navigate, collect halite and return it to base.
 # In later envs, we will introduce other bots
