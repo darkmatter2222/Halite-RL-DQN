@@ -40,6 +40,7 @@ _num_eval_episodes = 10  # @param {type:"integer"}
 
 
 reward_history = []
+loss_history = []
 
 # build policy directories
 host_name = socket.gethostname()
@@ -135,14 +136,21 @@ def smooth(y, box_pts):
 def render_history():
     figure = Figure()
     canvas = FigureCanvas(figure)
-    axes = figure.add_subplot(1, 1, 1)
+    axes1 = figure.add_subplot(1, 1, 1)
+    axes2 = figure.add_subplot(2, 1, 1)
 
-    axes.plot(reward_history, 'red')
-    axes.plot(smooth(reward_history, 4), 'orange')
-    axes.plot(smooth(reward_history, 8), 'yellow')
-    axes.plot(smooth(reward_history, 16), 'green')
-    axes.plot(smooth(reward_history, 32), 'blue')
-    axes.plot(smooth(reward_history, 64), 'purple')
+    axes1.plot(reward_history, 'red')
+    axes1.plot(smooth(reward_history, 4), 'orange')
+    axes1.plot(smooth(reward_history, 8), 'yellow')
+    axes1.plot(smooth(reward_history, 16), 'green')
+    axes1.plot(smooth(reward_history, 32), 'blue')
+    axes1.plot(smooth(reward_history, 64), 'purple')
+    axes2.plot(loss_history, 'red')
+    axes2.plot(smooth(loss_history, 4), 'orange')
+    axes2.plot(smooth(loss_history, 8), 'yellow')
+    axes2.plot(smooth(loss_history, 16), 'green')
+    axes2.plot(smooth(loss_history, 32), 'blue')
+    axes2.plot(smooth(loss_history, 64), 'purple')
     canvas.draw()
     image = np.fromstring(canvas.tostring_rgb(), dtype='uint8')
 
@@ -206,6 +214,7 @@ while True:
     train_checkpointer.save(_train_step_counter)
     print('step = {0}: Average Return = {1:.2f}'.format(step, avg_return))
     reward_history.append(avg_return)
+    loss_history.append(train_loss)
     render_history()
     tf_policy_saver.save(_save_policy_dir)
 
