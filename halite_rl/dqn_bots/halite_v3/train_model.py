@@ -158,7 +158,7 @@ def render_history():
 
     # display image with opencv or any operation you like
     cv2.imshow("plot", img)
-
+    plt.close('all')
 # collect_data(train_env, random_policy, replay_buffer, steps=100)
 
 dataset = _replay_buffer.as_dataset(

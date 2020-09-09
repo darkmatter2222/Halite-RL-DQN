@@ -59,6 +59,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self.last_action = 'NOTHING'
         self.max_turns_not_moved = 10
 
+        self.action_history = []
+
         # initialize game
         self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000,
                                                          "episodeSteps": self._max_turns })
@@ -100,6 +102,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self.episode_ended = False
         self.total_reward = 0
         self.turns_not_moved = 0
+        self.action_history = []
         # initialize game
         self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000,
                                                          "episodeSteps": self._max_turns })
@@ -116,6 +119,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
     def _step(self, action):
         # ===initialize variables===
         int_action = int(action)
+        self.action_history.append(self._action_def[int_action])
         reward = 0
         halite_after_turn = 0
         cargo_after_turn = 0
@@ -197,9 +201,13 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         if not self.episode_ended:
             distance = self.board.ships['2-1'].position - self.board.shipyards['1-1'].position
             if abs(distance)[0] > 5 or abs(distance)[1] > 5:
-                reward -= 100
+                reward -= 1000
                 self.episode_ended = True
 
+        # ===discouragements===
+        if self.action_history[-5:] == ['NOTHING', 'NOTHING', 'NOTHING', 'NOTHING', 'NOTHING']:
+            reward -= 1000
+            self.episode_ended = True
 
         # ===render image===
         if self.render_step:
