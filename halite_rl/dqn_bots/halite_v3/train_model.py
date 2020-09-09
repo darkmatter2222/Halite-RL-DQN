@@ -31,10 +31,11 @@ tf.compat.v1.enable_v2_behavior()
 #_initial_collect_steps = 10  # @param {type:"integer"}
 #_collect_steps_per_iteration = 10  # @param {type:"integer"}
 _replay_buffer_max_length = 40000   # @param {type:"integer"}
-_batch_size = 64  # @param {type:"integer"}
+_batch_size = 400  # @param {type:"integer"}
 _learning_rate = 0.0001  # @param {type:"number"}
 _num_train_episodes = 100 # @param {type:"integer"}
 _num_eval_episodes = 10  # @param {type:"integer"}
+_num_save_episodes = 10  # @param {type:"integer"}
 #_render_on_episode = 10  # @param {type:"integer"}
 
 
@@ -169,9 +170,9 @@ dataset = _replay_buffer.as_dataset(
 _agent.train = common.function(_agent.train)
 
 _agent.train_step_counter.assign(0)
-print('initial collect...')
-avg_return = compute_avg_return(_eval_env, _agent.policy, _num_eval_episodes)
-returns = [avg_return]
+#print('initial collect...')
+#avg_return = compute_avg_return(_eval_env, _agent.policy, _num_eval_episodes)
+#returns = [avg_return]
 iterator = iter(dataset)
 
 train_checkpointer = common.Checkpointer(
@@ -191,6 +192,8 @@ if restore_network:
     train_checkpointer.initialize_or_restore()
 
 #_train_env.pyenv._envs[0].set_rendering(enabled=False)
+
+returns = []
 
 while True:
     print('Collecting...')
@@ -213,7 +216,8 @@ while True:
     reward_history.append(avg_return)
     loss_history.append(train_loss)
     render_history()
-    tf_policy_saver.save(_save_policy_dir)
+    if step % _num_save_episodes == 0:
+        tf_policy_saver.save(_save_policy_dir)
 
 policy_dir = os.path.join(tempdir, 'policy')
 tf_policy_saver = policy_saver.PolicySaver(_agent.policy)
