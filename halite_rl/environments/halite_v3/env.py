@@ -69,8 +69,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self._action_spec = array_spec.BoundedArraySpec(
             shape=(), dtype=np.int32, minimum=0, maximum=len(self._action_def)-1, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
-            shape=(self._frames, self._channels, self._board_size, self._board_size), dtype=np.int32, minimum=0,
-            maximum=1, name='observation')
+            shape=(self._frames, self._channels, self._board_size, self._board_size), dtype=np.float, minimum=0.0,
+            maximum=1.0, name='observation')
 
         self.state = np.zeros([self._channels, self._board_size, self._board_size])
         # 0 = Halite 0-1
@@ -113,7 +113,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self.state_history = [self.state] * self._frames
 
         self.prime_board()
-        return_object = ts.restart(np.array(self.state_history, dtype=np.int32))
+        return_object = ts.restart(np.array(self.state_history, dtype=np.float))
         return return_object
 
     def _step(self, action):
@@ -225,10 +225,10 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
         # ===return to engine===
         if self.episode_ended:
-            return_object = ts.termination(np.array(self.state_history, dtype=np.int32), reward)
+            return_object = ts.termination(np.array(self.state_history, dtype=np.float), reward)
             return return_object
         else:
-            return_object = ts.transition(np.array(self.state_history, dtype=np.int32), reward=reward, discount=1.0)
+            return_object = ts.transition(np.array(self.state_history, dtype=np.float), reward=reward, discount=1.0)
             return return_object
 
 
@@ -272,12 +272,12 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                 state_pixels[0, y, x] = cell_halite
                 if cell.ship is not None:
                     if cell.ship.player_id == 0:
-                        state_pixels[1, y, x] = 1
+                        state_pixels[1, y, x] = 1.0
                     else:
                         state_pixels[1, y, x] = 0.5
                 elif cell.shipyard is not None:
                     if cell.shipyard.player_id == 0:
-                        state_pixels[2, y, x] = 1
+                        state_pixels[2, y, x] = 1.0
                     else:
                         state_pixels[2, y, x] = 0.5
 
