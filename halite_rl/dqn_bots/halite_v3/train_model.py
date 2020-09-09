@@ -30,12 +30,12 @@ tf.compat.v1.enable_v2_behavior()
  #_num_iterations = 20000000  # @param {type:"integer"}
 #_initial_collect_steps = 10  # @param {type:"integer"}
 #_collect_steps_per_iteration = 10  # @param {type:"integer"}
-_replay_buffer_max_length = 40000   # @param {type:"integer"}
-_batch_size = 400  # @param {type:"integer"}
-_learning_rate = 0.0001  # @param {type:"number"}
+_replay_buffer_max_length = 400000   # @param {type:"integer"}
+_batch_size = 40000  # @param {type:"integer"}
+_learning_rate = 0.001  # @param {type:"number"}
 _num_train_episodes = 100 # @param {type:"integer"}
 _num_eval_episodes = 10  # @param {type:"integer"}
-_num_save_episodes = 10  # @param {type:"integer"}
+_num_save_episodes = 20  # @param {type:"integer"}
 #_render_on_episode = 10  # @param {type:"integer"}
 
 
@@ -211,7 +211,8 @@ while True:
     print('Evaulating...')
     avg_return = compute_avg_return(_eval_env, _agent.policy, _num_eval_episodes)
     returns.append(avg_return)
-    train_checkpointer.save(_train_step_counter)
+    if step % _num_save_episodes == 0:
+        train_checkpointer.save(_train_step_counter)
     print('step = {0}: Average Return = {1:.2f}'.format(step, avg_return))
     reward_history.append(avg_return)
     loss_history.append(train_loss)

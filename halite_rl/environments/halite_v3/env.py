@@ -31,13 +31,13 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self._this_stopwatch = stopwatch()
         print('Initializing Env')
         # game parameters
-        self._board_size = 25
+        self._board_size = 5
         self._max_turns = 400
-        if self._max_turns > 25:
-            self._frames = 25
+        if self._max_turns > 1:
+            self._frames = 1
         else:
             self._frames = self._max_turns
-        self._agent_count = 4
+        self._agent_count = 1
         self._channels = 3
         self._action_def = {0: ShipAction.EAST,
                             1: ShipAction.NORTH,
@@ -170,9 +170,9 @@ class halite_ship_navigation(py_environment.PyEnvironment):
             self.board.ships['2-1'].next_action = self._action_def[int_action]
 
         # ===move random bots===
-        random_agent(self.board, self.board.players[1])
-        random_agent(self.board, self.board.players[2])
-        random_agent(self.board, self.board.players[3])
+        #random_agent(self.board, self.board.players[1])
+        #random_agent(self.board, self.board.players[2])
+        #random_agent(self.board, self.board.players[3])
 
         # ===perform move===
         self.board = self.board.next()
@@ -198,11 +198,11 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         if self.turns_counter == self._max_turns:
             self.episode_ended = True
         # distance qualifier
-        if not self.episode_ended:
-            distance = self.board.ships['2-1'].position - self.board.shipyards['1-1'].position
-            if abs(distance)[0] > 5 or abs(distance)[1] > 5:
-                reward -= 1000
-                self.episode_ended = True
+        #if not self.episode_ended:
+            #distance = self.board.ships['2-1'].position - self.board.shipyards['1-1'].position
+            #if abs(distance)[0] > 5 or abs(distance)[1] > 5:
+                #reward -= 1000
+                #self.episode_ended = True
 
         # ===discouragements===
         if self.action_history[-5:] == ['NOTHING', 'NOTHING', 'NOTHING', 'NOTHING', 'NOTHING']:
