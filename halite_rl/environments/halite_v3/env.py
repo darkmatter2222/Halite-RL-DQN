@@ -209,12 +209,6 @@ class halite_ship_navigation(py_environment.PyEnvironment):
             reward -= 1000
             self.episode_ended = True
 
-        # ===render image===
-        if self.render_step:
-            self.halite_image_render.render_board(self.board, self.state, heat_map=heat_map,
-                                                  total_reward=self.total_reward, this_step_reward=reward,
-                                                  window_name=self.window_name)
-
         # ===append to state history===
         self.turns_counter += 1
         self.state_history.append(self.state)
@@ -222,6 +216,12 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
         # ===totals===
         self.total_reward += reward
+
+        # ===render image===
+        if self.render_step:
+            self.halite_image_render.render_board(self.board, self.state, heat_map=heat_map,
+                                                  total_reward=self.total_reward, this_step_reward=reward,
+                                                  window_name=self.window_name)
 
         # ===return to engine===
         if self.episode_ended:
