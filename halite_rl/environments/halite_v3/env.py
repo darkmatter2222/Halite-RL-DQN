@@ -205,9 +205,11 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                 #self.episode_ended = True
 
         # ===discouragements===
-        if len(self.action_history[-5:]) > 5 and self.action_history[-5:] == ['NOTHING', 'NOTHING', 'NOTHING', 'NOTHING', 'NOTHING']:
-            reward -= 1000
-            self.episode_ended = True
+        last_five_history = self.action_history[-5:]
+        if len(last_five_history) >= 5:
+            if last_five_history == ['NOTHING', 'NOTHING', 'NOTHING', 'NOTHING', 'NOTHING']:
+                reward -= 1000
+                self.episode_ended = True
 
         # ===append to state history===
         self.turns_counter += 1
