@@ -1,3 +1,10 @@
+from os.path import dirname, abspath, join
+import sys
+THIS_DIR = dirname(__file__)
+CODE_DIR = abspath(join(THIS_DIR, '..', '..', '..'))
+THIS_DIR = abspath(join(THIS_DIR))
+sys.path.append(THIS_DIR)
+sys.path.append(CODE_DIR)
 import tensorflow as tf
 from tf_agents.agents.dqn import dqn_agent
 from tf_agents.environments import tf_py_environment
