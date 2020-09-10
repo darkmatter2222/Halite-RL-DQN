@@ -223,7 +223,11 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         if self.render_step:
             self.halite_image_render.render_board(self.board, self.state, heat_map=heat_map,
                                                   total_reward=self.total_reward, this_step_reward=reward,
-                                                  window_name=self.window_name)
+                                                  window_name=self.window_name,
+                                                  last_action=self._action_def[int_action],
+                                                  player_halite=halite_after_turn,
+                                                  total_ship_cargo=cargo_after_turn,
+                                                  action_history=self.action_history)
 
         # ===return to engine===
         if self.episode_ended:

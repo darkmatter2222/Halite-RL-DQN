@@ -3,7 +3,10 @@ import uuid
 import numpy as np
 import math
 from skimage import draw
+from collections import Counter
 import math
+from kaggle_environments import make
+from kaggle_environments.envs.halite.helpers import *
 from kaggle_environments import make
 from kaggle_environments.envs.halite.helpers import *
 import scipy as sp
@@ -14,7 +17,7 @@ class image_render_v2():
         self._board_size = this_board_size
         self.image_name = 'Default'
         self._final_image_dimension = 400
-        self._final_image_dimension_extension = 200
+        self._final_stats_dimension = 400
         self._sprite_models = {}
         self._BGR_colors = {
             'blue': (255, 0, 0),
@@ -115,12 +118,13 @@ class image_render_v2():
                         render_halite_sprite[h, w] = [0, 0, 0] # heatmap background
             self._premade_rendered_sprites[f'circle_sprite_{s}'] = render_halite_sprite
 
-    def render_board(self, board, state, heat_map, total_reward, this_step_reward, window_name, average_return_history = None):
+    def render_board(self, board, state, heat_map, total_reward, this_step_reward, window_name, average_return_history = None,
+                     last_action = 'UNKNOWN', player_halite = 0, total_ship_cargo = 0, action_history = []):
         # calculate sprite size
         sprite_size = math.floor(self._final_image_dimension / self._board_size)
         master_image = np.zeros([self._final_image_dimension, self._final_image_dimension, 3], dtype='uint8')
         state_image = np.zeros([self._final_image_dimension, self._final_image_dimension, 3], dtype='uint8')
-        master_image_extension = np.zeros([self._final_image_dimension_extension, self._final_image_dimension, 3])
+        stats_image = np.zeros([self._final_stats_dimension, self._final_stats_dimension, 3], dtype='uint8')
 
         reward_heatmap = np.zeros([self._board_size, self._board_size])
 
@@ -184,17 +188,34 @@ class image_render_v2():
                     # nothing
                     lol = 1
 
-        master_image = np.append(master_image, master_image_extension, axis=0)
-        cv2.putText(master_image, f'Total Reward: {total_reward}', (10, self._final_image_dimension + 50),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 1), 2)
-        cv2.putText(master_image, f'This Step Reward: {this_step_reward}', (10, self._final_image_dimension + 100),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 1), 2)
-        cv2.imshow(f'Real Time Play {window_name}', master_image)
+        cv2.putText(stats_image, f'Total Reward: {math.floor(total_reward)}', (10, 50),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 225), 2)
+        cv2.putText(stats_image, f'This Step Reward: {math.floor(this_step_reward)}', (10, 80),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 225), 2)
+        cv2.putText(stats_image, f'Last Action: {last_action}', (10, 110),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 225), 2)
+        cv2.putText(stats_image, f'Total Halite: {player_halite}', (10, 140),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 225), 2)
+        cv2.putText(stats_image, f'Total Cargo: {total_ship_cargo}', (10, 170),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 225), 2)
+        cv2.putText(stats_image, f'Action Diversity:', (10, 200),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 225), 2)
+        cou = Counter(action_history)
+        cv2.putText(stats_image, f'NORTH: {cou[ShipAction.NORTH]}', (100, 230),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 0, 225), 2)
+        cv2.putText(stats_image, f'SOUTH: {cou[ShipAction.SOUTH]}', (100, 250),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 0, 225), 2)
+        cv2.putText(stats_image, f'EAST: {cou[ShipAction.EAST]}', (100, 270),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 0, 225), 2)
+        cv2.putText(stats_image, f'WEST: {cou[ShipAction.WEST]}', (100, 290),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 0, 225), 2)
+        cv2.putText(stats_image, f'NOTHING: {cou["NOTHING"]}', (100, 310),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 0, 225), 2)
 
-        #cv2.imshow('State Halite', state[0, :, :])
+        cv2.imshow(f'Real Time Play {window_name}', master_image)
         cv2.imshow(f'State {window_name}', state_image)
-        #cv2.imshow('State Shipyard', state[2, :, :])
-        #cv2.imshow('State Heatmap', state[3, :, :])
+        cv2.imshow(f'Stats {window_name}', stats_image)
+
         cv2.waitKey(1)
         # ship
         lol = 1
