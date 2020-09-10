@@ -27,7 +27,7 @@ from halite_rl.environments.halite_v3.helpers.random_agent import random_agent
 tf.compat.v1.enable_v2_behavior()
 
 class halite_ship_navigation(py_environment.PyEnvironment):
-    def __init__(self, window_name, render_me=True):
+    def __init__(self, env_name, render_me=True):
         self._this_stopwatch = stopwatch()
         print('Initializing Env')
         # game parameters
@@ -46,6 +46,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                             4: ShipAction.WEST}
         self.render_step = render_me
         self.window_name = f''
+        self._env_name = env_name
 
         # runtime parameters
         self.turns_counter = 0
@@ -227,7 +228,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                                                   last_action=self._action_def[int_action],
                                                   player_halite=halite_after_turn,
                                                   total_ship_cargo=cargo_after_turn,
-                                                  action_history=self.action_history)
+                                                  action_history=self.action_history,
+                                                  env_name=self._env_name)
 
         # ===return to engine===
         if self.episode_ended:

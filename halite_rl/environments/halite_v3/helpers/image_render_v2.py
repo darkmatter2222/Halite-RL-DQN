@@ -119,7 +119,8 @@ class image_render_v2():
             self._premade_rendered_sprites[f'circle_sprite_{s}'] = render_halite_sprite
 
     def render_board(self, board, state, heat_map, total_reward, this_step_reward, window_name, average_return_history = None,
-                     last_action = 'UNKNOWN', player_halite = 0, total_ship_cargo = 0, action_history = []):
+                     last_action = 'UNKNOWN', player_halite = 0, total_ship_cargo = 0, action_history = [],
+                     env_name='UNKNOWN'):
         # calculate sprite size
         sprite_size = math.floor(self._final_image_dimension / self._board_size)
         master_image = np.zeros([self._final_image_dimension, self._final_image_dimension, 3], dtype='uint8')
@@ -211,6 +212,9 @@ class image_render_v2():
                     cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 0, 225), 2)
         cv2.putText(stats_image, f'NOTHING: {cou["NOTHING"]}', (100, 310),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.65, (0, 0, 225), 2)
+
+        cv2.putText(stats_image, f'Env: {env_name}', (10, 340),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 225), 2)
 
         cv2.imshow(f'Real Time Play {window_name}', master_image)
         cv2.imshow(f'State {window_name}', state_image)
