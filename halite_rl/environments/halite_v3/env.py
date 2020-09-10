@@ -33,8 +33,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         # game parameters
         self._board_size = 5
         self._max_turns = 400
-        if self._max_turns > 1:
-            self._frames = 1
+        if self._max_turns > 5:
+            self._frames = 5
         else:
             self._frames = self._max_turns
         self._agent_count = 1
@@ -205,7 +205,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                 #self.episode_ended = True
 
         # ===discouragements===
-        if self.action_history[-5:] == ['NOTHING', 'NOTHING', 'NOTHING', 'NOTHING', 'NOTHING']:
+        if len(self.action_history[-5:]) > 5 and self.action_history[-5:] == ['NOTHING', 'NOTHING', 'NOTHING', 'NOTHING', 'NOTHING']:
             reward -= 1000
             self.episode_ended = True
 

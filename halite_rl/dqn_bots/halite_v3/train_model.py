@@ -30,9 +30,9 @@ tf.compat.v1.enable_v2_behavior()
  #_num_iterations = 20000000  # @param {type:"integer"}
 #_initial_collect_steps = 10  # @param {type:"integer"}
 #_collect_steps_per_iteration = 10  # @param {type:"integer"}
-_replay_buffer_max_length = 400000   # @param {type:"integer"}
+_replay_buffer_max_length = 4000000   # @param {type:"integer"}
 _batch_size = 40000  # @param {type:"integer"}
-_learning_rate = 0.001  # @param {type:"number"}
+_learning_rate = 0.0001  # @param {type:"number"}
 _num_train_episodes = 100 # @param {type:"integer"}
 _num_eval_episodes = 10  # @param {type:"integer"}
 _num_save_episodes = 20  # @param {type:"integer"}
@@ -69,7 +69,7 @@ _eval_env = tf_py_environment.TFPyEnvironment(_eval_py_env)
 
 
 print('Building Network...')
-_fc_layer_params = (256,)
+_fc_layer_params = (512,)
 
 _q_net = q_network.QNetwork(
     _train_env.observation_spec(),
