@@ -17,7 +17,7 @@ import scipy as sp
 import cv2
 import uuid
 import matplotlib
-from halite_rl.environments.halite_v4.helpers.image_render_v2 import image_render_v2
+from halite_rl.environments.halite_v4.helpers.image_render_v3 import image_render_v3
 from halite_rl.environments.halite_v4.helpers.stopwatch import stopwatch
 from halite_rl.environments.halite_v4.helpers.random_agent import random_agent
 
@@ -31,35 +31,36 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self._this_stopwatch = stopwatch()
         print('Initializing Env')
         # game parameters
-        self._board_size = 5
+        self._board_size = 25
+        self._network_board_size = 5
         self._max_turns = 400
-        if self._max_turns > 5:
-            self._frames = 5
+        self._network_frame_depth = 5
+        
+        if self._max_turns > self._network_frame_depth:
+            self._frames = self._network_frame_depth
         else:
             self._frames = self._max_turns
+
         self._agent_count = 1
         self._channels = 3
+        # attract
+        # avoid
+        # self
+
         self._action_def = {0: ShipAction.EAST,
                             1: ShipAction.NORTH,
                             2: "NOTHING",
                             3: ShipAction.SOUTH,
                             4: ShipAction.WEST}
+
         self.render_step = render_me
-        self.window_name = f''
         self._env_name = env_name
 
         # runtime parameters
         self.turns_counter = 0
         self.episode_ended = False
         self.total_reward = 0
-        self.ships_idle = []
-        self.shipyards_idle = []
-        self.last_reward = 0
-
-        self.turns_not_moved = 0
-        self.last_action = 'NOTHING'
-        self.max_turns_not_moved = 10
-
+        self.ship_directive = {} # ship id: {target:T, Action At Target:A}
         self.action_history = []
 
         # initialize game
@@ -84,7 +85,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         # get board
         self.board = self.get_board()
         self.prime_board()
-        self.halite_image_render = image_render_v2(self._board_size)
+        self.halite_image_render = image_render_v3(self._board_size)
         self.previous_ship_count = 0
         print(f'Initialized at {self._this_stopwatch.elapsed()}')
 
@@ -120,116 +121,11 @@ class halite_ship_navigation(py_environment.PyEnvironment):
     def _step(self, action):
         # ===initialize variables===
         int_action = int(action)
-        self.action_history.append(self._action_def[int_action])
         reward = 0
-        halite_after_turn = 0
-        cargo_after_turn = 0
-        halite_after_turn = 0
-        cargo_after_turn = 0
-
-        grant_cargo_delta_reward = False
-
-        # ===get cargo and halite before turn===
-        if '2-1' in self.board.ships:
-            cargo_before_turn = self.board.ships['2-1'].halite
-        halite_before_turn = self.board.players[0].halite
-
-        # ===calculate reward and perform move===
-        # if move = NOTHING and if adjacent cells are > current cell then punishment (what was max delta)
-        # if move = NOTHING and if adjacent cells are < current cell then reward (what was collected)
-        if self._action_def[int_action] == 'NOTHING':
-            this_ship = self.board.ships['2-1']
-            this_cell_halite = this_ship.cell.halite
-
-            adj_halite = [this_ship.cell.north.halite,
-                          this_ship.cell.south.halite,
-                          this_ship.cell.east.halite,
-                          this_ship.cell.west.halite]
-
-            if this_cell_halite > np.max(adj_halite):
-                reward += this_cell_halite - np.max(adj_halite)
-            else:
-                grant_cargo_delta_reward = True
-        # if move = (N,S,E,W) and target cells is > current cell then reward (target cell halite value)
-        # if move = (N,S,E,W) and target cells is < current cell then punishment (target cell halite delta)
-        elif not self._action_def[int_action] == 'NOTHING':
-            this_ship = self.board.ships['2-1']
-            this_cell_halite = this_ship.cell.halite
-            delta = 0
-
-            if self._action_def[int_action] == ShipAction.NORTH:
-                delta = this_ship.cell.north.halite - this_cell_halite
-            elif self._action_def[int_action] == ShipAction.SOUTH:
-                delta = this_ship.cell.south.halite - this_cell_halite
-            elif self._action_def[int_action] == ShipAction.EAST:
-                delta = this_ship.cell.east.halite - this_cell_halite
-            elif self._action_def[int_action] == ShipAction.WEST:
-                delta = this_ship.cell.west.halite - this_cell_halite
-
-            reward += delta
-
-            self.board.ships['2-1'].next_action = self._action_def[int_action]
-
-        # ===move random bots===
-        #random_agent(self.board, self.board.players[1])
-        #random_agent(self.board, self.board.players[2])
-        #random_agent(self.board, self.board.players[3])
-
-        # ===perform move===
-        self.board = self.board.next()
-        self.state, heat_map = self.get_state_v2()
-
-        # ===get cargo and halite after turn===
-        if '2-1' in self.board.ships:
-            cargo_after_turn = self.board.ships['2-1'].halite
-        halite_after_turn = self.board.players[0].halite
-
-        # ===additional grants===
-        if grant_cargo_delta_reward:
-            reward += cargo_after_turn - cargo_before_turn
-
-        # ===determine if game over=== (no punishment)
-        # no ship
-        if len(self.board.players[0].ships) == 0:
-            self.episode_ended = True
-        # no shipyard
-        if len(self.board.players[0].shipyards) == 0:
-            self.episode_ended = True
-        # max turns
-        if self.turns_counter == self._max_turns:
-            self.episode_ended = True
-        # distance qualifier
-        #if not self.episode_ended:
-            #distance = self.board.ships['2-1'].position - self.board.shipyards['1-1'].position
-            #if abs(distance)[0] > 5 or abs(distance)[1] > 5:
-                #reward -= 1000
-                #self.episode_ended = True
-
-        # ===discouragements===
-        last_five_history = self.action_history[-5:]
-        if len(last_five_history) >= 5:
-            if last_five_history == ['NOTHING', 'NOTHING', 'NOTHING', 'NOTHING', 'NOTHING']:
-                reward -= 1000
-                self.episode_ended = True
-
-        # ===append to state history===
-        self.turns_counter += 1
-        self.state_history.append(self.state)
-        del self.state_history[:1]
-
-        # ===totals===
-        self.total_reward += reward
 
         # ===render image===
         if self.render_step:
-            self.halite_image_render.render_board(self.board, self.state, heat_map=heat_map,
-                                                  total_reward=self.total_reward, this_step_reward=reward,
-                                                  window_name=self.window_name,
-                                                  last_action=self._action_def[int_action],
-                                                  player_halite=halite_after_turn,
-                                                  total_ship_cargo=cargo_after_turn,
-                                                  action_history=self.action_history,
-                                                  env_name=self._env_name)
+            self.halite_image_render.render_board(self.board, self.state)
 
         # ===return to engine===
         if self.episode_ended:
@@ -239,9 +135,6 @@ class halite_ship_navigation(py_environment.PyEnvironment):
             return_object = ts.transition(np.array(self.state_history, dtype=np.float), reward=reward, discount=1.0)
             return return_object
 
-
-    def set_rendering(self, enabled=True):
-        self.render_step = enabled
 
     def prime_board(self):
         self.board.players[0].ships[0].next_action = ShipAction.CONVERT
