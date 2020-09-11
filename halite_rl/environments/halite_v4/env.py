@@ -32,19 +32,17 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         print('Initializing Env')
         # game parameters
         self._board_size = 25
-        self._network_board_size = 5
         self._max_turns = 400
-        self._network_frame_depth = 5
-        
+        self._network_frame_depth = 1
+
         if self._max_turns > self._network_frame_depth:
             self._frames = self._network_frame_depth
         else:
             self._frames = self._max_turns
 
-        self._agent_count = 1
-        self._channels = 3
-        # attract
-        # avoid
+        self._agent_count = 2
+        self._channels = 2
+        # attract Target /w heatmap - avoid Target w/ heatmap
         # self
 
         self._action_def = {0: ShipAction.EAST,
@@ -157,32 +155,39 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         actions = [agent.action for agent in self.environment.state]
         return Board(obs, config, actions)
 
-    def get_state_v2(self):
+    def get_state_v2(self, ship_in_question_id = '0'):
         # this method, we are constructing both the board to be rendered and what is provided to the neural network.
+        attract_heatmap = np.zeros([self._board_size, self._board_size])
+        detract_heatmap = np.zeros([self._board_size, self._board_size])
+        self_location = np.zeros([self._board_size, self._board_size])
+
         reward_heatmap = np.zeros([self._board_size, self._board_size])
         state_pixels = np.zeros([self._channels, self._board_size, self._board_size])
+
         for x in range(0, self._board_size):
             for y in range(0, self._board_size):
                 cell = self.board[(x, self._board_size - y - 1)]
-                cell_halite = 1.0 * cell.halite / float(self.board.configuration.max_cell_halite)
-                cell_halite_heat = 255 * cell.halite / float(self.board.configuration.max_cell_halite)
-                reward_heatmap[y, x] = cell_halite_heat
-                # 0 = Halite
-                # 1 = Ship Presence (One Hot 'ship_id', rest 0.5)
-                # 2 = Shipyard Presence (One Hot 'ship_id', rest 0.5)
-                state_pixels[0, y, x] = cell_halite
+
                 if cell.ship is not None:
-                    if cell.ship.player_id == 0:
-                        state_pixels[1, y, x] = 1.0
-                    else:
-                        state_pixels[1, y, x] = 0.5
+                    if not cell.ship.player_id == 0:
+                        detract_heatmap[y, x] = 1.0
+                    if cell.ship.id == ship_in_question_id:
+                        self_location[y, x] = 1.0
                 elif cell.shipyard is not None:
                     if cell.shipyard.player_id == 0:
-                        state_pixels[2, y, x] = 1.0
+                        lol = 0 # don't give a shit for now...
                     else:
-                        state_pixels[2, y, x] = 0.5
+                        detract_heatmap[y, x] = 1.0
 
-        sigma = [0.7, 0.7]
-        reward_heatmap = sp.ndimage.filters.gaussian_filter(reward_heatmap, sigma, mode='constant')
+        for ship_id in self.board.ships:
+            self.board.ships[ship_id].position
 
-        return state_pixels, reward_heatmap
+        attract_sigma = [0.7, 0.7]
+        attract_heatmap = sp.ndimage.filters.gaussian_filter(attract_heatmap, attract_sigma, mode='constant')
+        detract_sigma = [0.5, 0.5]
+        detract_heatmap = sp.ndimage.filters.gaussian_filter(detract_heatmap, detract_sigma, mode='constant')
+        navigation_map = attract_heatmap - detract_heatmap
+
+        state = [navigation_map, self_location]
+
+        return state
