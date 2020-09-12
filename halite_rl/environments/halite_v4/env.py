@@ -34,7 +34,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         print('Initializing Env')
         # game parameters
         self._board_size = 15
-        self._max_turns = 400
+        self._max_turns = 100
         self._network_frame_depth = 1
 
         if self._max_turns > self._network_frame_depth:
@@ -151,6 +151,11 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         # max turns
         if self.turns_counter == self._max_turns:
             self.episode_ended = True
+
+        # ===calculate reward===
+        if not self.episode_ended:
+            pos = self.board.ships['2-1'].position
+            reward += self.state[0, self._board_size - pos.y - 1, pos.x]
 
         # ===append to state history===
         self.turns_counter += 1
