@@ -141,13 +141,13 @@ class halite_ship_navigation(py_environment.PyEnvironment):
     def prime_board(self):
         self.board.players[0].ships[0].next_action = ShipAction.CONVERT
         self.board = self.board.next()
-        self.state, heat_map = self.get_state_v2()
+        self.state = self.get_state_v2()
         self.state_history.append(self.state)
         del self.state_history[:1]
         self.turns_counter += 1
         self.board.players[0].shipyards[0].next_action = ShipyardAction.SPAWN
         self.board = self.board.next()
-        self.state, heat_map = self.get_state_v2()
+        self.state = self.get_state_v2()
         self.state_history.append(self.state)
         del self.state_history[:1]
         self.turns_counter += 1
@@ -163,6 +163,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         attract_heatmap = np.zeros([self._board_size, self._board_size])
         detract_heatmap = np.zeros([self._board_size, self._board_size])
         self_location = np.zeros([self._board_size, self._board_size])
+        state = np.zeros([self._channels, self._board_size, self._board_size])
 
         reward_heatmap = np.zeros([self._board_size, self._board_size])
         state_pixels = np.zeros([self._channels, self._board_size, self._board_size])
@@ -186,6 +187,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         detract_heatmap = sp.ndimage.filters.gaussian_filter(detract_heatmap, detract_sigma, mode='constant')
         navigation_map = attract_heatmap - detract_heatmap
 
-        state = np.array([navigation_map, self_location])
+        state[0] = attract_heatmap
+        state[1] = detract_heatmap
 
         return state
