@@ -26,6 +26,7 @@ from halite_rl.environments.halite_v4.helpers.random_agent import random_agent
 
 tf.compat.v1.enable_v2_behavior()
 
+
 class halite_ship_navigation(py_environment.PyEnvironment):
     def __init__(self, env_name, render_me=True):
         self._this_stopwatch = stopwatch()
@@ -58,25 +59,21 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self.turns_counter = 0
         self.episode_ended = False
         self.total_reward = 0
-        self.ship_directive = {} # ship id: {target:T, Action At Target:A}
+        self.ship_directive = {}  # ship id: {target:T, Action At Target:A}
         self.action_history = []
 
         # initialize game
         self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000,
-                                                         "episodeSteps": self._max_turns })
+                                                         "episodeSteps": self._max_turns})
         self.environment.reset(self._agent_count)
 
         self._action_spec = array_spec.BoundedArraySpec(
-            shape=(), dtype=np.int32, minimum=0, maximum=len(self._action_def)-1, name='action')
+            shape=(), dtype=np.int32, minimum=0, maximum=len(self._action_def) - 1, name='action')
         self._observation_spec = array_spec.BoundedArraySpec(
             shape=(self._frames, self._channels, self._board_size, self._board_size), dtype=np.float, minimum=0.0,
             maximum=1.0, name='observation')
 
         self.state = np.zeros([self._channels, self._board_size, self._board_size])
-        # 0 = Halite 0-1
-        # 1 = Ships (This One Hot, rest are .5)
-        # 2 = Shipyards (This One Hot, rest are .5)
-        # 3 = Halite Heat Map
 
         self.state_history = [self.state] * self._frames
 
@@ -105,7 +102,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self.action_history = []
         # initialize game
         self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000,
-                                                         "episodeSteps": self._max_turns })
+                                                         "episodeSteps": self._max_turns})
         self.environment.reset(self._agent_count)
         # get board
         self.board = self.get_board()
@@ -121,6 +118,14 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         int_action = int(action)
         reward = 0
 
+        # ===pick targets===
+        if not '2-1' in self.ship_directive:
+            self.ship_directive['2-1'] = {
+                'mode': 'parking',
+                'target': self.board.shipyards['1-1'].position + (2, 0),
+                'action_at_target': 'park'
+            }
+
         # ===render image===
         if self.render_step:
             self.halite_image_render.render_board(self.board, self.state)
@@ -132,7 +137,6 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         else:
             return_object = ts.transition(np.array(self.state_history, dtype=np.float), reward=reward, discount=1.0)
             return return_object
-
 
     def prime_board(self):
         self.board.players[0].ships[0].next_action = ShipAction.CONVERT
@@ -148,14 +152,13 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         del self.state_history[:1]
         self.turns_counter += 1
 
-
     def get_board(self):
         obs = self.environment.state[0].observation
         config = self.environment.configuration
         actions = [agent.action for agent in self.environment.state]
         return Board(obs, config, actions)
 
-    def get_state_v2(self, ship_in_question_id = '0'):
+    def get_state_v2(self, ship_in_question_id='2-1'):
         # this method, we are constructing both the board to be rendered and what is provided to the neural network.
         attract_heatmap = np.zeros([self._board_size, self._board_size])
         detract_heatmap = np.zeros([self._board_size, self._board_size])
@@ -164,30 +167,25 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         reward_heatmap = np.zeros([self._board_size, self._board_size])
         state_pixels = np.zeros([self._channels, self._board_size, self._board_size])
 
-        for x in range(0, self._board_size):
-            for y in range(0, self._board_size):
-                cell = self.board[(x, self._board_size - y - 1)]
-
-                if cell.ship is not None:
-                    if not cell.ship.player_id == 0:
-                        detract_heatmap[y, x] = 1.0
-                    if cell.ship.id == ship_in_question_id:
-                        self_location[y, x] = 1.0
-                elif cell.shipyard is not None:
-                    if cell.shipyard.player_id == 0:
-                        lol = 0 # don't give a shit for now...
-                    else:
-                        detract_heatmap[y, x] = 1.0
-
         for ship_id in self.board.ships:
-            self.board.ships[ship_id].position
+            ship = self.board.ships[ship_id]
+            if not ship.player_id == 0:
+                detract_heatmap[self._board_size - ship.position.y - 1, ship.position.x] = 1.0
+            if ship.id == ship_in_question_id:
+                self_location[self._board_size - ship.position.y - 1, ship.position.x] = 1.0
+        for shipyard_id in self.board.shipyards:
+            shipyard = self.board.shipyards[shipyard_id]
+            if shipyard.player_id == 0:
+                dont_care_for_now = 1  # TODO do something with this, at this point, meaningless
+            else:
+                detract_heatmap[self._board_size - shipyard.position.y - 1, shipyard.position.x] = 1.0
 
         attract_sigma = [0.7, 0.7]
         attract_heatmap = sp.ndimage.filters.gaussian_filter(attract_heatmap, attract_sigma, mode='constant')
-        detract_sigma = [0.5, 0.5]
+        detract_sigma = [0.65, 0.65]
         detract_heatmap = sp.ndimage.filters.gaussian_filter(detract_heatmap, detract_sigma, mode='constant')
         navigation_map = attract_heatmap - detract_heatmap
 
-        state = [navigation_map, self_location]
+        state = np.array([navigation_map, self_location])
 
         return state
