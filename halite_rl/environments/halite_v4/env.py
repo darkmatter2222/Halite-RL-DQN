@@ -14,6 +14,7 @@ from tf_agents.environments import suite_gym
 from tf_agents.trajectories import time_step as ts
 import random
 import scipy as sp
+import sklearn
 import cv2
 import uuid
 import matplotlib
@@ -129,7 +130,28 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                 'action_at_target': 'park'
             }
 
+        # ===move random bots===
+        random_agent(self.board, self.board.players[1])
+
+        # ===determine if game over=== (no punishment)
+        # no ship
+        if len(self.board.players[0].ships) == 0:
+            self.episode_ended = True
+        # no shipyard
+        if len(self.board.players[0].shipyards) == 0:
+            self.episode_ended = True
+        # max turns
+        if self.turns_counter == self._max_turns:
+            self.episode_ended = True
+
+        # ===perform move===
+        self.board = self.board.next()
         self.state = self.get_state_v2()
+
+        # ===append to state history===
+        self.turns_counter += 1
+        self.state_history.append(self.state)
+        del self.state_history[:1]
 
         # ===render image===
         if self.render_step:
@@ -163,6 +185,12 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         actions = [agent.action for agent in self.environment.state]
         return Board(obs, config, actions)
 
+    def scale(self, X, x_min, x_max):
+        nom = (X - X.min(axis=0)) * (x_max - x_min)
+        denom = X.max(axis=0) - X.min(axis=0)
+        denom[denom == 0] = 1
+        return x_min + nom / denom
+
     def get_state_v2(self, ship_in_question_id='2-1'):
         # this method, we are constructing both the board to be rendered and what is provided to the neural network.
         attract_heatmap = np.zeros([self._board_size, self._board_size])
@@ -170,22 +198,19 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self_location = np.zeros([self._board_size, self._board_size])
         state = np.zeros([self._channels, self._board_size, self._board_size])
 
-        reward_heatmap = np.zeros([self._board_size, self._board_size])
-        state_pixels = np.zeros([self._channels, self._board_size, self._board_size])
-
         attract_heatmap_topoff_location = None
         detract_heatmap_topoff_location = []
 
         for ship_id in self.board.ships:
             ship = self.board.ships[ship_id]
             if not ship.player_id == 0:
-                detract_heatmap[self._board_size - ship.position.y - 1, ship.position.x] = self._board_size
+                detract_heatmap[self._board_size - ship.position.y - 1, ship.position.x] = self._board_size * 2
                 detract_heatmap_topoff_location.append((self._board_size - ship.position.y - 1, ship.position.x))
             if ship.id == ship_in_question_id:
                 self_location[self._board_size - ship.position.y - 1, ship.position.x] = 1.0
             if ship_id == ship_in_question_id and ship_in_question_id in self.ship_directive:
                 if self.ship_directive[ship_in_question_id]['mode'][-3:] == 'ing':
-                    attract_heatmap[self.ship_directive[ship_in_question_id]['target']] = self._board_size
+                    attract_heatmap[self.ship_directive[ship_in_question_id]['target']] = self._board_size * 2
                     attract_heatmap_topoff_location = self.ship_directive[ship_in_question_id]['target']
         for shipyard_id in self.board.shipyards:
             shipyard = self.board.shipyards[shipyard_id]
@@ -203,6 +228,17 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         for _ in detract_heatmap_topoff_location:
             detract_heatmap[_] = self._board_size
         navigation_map = attract_heatmap - detract_heatmap
+
+        min = np.min(navigation_map)
+        delta_to_zero = abs(0 - min)
+        navigation_map = navigation_map + delta_to_zero
+        max = np.max(navigation_map)
+
+        if max > 0:
+            navigation_map = ((navigation_map * 1) / max)
+
+
+
 
         state[0] = navigation_map
         state[1] = self_location

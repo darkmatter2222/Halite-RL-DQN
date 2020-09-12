@@ -125,25 +125,13 @@ class image_render_v3():
         state_image = np.zeros([self._final_image_dimension, self._final_image_dimension, 3], dtype='uint8')
         stats_image = np.zeros([self._final_stats_dimension, self._final_stats_dimension, 3], dtype='uint8')
 
-        reward_heatmap = np.zeros([self._board_size, self._board_size])
-
-        for height in range(self._board_size):
-            for width in range(self._board_size):
-                board_cell = board[width, height]
-                bord_cell_halite = int(9.0 * board_cell.halite / float(board.configuration.max_cell_halite))
-                reward_heatmap[height, width] = bord_cell_halite
-
-        # Apply gaussian filter
-        sigma = [0.7, 0.7]
-        reward_heatmap = sp.ndimage.filters.gaussian_filter(reward_heatmap, sigma, mode='constant')
-
 
         for board_h in range(self._board_size):
             for board_w in range(self._board_size):
                 board_y = (self._board_size - board_h - 1)
                 board_x = board_w
                 board_cell = board[board_x, board_y]
-                bord_cell_halite = math.floor(reward_heatmap[board_h, board_w])
+                bord_cell_halite = int(9.0 * board_cell.halite / float(board.configuration.max_cell_halite))
 
                 half_sprite_size = math.floor(sprite_size / 2)
 
