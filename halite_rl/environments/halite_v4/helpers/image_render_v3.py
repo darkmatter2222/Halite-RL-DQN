@@ -156,10 +156,6 @@ class image_render_v3():
                 state_image[board_h * half_sprite_size + 200:(board_h * half_sprite_size + 200)+ half_sprite_size,
                             board_x * half_sprite_size:board_x * half_sprite_size + half_sprite_size] = \
                             sudo_sprite
-                sudo_sprite.fill(state[2, board_h, board_x] * 255)
-                state_image[board_h * half_sprite_size:board_h * half_sprite_size + half_sprite_size,
-                            board_x * half_sprite_size + 200:(board_x * half_sprite_size + 200)+ half_sprite_size] = \
-                            sudo_sprite
 
 
                 master_image[board_h * sprite_size:board_h * sprite_size + sprite_size,

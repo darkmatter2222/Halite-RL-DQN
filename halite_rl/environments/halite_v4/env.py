@@ -32,7 +32,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self._this_stopwatch = stopwatch()
         print('Initializing Env')
         # game parameters
-        self._board_size = 25
+        self._board_size = 15
         self._max_turns = 400
         self._network_frame_depth = 1
 
@@ -119,12 +119,17 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         reward = 0
 
         # ===pick targets===
+        # modes
+        # -parking
+        # -parked
         if not '2-1' in self.ship_directive:
             self.ship_directive['2-1'] = {
                 'mode': 'parking',
-                'target': self.board.shipyards['1-1'].position + (2, 0),
+                'target': self.board.shipyards['1-1'].position + (2, 0),  # south
                 'action_at_target': 'park'
             }
+
+        self.state = self.get_state_v2()
 
         # ===render image===
         if self.render_step:
@@ -168,12 +173,20 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         reward_heatmap = np.zeros([self._board_size, self._board_size])
         state_pixels = np.zeros([self._channels, self._board_size, self._board_size])
 
+        attract_heatmap_topoff_location = None
+        detract_heatmap_topoff_location = []
+
         for ship_id in self.board.ships:
             ship = self.board.ships[ship_id]
             if not ship.player_id == 0:
-                detract_heatmap[self._board_size - ship.position.y - 1, ship.position.x] = 1.0
+                detract_heatmap[self._board_size - ship.position.y - 1, ship.position.x] = self._board_size
+                detract_heatmap_topoff_location.append((self._board_size - ship.position.y - 1, ship.position.x))
             if ship.id == ship_in_question_id:
                 self_location[self._board_size - ship.position.y - 1, ship.position.x] = 1.0
+            if ship_id == ship_in_question_id and ship_in_question_id in self.ship_directive:
+                if self.ship_directive[ship_in_question_id]['mode'][-3:] == 'ing':
+                    attract_heatmap[self.ship_directive[ship_in_question_id]['target']] = self._board_size
+                    attract_heatmap_topoff_location = self.ship_directive[ship_in_question_id]['target']
         for shipyard_id in self.board.shipyards:
             shipyard = self.board.shipyards[shipyard_id]
             if shipyard.player_id == 0:
@@ -181,13 +194,17 @@ class halite_ship_navigation(py_environment.PyEnvironment):
             else:
                 detract_heatmap[self._board_size - shipyard.position.y - 1, shipyard.position.x] = 1.0
 
-        attract_sigma = [0.7, 0.7]
+        attract_sigma = [self._board_size/10, self._board_size/10]
         attract_heatmap = sp.ndimage.filters.gaussian_filter(attract_heatmap, attract_sigma, mode='constant')
-        detract_sigma = [0.65, 0.65]
+        detract_sigma = [self._board_size/20, self._board_size/20]
         detract_heatmap = sp.ndimage.filters.gaussian_filter(detract_heatmap, detract_sigma, mode='constant')
+        if not attract_heatmap_topoff_location == None:
+            attract_heatmap[attract_heatmap_topoff_location] = self._board_size
+        for _ in detract_heatmap_topoff_location:
+            detract_heatmap[_] = self._board_size
         navigation_map = attract_heatmap - detract_heatmap
 
-        state[0] = attract_heatmap
-        state[1] = detract_heatmap
+        state[0] = navigation_map
+        state[1] = self_location
 
         return state
