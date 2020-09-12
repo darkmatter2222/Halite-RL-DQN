@@ -130,8 +130,16 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                 'action_at_target': 'park'
             }
 
+        # ===take action===
+        if not self._action_def[int_action] == 'NOTHING':
+            self.board.ships['2-1'].next_action = self._action_def[int_action]
+
         # ===move random bots===
         random_agent(self.board, self.board.players[1])
+
+        # ===perform move===
+        self.board = self.board.next()
+        self.state = self.get_state_v2()
 
         # ===determine if game over=== (no punishment)
         # no ship
@@ -143,10 +151,6 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         # max turns
         if self.turns_counter == self._max_turns:
             self.episode_ended = True
-
-        # ===perform move===
-        self.board = self.board.next()
-        self.state = self.get_state_v2()
 
         # ===append to state history===
         self.turns_counter += 1
@@ -217,7 +221,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         for ship_id in self.board.ships:
             ship = self.board.ships[ship_id]
             if not ship.player_id == 0:
-                detract_heatmap[self._board_size - ship.position.y - 1, ship.position.x] = self._board_size * 2
+                detract_heatmap[self._board_size - ship.position.y - 1, ship.position.x] = self._board_size * 10
                 detract_heatmap_topoff_location.append((self._board_size - ship.position.y - 1, ship.position.x))
             if ship.id == ship_in_question_id:
                 self_location[self._board_size - ship.position.y - 1, ship.position.x] = 1.0
@@ -225,7 +229,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                 if self.ship_directive[ship_in_question_id]['mode'][-3:] == 'ing':
                     target = (self._board_size - self.ship_directive[ship_in_question_id]['target'].y - 1,
                                      self.ship_directive[ship_in_question_id]['target'].x)
-                    attract_heatmap[target] = self._board_size * 2
+                    attract_heatmap[target] = self._board_size * 15
                     attract_heatmap_topoff_location = target
         for shipyard_id in self.board.shipyards:
             shipyard = self.board.shipyards[shipyard_id]
@@ -243,8 +247,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
             attract_heatmap[attract_heatmap_topoff_location] = self._board_size
         for _ in detract_heatmap_topoff_location:
             detract_heatmap[_] = self._board_size
-        for _ in player_shipyard_temp_topoff:
-            attract_heatmap[_] = self._board_size
+        #for _ in player_shipyard_temp_topoff:
+            #attract_heatmap[_] = self._board_size
         navigation_map = attract_heatmap - detract_heatmap
 
         min = np.min(navigation_map)
@@ -254,9 +258,6 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
         if max > 0:
             navigation_map = ((navigation_map * 1) / max)
-
-
-
 
         state[0] = navigation_map
         state[1] = self_location
