@@ -55,6 +55,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
         self.render_step = render_me
         self._env_name = env_name
+        self._max_groth_step = 1000000
 
         self.station_to_ship = {}
 
@@ -64,6 +65,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self.total_reward = 0
         self.ship_directive = {}  # ship id: {target:T, Action At Target:A}
         self.action_history = []
+        self.env_step_count = 0
 
         # initialize game
         self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000,
@@ -121,6 +123,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         # ===initialize variables===
         int_action = int(action)
         reward = 0
+        self.env_step_count += 1
 
         # ===pick targets===
         # modes
@@ -128,11 +131,29 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         # -parked
 
         if not '2-1' in self.ship_directive:
-            rand_y = random.randrange(0, self._board_size - 1)
-            rand_x = random.randrange(0, self._board_size - 1)
+            if self.env_step_count >= self._max_groth_step:
+                max_range = self._board_size - 1
+            else:
+                max_range = int((self._board_size - 1 * self.env_step_count) / self._max_groth_step) + 1
+
+            if max_range >= self._board_size:
+                max_range = self._board_size - 1
+
+            rand_y = random.randrange(0, max_range)
+            rand_x = random.randrange(0, max_range)
+
+            target_y = self.board.players[0].shipyards[0].position.y + rand_y
+            target_x = self.board.players[0].shipyards[0].position.x + rand_x
+
+            if target_y >= self._board_size:
+                target_y = target_y - self._board_size
+
+            if target_x >= self._board_size:
+                target_x = target_x - self._board_size
+
             self.ship_directive['2-1'] = {
                 'mode': 'parking',
-                'target': (rand_y, rand_x),  # south
+                'target': (target_y, target_x),  # south
                 'action_at_target': 'park'
             }
 
