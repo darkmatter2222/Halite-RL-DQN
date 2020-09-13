@@ -33,7 +33,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self._this_stopwatch = stopwatch()
         print('Initializing Env')
         # game parameters
-        self._board_size = 25
+        self._board_size = 15
         self._max_turns = 400
         self._network_frame_depth = 1
 

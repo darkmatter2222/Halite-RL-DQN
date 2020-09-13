@@ -23,6 +23,7 @@ import numpy as np
 import socket
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+import tensorflow_addons as tfa
 
 # loading configuration...
 print('loading configuration...')
@@ -83,7 +84,10 @@ _q_net = q_network.QNetwork(
     _train_env.action_spec(),
     fc_layer_params=_fc_layer_params)
 
-_optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=_learning_rate)
+clr = tfa.optimizers.CyclicalLearningRate(initial_learning_rate=0.1, maximal_learning_rate=0.0001, step_size=200,
+                                          scale_fn=lambda x:1.)
+
+_optimizer = tf.compat.v1.train.AdamOptimizer(learning_rate=clr)
 
 _train_step_counter = tf.Variable(0)
 

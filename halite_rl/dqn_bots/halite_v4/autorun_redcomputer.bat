@@ -1,2 +1,2 @@
 @echo off
-cmd /k "cd /d    C:\Users\ryans\source\repos\Halite-RL-DQN & git pull & cd /d C:\Users\ryans\source\repos\venvs\Python375x64CPUTensorflow\Scripts & activate & cd /d    C:\Users\ryans\source\repos\Halite-RL-DQN\halite_rl\dqn_bots\halite_v4 & python C:\Users\ryans\source\repos\Halite-RL-DQN\halite_rl\dqn_bots\halite_v4\train_model.py"
+cmd /k "cd /d    C:\Users\ryans\source\repos\Halite-RL-DQN & git pull & cd /d C:\Users\ryans\source\repos\venvs\Python375x64TensorflowGPU\Scripts & activate & cd /d    C:\Users\ryans\source\repos\Halite-RL-DQN\halite_rl\dqn_bots\halite_v4 & python C:\Users\ryans\source\repos\Halite-RL-DQN\halite_rl\dqn_bots\halite_v4\train_model.py"
