@@ -1,2 +1,0 @@
-@echo off
-cmd /k "cd /d C:\Users\ryans\source\repos\venvs\Python375x64CPUTensorflow\Scripts & activate & cd /d    C:\Users\ryans\source\repos\Halite-RL-DQN\halite_rl\dqn_bots\halite_v3 & python train_model.py"
