@@ -278,12 +278,10 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         attract_heatmap = sp.ndimage.filters.gaussian_filter(attract_heatmap, attract_sigma, mode='constant')
         detract_sigma = [self._board_size/20, self._board_size/20]
         detract_heatmap = sp.ndimage.filters.gaussian_filter(detract_heatmap, detract_sigma, mode='constant')
-        #if not attract_heatmap_topoff_location == None:
-            #attract_heatmap[attract_heatmap_topoff_location] = self._board_size
-        #for _ in detract_heatmap_topoff_location:
-            #detract_heatmap[_] = self._board_size
-        #for _ in player_shipyard_temp_topoff:
-            #attract_heatmap[_] = self._board_size
+        if not attract_heatmap_topoff_location == None:
+            attract_heatmap[attract_heatmap_topoff_location] = self._board_size
+        for _ in detract_heatmap_topoff_location:
+            detract_heatmap[_] = self._board_size
         navigation_map = attract_heatmap - detract_heatmap
 
         min = np.min(navigation_map)
