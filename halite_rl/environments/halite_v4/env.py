@@ -34,7 +34,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         print('Initializing Env')
         # game parameters
         self._board_size = 15
-        self._max_turns = 400
+        self._max_turns = 100
         self._network_frame_depth = 1
 
         if self._max_turns > self._network_frame_depth:
@@ -55,7 +55,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
         self.render_step = render_me
         self._env_name = env_name
-        self._max_groth_step = 1000000
+        self._max_groth_step = 1000
 
         self.station_to_ship = {}
 
@@ -248,15 +248,18 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         detract_heatmap = np.zeros([self._board_size, self._board_size])
         self_location = np.zeros([self._board_size, self._board_size])
         state = np.zeros([self._channels, self._board_size, self._board_size])
+        navigation_map = np.full([self._board_size, self._board_size], 0.5)
 
         attract_heatmap_topoff_location = None
         detract_heatmap_topoff_location = []
         player_shipyard_temp_topoff = []
 
+        hot_spot = self._board_size * 10
+
         for ship_id in self.board.ships:
             ship = self.board.ships[ship_id]
             if not ship.player_id == 0:
-                detract_heatmap[self._board_size - ship.position.y - 1, ship.position.x] = self._board_size * 10
+                detract_heatmap[self._board_size - ship.position.y - 1, ship.position.x] = hot_spot
                 detract_heatmap_topoff_location.append((self._board_size - ship.position.y - 1, ship.position.x))
             if ship.id == ship_in_question_id:
                 self_location[self._board_size - ship.position.y - 1, ship.position.x] = 1.0
@@ -264,7 +267,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                 if self.ship_directive[ship_in_question_id]['mode'][-3:] == 'ing':
                     target = (self._board_size - self.ship_directive[ship_in_question_id]['target'][0] - 1,
                                      self.ship_directive[ship_in_question_id]['target'][1])
-                    attract_heatmap[target] = self._board_size * 15
+                    attract_heatmap[target] = hot_spot
                     attract_heatmap_topoff_location = target
         for shipyard_id in self.board.shipyards:
             shipyard = self.board.shipyards[shipyard_id]
@@ -272,25 +275,30 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                 dont_care_for_now = 1  # TODO do something with this, at this point, meaningless
                 player_shipyard_temp_topoff.append((self._board_size - shipyard.position.y - 1, shipyard.position.x))
             else:
-                detract_heatmap[self._board_size - shipyard.position.y - 1, shipyard.position.x] = self._board_size * 10
+                detract_heatmap[self._board_size - shipyard.position.y - 1, shipyard.position.x] = hot_spot
 
         attract_sigma = [self._board_size/10, self._board_size/10]
         attract_heatmap = sp.ndimage.filters.gaussian_filter(attract_heatmap, attract_sigma, mode='constant')
         detract_sigma = [self._board_size/20, self._board_size/20]
         detract_heatmap = sp.ndimage.filters.gaussian_filter(detract_heatmap, detract_sigma, mode='constant')
+
+
         if not attract_heatmap_topoff_location == None:
-            attract_heatmap[attract_heatmap_topoff_location] = self._board_size
+            attract_heatmap[attract_heatmap_topoff_location] = hot_spot
         for _ in detract_heatmap_topoff_location:
-            detract_heatmap[_] = self._board_size
-        navigation_map = attract_heatmap - detract_heatmap
+            detract_heatmap[_] = hot_spot
 
-        min = np.min(navigation_map)
-        delta_to_zero = abs(0 - min)
-        navigation_map = navigation_map + delta_to_zero
-        max = np.max(navigation_map)
+        # normalize each...
+        attract_heatmap_max = np.max(attract_heatmap)
+        if attract_heatmap_max > 0:
+            attract_heatmap = ((attract_heatmap * 0.5) / attract_heatmap_max)
 
-        if max > 0:
-            navigation_map = ((navigation_map * 1) / max)
+        detract_heatmap_max = np.max(detract_heatmap)
+        if detract_heatmap_max > 0:
+            detract_heatmap = ((detract_heatmap * 0.5) / detract_heatmap_max)
+
+        navigation_map += attract_heatmap
+        navigation_map -= detract_heatmap
 
         state[0] = navigation_map
         state[1] = self_location

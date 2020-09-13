@@ -77,7 +77,7 @@ _eval_env = tf_py_environment.TFPyEnvironment(_eval_py_env)
 
 
 print('Building Network...')
-_fc_layer_params = (64,)
+_fc_layer_params = (64, 64, 64, 64, 64)
 
 _q_net = q_network.QNetwork(
     _train_env.observation_spec(),
@@ -211,11 +211,11 @@ while True:
         while not time_step.is_last():
             collect_step(_train_env, _agent.collect_policy)
             time_step = _train_env.current_time_step()
-    print('Training...')
-    experience, unused_info = next(iterator)
-    train_loss = _agent.train(experience).loss
-    step = _agent.train_step_counter.numpy()
-    print('step = {0}: loss = {1}'.format(step, train_loss))
+        print('Training...')
+        experience, unused_info = next(iterator)
+        train_loss = _agent.train(experience).loss
+        step = _agent.train_step_counter.numpy()
+        print('step = {0}: loss = {1}'.format(step, train_loss))
     print('Evaulating...')
     avg_return = compute_avg_return(_eval_env, _agent.policy, _num_eval_episodes)
     returns.append(avg_return)
