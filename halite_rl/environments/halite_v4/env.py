@@ -33,8 +33,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self._this_stopwatch = stopwatch()
         print('Initializing Env')
         # game parameters
-        self._board_size = 15
-        self._max_turns = 100
+        self._board_size = 25
+        self._max_turns = 400
         self._network_frame_depth = 1
 
         if self._max_turns > self._network_frame_depth:
@@ -55,6 +55,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
         self.render_step = render_me
         self._env_name = env_name
+
+        self.station_to_ship = {}
 
         # runtime parameters
         self.turns_counter = 0
@@ -123,10 +125,13 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         # modes
         # -parking
         # -parked
+
         if not '2-1' in self.ship_directive:
+            rand_y = random.randrange(0, self._board_size - 1)
+            rand_x = random.randrange(0, self._board_size - 1)
             self.ship_directive['2-1'] = {
                 'mode': 'parking',
-                'target': self.board.shipyards['1-1'].position + (0, 2),  # south
+                'target': self.board.shipyards['1-1'].position + (rand_y, rand_x),  # south
                 'action_at_target': 'park'
             }
 
@@ -187,6 +192,9 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self.state_history.append(self.state)
         del self.state_history[:1]
         self.turns_counter += 1
+
+        self.station_to_ship[self.board.players[0].shipyards[0].id] = self.board.players[0].ships[0].id
+
         self.board.players[0].ships[0].next_action = ShipAction.NORTH
         self.board = self.board.next()
         self.state = self.get_state_v2()
@@ -242,16 +250,16 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                 dont_care_for_now = 1  # TODO do something with this, at this point, meaningless
                 player_shipyard_temp_topoff.append((self._board_size - shipyard.position.y - 1, shipyard.position.x))
             else:
-                detract_heatmap[self._board_size - shipyard.position.y - 1, shipyard.position.x] = self._board_size * 2
+                detract_heatmap[self._board_size - shipyard.position.y - 1, shipyard.position.x] = self._board_size * 10
 
         attract_sigma = [self._board_size/10, self._board_size/10]
         attract_heatmap = sp.ndimage.filters.gaussian_filter(attract_heatmap, attract_sigma, mode='constant')
         detract_sigma = [self._board_size/20, self._board_size/20]
         detract_heatmap = sp.ndimage.filters.gaussian_filter(detract_heatmap, detract_sigma, mode='constant')
-        if not attract_heatmap_topoff_location == None:
-            attract_heatmap[attract_heatmap_topoff_location] = self._board_size
-        for _ in detract_heatmap_topoff_location:
-            detract_heatmap[_] = self._board_size
+        #if not attract_heatmap_topoff_location == None:
+            #attract_heatmap[attract_heatmap_topoff_location] = self._board_size
+        #for _ in detract_heatmap_topoff_location:
+            #detract_heatmap[_] = self._board_size
         #for _ in player_shipyard_temp_topoff:
             #attract_heatmap[_] = self._board_size
         navigation_map = attract_heatmap - detract_heatmap
