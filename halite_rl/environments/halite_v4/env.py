@@ -103,6 +103,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
         self.total_reward = 0
         self.turns_not_moved = 0
         self.action_history = []
+        self.ship_directive = {}
         # initialize game
         self.environment = make("halite", configuration={"size": self._board_size, "startingHalite": 1000,
                                                          "episodeSteps": self._max_turns})
@@ -131,7 +132,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
             rand_x = random.randrange(0, self._board_size - 1)
             self.ship_directive['2-1'] = {
                 'mode': 'parking',
-                'target': self.board.shipyards['1-1'].position + (rand_y, rand_x),  # south
+                'target': (rand_y, rand_x),  # south
                 'action_at_target': 'park'
             }
 
@@ -240,8 +241,8 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                 self_location[self._board_size - ship.position.y - 1, ship.position.x] = 1.0
             if ship_id == ship_in_question_id and ship_in_question_id in self.ship_directive:
                 if self.ship_directive[ship_in_question_id]['mode'][-3:] == 'ing':
-                    target = (self._board_size - self.ship_directive[ship_in_question_id]['target'].y - 1,
-                                     self.ship_directive[ship_in_question_id]['target'].x)
+                    target = (self._board_size - self.ship_directive[ship_in_question_id]['target'][0] - 1,
+                                     self.ship_directive[ship_in_question_id]['target'][1])
                     attract_heatmap[target] = self._board_size * 15
                     attract_heatmap_topoff_location = target
         for shipyard_id in self.board.shipyards:
