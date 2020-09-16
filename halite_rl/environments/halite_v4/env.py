@@ -55,7 +55,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
 
         self.render_step = render_me
         self._env_name = env_name
-        self._max_groth_step = 1000
+        self._max_groth_step = 1
 
         self.station_to_ship = {}
 
