@@ -43,7 +43,8 @@ _batch_size = 64  # @param {type:"integer"}
 _learning_rate = 0.00001  # @param {type:"number"}
 _num_train_episodes = 100 # @param {type:"integer"}
 _num_eval_episodes = 10  # @param {type:"integer"}
-_num_save_episodes = 20  # @param {type:"integer"}
+_num_save_episodes = 5  # @param {type:"integer"}
+_num_dump_replay_buffer_episodes = 10  # @param {type:"integer"}
 #_render_on_episode = 10  # @param {type:"integer"}
 
 
@@ -77,7 +78,7 @@ _eval_env = tf_py_environment.TFPyEnvironment(_eval_py_env)
 
 
 print('Building Network...')
-_fc_layer_params = (64, 64, 64, 64, 64)
+_fc_layer_params = (64, 32, 16, 8)
 
 _q_net = q_network.QNetwork(
     _train_env.observation_spec(),
@@ -221,6 +222,8 @@ while True:
     returns.append(avg_return)
     if step % _num_save_episodes == 0:
         train_checkpointer.save(_train_step_counter)
+    if step % _num_dump_replay_buffer_episodes == 0:
+        _replay_buffer.clear()
     print('step = {0}: Average Return = {1:.2f}'.format(step, avg_return))
     reward_history.append(avg_return)
     loss_history.append(train_loss)
