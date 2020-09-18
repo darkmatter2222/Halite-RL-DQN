@@ -267,7 +267,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
                 if self.ship_directive[ship_in_question_id]['mode'][-3:] == 'ing':
                     target = (self._board_size - self.ship_directive[ship_in_question_id]['target'][0] - 1,
                                      self.ship_directive[ship_in_question_id]['target'][1])
-                    attract_heatmap[target] = hot_spot
+                    attract_heatmap[target] = hot_spot * 50
                     attract_heatmap_topoff_location = target
         for shipyard_id in self.board.shipyards:
             shipyard = self.board.shipyards[shipyard_id]
@@ -277,7 +277,7 @@ class halite_ship_navigation(py_environment.PyEnvironment):
             else:
                 detract_heatmap[self._board_size - shipyard.position.y - 1, shipyard.position.x] = hot_spot
 
-        attract_sigma = [self._board_size/10, self._board_size/10]
+        attract_sigma = [self._board_size/3, self._board_size/3]
         attract_heatmap = sp.ndimage.filters.gaussian_filter(attract_heatmap, attract_sigma, mode='constant')
         detract_sigma = [self._board_size/20, self._board_size/20]
         detract_heatmap = sp.ndimage.filters.gaussian_filter(detract_heatmap, detract_sigma, mode='constant')
