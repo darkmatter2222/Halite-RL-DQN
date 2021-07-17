@@ -18,9 +18,10 @@ tf.compat.v1.enable_v2_behavior()
 class find_the_dot(py_environment.PyEnvironment):
     def __init__(self, window_name):
         self.score = {'win': 0, 'loss': 0, 'timeout': 0}
+        self.score_history = []
         self.start_time = datetime.datetime.now()
-        self.board_width = 5
-        self.board_height = 5
+        self.board_width = 15
+        self.board_height = 15
         self.master_step_counter = 0
         self.uuid = window_name
         self.sigma_y = self.board_width / 2
@@ -60,9 +61,15 @@ class find_the_dot(py_environment.PyEnvironment):
                                         _config['files']['policy']['images']['stills']['dir'],
                                         _config['files']['policy']['images']['stills']['name'])
 
+    def append_score(self, action, count):
+        self.score[action] += count
+        self.score_history.append(action)
+
     def render_image(self, directive='unknown'):
         if not self.enable_render_image:
             return
+
+        #return
 
         new_image = np.zeros([self.board_height, self.board_width, 3])
         font = cv2.FONT_HERSHEY_SIMPLEX
@@ -166,6 +173,17 @@ class find_the_dot(py_environment.PyEnvironment):
         return return_object
 
     def _reset(self):
+        total = self.score['loss'] + self.score['win'] + self.score['timeout']
+        if total != 0:
+            intervals = [10, 100, 1000]
+            message = ''
+
+            for interval in intervals:
+                if len(self.score_history) > interval:
+                    working_set = self.score_history[:-interval]
+                    message += f"Interval: {interval} Win {math.floor((working_set.count('win') * 100) / len(working_set))}%\t"
+            print(message)
+
         self._state = np.zeros([self.board_height, self.board_width, self.channels])
         self._episode_ended = False
         self.total_reward = 0
@@ -234,19 +252,19 @@ class find_the_dot(py_environment.PyEnvironment):
         if self.this_turn == self.max_turns - 1:
             info = 'Max Tries'
             self._episode_ended = True
-            self.score['timeout'] += 1
+            self.append_score('timeout', 1)
             reward += loose_reward
         else:
             # Loose Fall Off Map?
             if self.player_location['y'] < 0 or self.player_location['x'] < 0 or \
                     self.player_location['x'] >= self.board_width or self.player_location['y'] >= self.board_height:
                 info = 'Loose Fall Off Map'
-                self.score['loss'] += 1
+                self.append_score('loss', 1)
                 self._episode_ended = True
                 reward += loose_reward
             elif self._state[self.player_location['y'], self.player_location['x']][0] == 1:
                 info = 'Won Got the Goal'
-                self.score['win'] += 1
+                self.append_score('win', 1)
                 self._episode_ended = True
                 reward += win_reward
             elif self._state[self.player_location['y'], self.player_location['x']][2] != 0:

@@ -11,6 +11,7 @@ from tqdm import tqdm
 import os
 import json
 from tf_agents.policies import policy_saver
+from multiprocessing import Process
 
 # loading configuration...
 print('loading configuration...')
@@ -23,13 +24,13 @@ tf.compat.v1.enable_v2_behavior()
 
 # setting hyperparameters
 _num_iterations = 20000000  # @param {type:"integer"}
-_initial_collect_steps = 100  # @param {type:"integer"}
-_collect_steps_per_iteration = 10  # @param {type:"integer"}
-_replay_buffer_max_length = 100000  # @param {type:"integer"}
+_initial_collect_steps = 10000  # @param {type:"integer"}
+_collect_steps_per_iteration = 100  # @param {type:"integer"}
+_replay_buffer_max_length = 10000  # @param {type:"integer"}
 _batch_size = 64 * 10  # @param {type:"integer"}
 _learning_rate = 0.0001  # @param {type:"number"}
 _train_steps = 4000  # @param {type:"integer"}
-_num_eval_episodes = 10  # @param {type:"integer"}
+_num_eval_episodes = 100  # @param {type:"integer"}
 
 # build policy directories
 _save_policy_dir = os.path.join(_config['files']['policy']['base_dir'],
@@ -44,6 +45,9 @@ _checkpoint_policy_dir = os.path.join(_config['files']['policy']['base_dir'],
 # however google did it in their tutorial...
 _train_py_env = find_the_dot(window_name='Training')
 _eval_py_env = find_the_dot(window_name='Testing')
+
+_train_py_env.enable_render_image = False
+_eval_py_env.enable_render_image = False
 
 # wrap the pure python game in a tensorflow wrapper
 _train_env = tf_py_environment.TFPyEnvironment(_train_py_env)
@@ -107,6 +111,9 @@ def collect_step(environment, policy, buffer):
     # Add trajectory to the replay buffer
     buffer.add_batch(traj)
 
+def collect_step_threaded(environment, policy, buffer):
+    p = Process(target=collect_step, args=(environment, policy, buffer,))
+    p.start()
 
 def collect_data(env, policy, buffer, steps):
     for _ in range(steps):
